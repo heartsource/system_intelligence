@@ -35,3 +35,11 @@ b.  az account set -s <subscription id>  # when there are multiple subscriptions
 b.  az aks get-credentials --resource-group rg_productsupport --name aks_product_support_cluster
 
 
+AI Models
+a.  https://www.youtube.com/watch?v=C3-SkB1s9bs
+b.  install Xcode from appstore for mac - this was a pain to find out
+
+
+
+Key vaults
+1.  https://www.youtube.com/watch?v=Vs3wyFk9upo  #create and access keyvault

@@ -1,0 +1,6 @@
+openai
+azure-functions
+azure-identity
+azure-keyvault-secrets
+llama-index
+llama-cpp-python

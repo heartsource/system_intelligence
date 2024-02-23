@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  backend:
+    build: ./
+    container_name: ${backend_image_name}
+    image: ${docker_user}/${backend_image_name}:${backend_image_tag}
+    ports:
+      - 80:80
+#    volumes:
+#      - model:/model
+#volumes:
+#  model:

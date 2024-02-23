@@ -1,0 +1,18 @@
+{
+  "OPENAI_API_KEY": "your_api_key_here",
+  "API_SECRET": "your_api_secret_here",
+  "DATABASE_URL": "your_database_url_here",
+  "SECRET_KEY": "your_secret_key_here",
+  "DEBUG": true,
+
+  "AZURE_CLIENT_ID": "774b6179-1d83-4774-8569-6a92a721c942",
+  "AZURE_CLIENT_SECRET": "OH08Q~deyHwVs-OPaatTVQxhA6EqNpXVTurfJcSR",
+  "AZURE_CLIENT_SECRET_ID": "c4167a87-ad58-46de-911b-fb2ba3ac4967",
+  "AZURE_CLIENT_SECRET_VALUE": "OH08Q~deyHwVs-OPaatTVQxhA6EqNpXVTurfJcSR",
+  "AZURE_TENANT_ID": "50392f5e-5b58-4b20-adc2-0d20fa2d2b44",
+  "AZURE_VAULT_URL": "https://kv-prouctsupport.vault.azure.net/",
+
+  "OPEN_AI_API_KEY": "product-support-ai-openai-api-key1",
+  "LLAMA_MODEL_LOCAL_PATH": "../model/llama-2-7b-chat.Q5_0.gguf",
+  "LLAMA_MODEL_PATH": "/model/llama-2-7b-chat.Q5_0.gguf"
+}
