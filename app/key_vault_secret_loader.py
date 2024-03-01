@@ -5,7 +5,7 @@ from config_Loader import get_configs
 config = get_configs()
 
 client_id = config.get("AZURE_CLIENT_ID")
-client_secret = config.get("AZURE_CLIENT_SECRET")
+client_secret = config.get("AZURE_CLIENT_SECRET_VALUE")
 tenant_id = config.get("AZURE_TENANT_ID")
 vault_url = config.get("AZURE_VAULT_URL")
 

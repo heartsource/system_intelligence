@@ -9,7 +9,15 @@ config = get_configs()
 
 tags_metadata = [
     {
-        "name": "talk_to_heartie_wiki",
+        "name": "talk_to_openai_heartie",
+        "description": "Simple call to openAI through API",
+    },
+    {
+        "name": "talk_to_embedded_llama_heartie",
+        "description": "Simple call to local embedded LLAMA",
+    },
+    {
+        "name": "talk_to_embedded_rag_langchain_openai_wiki_heartie",
         "description": "Using Retreival Augmented Generation.  This uses wiki as a source which tokenizes the prompt and knowledge into a vectocized Chroma DB. "
                        "This is then used to hit OpenAI API to retrieve the results ",
         "externalDocs": {
@@ -18,7 +26,7 @@ tags_metadata = [
         },
     },
     {
-        "name": "talk_to_heartie_pdf",
+        "name": "talk_to_embedded_rag_langchain_openai_pdf_heartie",
         "description": "Using Retreival Augmented Generation.  This uses a local PDF (~600 pages) as a source which tokenizes the prompt and knowledge into a vectocized Chroma DB. "
                        "This is then used to hit OpenAI API to retrieve the results ",
         "externalDocs": {
@@ -33,8 +41,8 @@ app = FastAPI(openapi_tags=tags_metadata)
 async def root():
     return {"message": "Hello1 World"}
 
-@app.post("/talk_to_heartie_wiki/", tags=["talk_to_heartie_wiki"])
-async def talk_to_heartie_wiki(prompt: str, chromadb_path=config.get("CHROMA_DB_PATH")):
+@app.post("/talk_to_embedded_rag_langchain_openai_wiki_heartie/", tags=["talk_to_embedded_rag_langchain_openai_wiki_heartie"])
+async def talk_to_embedded_rag_langchain_openai_wiki_heartie(prompt: str):
     from langchain_community.document_loaders import wikipedia
     #from langchain.document_loaders import wikipedia
     from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -64,7 +72,7 @@ async def talk_to_heartie_wiki(prompt: str, chromadb_path=config.get("CHROMA_DB_
         embeddings,
         ids=[f"{item.metadata['source']}-{index}" for index, item in enumerate(data)],
         collection_name="Nissan-Leaf-EV-Embeddings",
-        persist_directory=chromadb_path
+        persist_directory="db"
     )
     store.persist()
 
@@ -101,8 +109,8 @@ async def talk_to_heartie_wiki(prompt: str, chromadb_path=config.get("CHROMA_DB_
     return return_value
 
 
-@app.post("/talk_to_heartie_pdf/", tags=["talk_to_heartie_pdf"])
-async def talk_to_heartie_pdf(prompt: str, pdf_knowledge_path=config.get("KNOWLEDGE_PDF_PATH"), chromadb_path=config.get("CHROMA_DB_PATH")):
+@app.post("/talk_to_embedded_rag_langchain_openai_pdf_heartie/", tags=["talk_to_embedded_rag_langchain_openai_pdf_heartie"])
+async def talk_to_embedded_rag_langchain_openai_pdf_heartie(prompt: str, pdf_knowledge_path=config.get("KNOWLEDGE_PDF_PATH")):
     #from langchain_community.document_loaders import wikipedia
     from langchain_community.document_loaders import UnstructuredPDFLoader
     # from langchain.document_loaders import wikipedia
@@ -140,7 +148,7 @@ async def talk_to_heartie_pdf(prompt: str, pdf_knowledge_path=config.get("KNOWLE
         embeddings,
         ids=[f"{item.metadata['source']}-{index}" for index, item in enumerate(data)],
         collection_name="Nissan-Leaf-owner-manual-Embeddings",
-        persist_directory=chromadb_path
+        persist_directory="db"
     )
     store.persist()
 
@@ -178,8 +186,8 @@ async def talk_to_heartie_pdf(prompt: str, pdf_knowledge_path=config.get("KNOWLE
 
 
 #wiki_prompt = "Tell me about the first generation of Nissan Leaf?"
-#wiki_return_value = asyncio.run(talk_to_heartie_wiki(wiki_prompt, chromadb_path=config.get("CHROMA_DB_LOCAL_PATH")))
+#wiki_return_value = asyncio.run(talk_to_embedded_rag_langchain_openai_wiki_heartie(wiki_prompt))
 #print(f"Return value from OpenAI with Wiki: {wiki_return_value}")
-#pdf_prompt = "Can you explain regenerative break system?"
-#pdf_return_value = asyncio.run(talk_to_heartie_pdf(pdf_prompt, pdf_knowledge_path=config.get("KNOWLEDGE_PDF_LOCAL_PATH"), chromadb_path=config.get("CHROMA_DB_LOCAL_PATH")))
+#df_prompt = "Can you explain regenerative break system?"
+#pdf_return_value = asyncio.run(talk_to_embedded_rag_langchain_openai_pdf_heartie(pdf_prompt, pdf_knowledge_path=config.get("KNOWLEDGE_PDF_LOCAL_PATH")))
 #print(f"Return value from OpenAI with Wiki: {pdf_return_value}")
