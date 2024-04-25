@@ -1,5 +1,0 @@
-# Test your FastAPI endpoints
-
-##
-POST http://127.0.0.1:8000//talk_to_heartie/
-Accept: application/json
