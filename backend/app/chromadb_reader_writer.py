@@ -1,3 +1,4 @@
+import os
 import uuid
 from config_Loader import get_configs
 from key_vault_secret_loader import get_value_from_key_vault
@@ -42,7 +43,16 @@ def chromadb_reader(question: str):
 def get_client():
     import chromadb
     #client = chromadb.PersistentClient(path=config.get("CHROMA_DB_PATH"))
-    client = (chromadb.HttpClient(host=config.get("CHROMA_HOST"), port=config.get("CHROMA_PORT")))
+    chromaHost = ""
+    chromaPort = ""
+    try:
+        chromaHost = os.environ['CHROMA_HOST']
+        chromaPort = os.environ['CHROMA_PORT']
+    except Exception:
+        if chromaHost == "" or chromaPort == "":
+            chromaHost = config.get("CHROMA_HOST")
+            chromaPort = config.get("CHROMA_PORT")
+    client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
     return client
 
 def get_collection_name():

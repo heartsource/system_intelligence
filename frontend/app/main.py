@@ -1,11 +1,12 @@
 import streamlit as st
-
+import os
 
 def main():
     print("GUI Started ....")
     st.title("Systems Intelligence")
     # Create two columns for the layout
     st.write('<div style="border: 1px solid black; padding: 10px; margin-bottom: 20px;">', unsafe_allow_html=True)
+
     with st.container() as top_container:
         st.subheader("File uploads to enrich Heartie and build context")
         st.subheader("1.  Select file for upload")
@@ -59,7 +60,12 @@ def main():
 
 def load_content(txt_content):
     import requests
-    DATA_LOAD_API_URL = "http://system-intelligence-backend:80/load_to_chromadb/"
+    host = get_host_port()
+    print('load_content on host and port: ', host)
+
+    DATA_LOAD_API_URL = host + "/load_to_chromadb/"
+    print('Sending load_content request to: ', DATA_LOAD_API_URL)
+
     print("Loading Content - Start")
     data = {
         "file_content": txt_content
@@ -70,7 +76,12 @@ def load_content(txt_content):
 
 def query_heartie(query):
     import requests
-    QUERY_URL =  "http://system-intelligence-backend/talk_to_heartie/"
+    host = get_host_port()
+    print('load_content on host and port: ', host)
+
+    QUERY_URL =  host + "/talk_to_heartie/"
+    print('Sending query_heartie request to: ', QUERY_URL)
+
     print("Query - Start")
     data = {
         "question": query
@@ -78,6 +89,17 @@ def query_heartie(query):
     response = requests.post(url=QUERY_URL, params=data)
     print("Query - End", response.text)
     return response
+
+def get_host_port():
+    host = ""
+    try:
+        host = os.environ['BE_HOST']
+    except Exception:
+        if host == "":
+            host = "http://system-intelligence-backend"
+
+    return host
+
 
 #load_content("On your corporate network - Most corporate networks are closed to the outside world. You typically use a VPN to log onto your corporate network and access resources there. You could run your Streamlit app on a server in your corporate network for security reasons, to ensure that only folks internal to your company can access it. On your corporate network - Most corporate networks are closed to the outside world. You typically use a VPN to log onto your corporate network and access resources there. You could run your Streamlit app on a server in your corporate network for security reasons, to ensure that only folks internal to your company can access it.On your corporate network - Most corporate networks are closed to the outside world. You typically use a VPN to log onto your corporate network and access resources there. You could run your Streamlit app on a server in your corporate network for security reasons, to ensure that only folks internal to your company can access it.On your corporate network - Most corporate networks are closed to the outside world. You typically use a VPN to log onto your corporate network and access resources there. You could run your Streamlit app on a server in your corporate network for security reasons, to ensure that only folks internal to your company can access it.")
 #query_heartie("what is an EV?")
