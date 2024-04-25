@@ -1,0 +1,8 @@
+.idea
+/chromadb
+/k8
+/out_dated_files
+/test
+.git
+.DS_Store
+.env

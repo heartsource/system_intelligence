@@ -1,0 +1,10 @@
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+COPY ./py_lib/* /py_lib/
+RUN pip install --upgrade pip
+RUN pip cache purge
+RUN pip install -r /py_lib/requirement.txt
+RUN pip cache purge
+COPY ./app/* /app/
+COPY ./config/* /config/
+COPY ./knowledge/* /knowledge/
+EXPOSE 80

@@ -1,0 +1,39 @@
+{
+  "OPENAI_API_KEY": "your_api_key_here",
+  "API_SECRET": "your_api_secret_here",
+  "DATABASE_URL": "your_database_url_here",
+  "SECRET_KEY": "your_secret_key_here",
+  "DEBUG": true,
+
+  "AZURE_CLIENT_ID": "7f35cd86-e3e8-4d70-833a-8961f6dc9d82",
+  "AZURE_TENANT_ID": "0d8d044e-89bf-4722-9556-04163b0c4348",
+  "AZURE_CLIENT_SECRET_VALUE": "8GD8Q~5HXHTY-wj6MBD7w0OgBGjNcvrVTwDMUaIW",
+  "AZURE_VAULT_URL": "https://productsupport-kv.vault.azure.net/",
+
+  "OPEN_AI_API_KEY": "product-support-ai-openai-api-key1",
+  "LLAMA_MODEL_LOCAL_PATH": "../model/llama-2-7b-chat.Q5_0.gguf",
+  "LLAMA_MODEL_PATH": "/model/llama-2-7b-chat.Q5_0.gguf",
+
+  "KNOWLEDGE_PDF_PATH": "/knowledge/2020-nissan-leaf-owner-manual.pdf",
+  "KNOWLEDGE_PDF_LOCAL_PATH": "../knowledge/2020-nissan-leaf-owner-manual.pdf",
+
+  "KNOWLEDGE_TXT_PATH": "/knowledge/nissan_history.txt",
+  "KNOWLEDGE_TXT_LOCAL_PATH": "../knowledge/nissan_history.txt",
+
+  "KNOWLEDGE_DOC_PATH": "/knowledge/2023_leaf_warranty.docx",
+  "KNOWLEDGE_DOC_LOCAL_PATH": "../knowledge/2023_leaf_warranty.docx",
+
+  "CHROMA_DB_PATH": "../chromadb",
+  "CHROMA_DB_NAME": "system_intelligence_chromadb",
+  "CHROMA_DB_COLLECTION_NAME": "system_intelligence_collection",
+
+  "CHROMA_HOST": "chroma-server",
+  "CHROMA_PORT": "8000",
+
+  "AZURE_OPENAI_ENDPOINT": "https://productsupportopenai.openai.azure.com/",
+  "AZURE_OPENAI_API_KEY": "system-intelligence-ai-openai-api-key",
+  "AZURE_DEPLOYMENT_NAME": "system-intelligence-gpt-35-turbo-instruct",
+
+  "TEMPLATE_AI": "You are a bot that answers questions about the electric vehicle Nissan Leaf, using only the context provided.\n If you don't know the answer, simply state that you don't know. \n\n As electric vehicles are the future, every organization is investing a lot in research \n This paper is all about Nissan Leaf, which is a mid-range budget vehicle available for public consumption. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}."
+
+}

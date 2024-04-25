@@ -1,0 +1,6 @@
+azure-identity
+azure-keyvault-secrets
+chromadb
+langchain_community
+sentence_transformers
+openai

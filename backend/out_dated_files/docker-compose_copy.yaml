@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  backend:
+    build: ../..
+    container_name: ${backend_image_name}
+    image: ${docker_user}/${backend_image_name}:${backend_image_tag}
+    environment:
+      #These two timeout parameters are added to override env variables of
+      #gunicorn server start up parameters. Without this the server would
+      #timeout.  It was a pain to understand the generic message of timeout.
+      #Good we resolved it ... Look at Gunicorn startup code to understand.
+      - GRACEFUL_TIMEOUT=${graceful_timeout}
+      - TIMEOUT=${timeout}
+    ports:
+      - 80:80
+#    volumes:
+#      - model:/model
+#volumes:
+#  model:
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - ./chromadb:/data/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/data/chroma # this is the default path, change it as needed
+      - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-TRUE}
+    ports:
+      - 8000:8000
+    networks:
+      - net
+networks:
+  net:
+    driver: bridge
