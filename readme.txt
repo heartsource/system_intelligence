@@ -7,7 +7,7 @@ docker build -t myil/productsupportbackendapi:1.1 .
 # 1.  Push the image to hub
 docker push <dockerhub_username>/<image_name>:<tag>
 docker push myil/productsupportbackendapi:1.1
-
+          
 # 2.  login into azure account
     a.  az login
     b.  https://www.youtube.com/watch?v=Q0Jqy3Jp65c
