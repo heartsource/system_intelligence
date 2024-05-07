@@ -34,6 +34,7 @@
   "AZURE_OPENAI_API_KEY": "system-intelligence-ai-openai-api-key",
   "AZURE_DEPLOYMENT_NAME": "system-intelligence-gpt-35-turbo-instruct",
 
-  "TEMPLATE_AI": "You are a bot that answers questions about the electric vehicle Nissan Leaf, using only the context provided.\n If you don't know the answer, simply state that you don't know. \n\n As electric vehicles are the future, every organization is investing a lot in research \n This paper is all about Nissan Leaf, which is a mid-range budget vehicle available for public consumption. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}."
+  "TEMPLATE_AI": "You are a bot that answers questions, using only the context provided.\n If you have complete information provide accurate answers. If you only have partial information from the context, please state that you do not have accurate information and try to provide a precise answer in a maximum of 2 sentences with a disclaimer that you did your best to answer but you are not sure. If there is no information from the context at all, please say you do not have an answer in a polite way. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}.",
+  "TEMPLATE_AI_DYN_PROMPT": "{}. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}."
 
 }

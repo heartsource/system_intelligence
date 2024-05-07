@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 import os
 
@@ -40,7 +41,7 @@ async def root():
 
 
 @app.post("/talk_to_heartie/", tags=["talk_to_heartie"])
-async def talk_to_heartie(question: str):
+async def talk_to_heartie(question: str, prompt: str|None = None):
     #Context creation
     from chromadb_reader_writer import chromadb_reader
     print('Heartie is in Action:  Started ... ')
@@ -65,6 +66,10 @@ async def talk_to_heartie(question: str):
     # Define your template with context and prompt
     template = config.get("TEMPLATE_AI")
     template_with_context_and_question = template.format(context, question)
+    if prompt is not None:
+        template = config.get("TEMPLATE_AI_DYN_PROMPT")
+        template_with_context_and_question = template.format(prompt, context, question)
+
     print(f"Template with substitutions :{template_with_context_and_question}")
 
     response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=200)
