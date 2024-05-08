@@ -4,4 +4,3 @@ chromadb
 langchain_community
 sentence_transformers
 openai
-eval-type-backport

@@ -41,7 +41,7 @@ def main():
         st.subheader("3.  Enter the prompt (optional)")
 
         # Text box for user input
-        prompt_input = st.text_input("Enter prompt:")
+        prompt_input = st.text_area("Enter prompt:")
 
         # Button to set the prompt
         if st.button("Set Prompt"):
@@ -103,10 +103,14 @@ def query_heartie(query):
     print('Sending query_heartie request to: ', QUERY_URL)
 
     print("Query - Start")
-    print(st.session_state.prompt_received)
+    promptToPass = None
+
+    if 'prompt_received' in st.session_state:
+        promptToPass = st.session_state.prompt_received
+
     data = {
         "question": query,
-        "prompt": st.session_state.prompt_received
+        "prompt": promptToPass
     }
 
     response = requests.post(url=QUERY_URL, params=data)

@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Optional
 import asyncio
 import os
 
@@ -41,7 +41,7 @@ async def root():
 
 
 @app.post("/talk_to_heartie/", tags=["talk_to_heartie"])
-async def talk_to_heartie(question: str, prompt: str|None = None):
+async def talk_to_heartie(question: str, prompt: Optional[str] = None):
     #Context creation
     from chromadb_reader_writer import chromadb_reader
     print('Heartie is in Action:  Started ... ')
