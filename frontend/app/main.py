@@ -38,6 +38,25 @@ def main():
                 response_txt = "Exception:  API Unavailable - contact support team"
             #print("User input:", user_input)
             st.write(response_txt)
+        st.subheader("3.  Enter the prompt (optional)")
+
+        # Text box for user input
+        prompt_input = st.text_area("Enter prompt:")
+
+        # Button to set the prompt
+        if st.button("Set Prompt"):
+            response_txt = ''
+            # Consume the prompt entered by the use
+            try:
+                prompt_received = prompt_input.strip()
+                st.session_state.prompt_received = None
+                if len(prompt_received) > 0:
+                    st.session_state.prompt_received = prompt_received
+                response_txt = 'Prompt is set'
+            except Exception as e:
+                response_txt = "Exception:  While setting prompt"
+            #print("User input:", user_input)
+            st.write(response_txt)
 
     st.write('<div style="border: 1px solid black; padding: 10px; margin-bottom: 20px;">', unsafe_allow_html=True)
     with st.container() as bottom_container:
@@ -45,6 +64,7 @@ def main():
 
         # Text box for user input
         user_query = st.text_input("Enter the Query:")
+        response_txt = ""
 
         # Button to submit the text
         if st.button("Query"):
@@ -83,9 +103,16 @@ def query_heartie(query):
     print('Sending query_heartie request to: ', QUERY_URL)
 
     print("Query - Start")
+    promptToPass = None
+
+    if 'prompt_received' in st.session_state:
+        promptToPass = st.session_state.prompt_received
+
     data = {
-        "question": query
+        "question": query,
+        "prompt": promptToPass
     }
+
     response = requests.post(url=QUERY_URL, params=data)
     print("Query - End", response.text)
     return response
