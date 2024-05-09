@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: systemintelligencebackendapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: systemintelligencebackendapp
+  template:
+    metadata:
+      labels:
+        app: systemintelligencebackendapp
+    spec:
+      containers:
+      - name: systemintelligencebackendapp
+        image: myil/system-intelligence-backend:1.0.0
+        ports:
+        - containerPort: 80

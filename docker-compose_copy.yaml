@@ -2,7 +2,7 @@ version: "3.8"
 services:
   backend:
     build: ./backend/
-    container_name: system-intelligence-backend
+    container_name: ${backend_image_name}
     image: ${docker_user}/${backend_image_name}:${backend_image_tag}
     environment:
       #These two timeout parameters are added to override env variables of
@@ -16,7 +16,7 @@ services:
 
   chromadb:
     image: chromadb/chroma:latest
-    container_name: chroma-server
+    container_name: chroma_server
     volumes:
       - ./chromadb:/data/chroma
     environment:
@@ -28,7 +28,7 @@ services:
 
   frontend:
     build: ./frontend/
-    container_name: system-intelligence-frontend
+    container_name: ${frontend_image_name}
     image: ${docker_user}/${frontend_image_name}:${frontend_image_tag}
     ports:
       - 8501:8501
