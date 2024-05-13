@@ -1,0 +1,60 @@
+.answerContainer {
+  max-width: 90%;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow-y: scroll;
+  max-height: 550px;
+  margin-top: 0.3em;
+}
+
+.userInitial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Makes it a circle */
+  background-color: #342b47; /* Background color of the circle */
+  color: #eae7e7; /* Text color */
+  text-align: center; /* Center text horizontally */
+  line-height: 50px; /* Center text vertically */
+  font-size: 1rem; /* Adjust font size as needed */
+  padding-left: '10px';
+}
+
+.col-md-auto {
+  margin: auto 0;
+}
+
+.row.align-items-center {
+  display: flex;
+  align-items: center; /* Vertically align items */
+  padding: 0.5em;
+  margin-left: 1.2rem;
+}
+
+/* Style for the tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #c91616;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}

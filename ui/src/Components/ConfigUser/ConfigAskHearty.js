@@ -1,31 +1,58 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../../Styles/userdashboard.css';
 import hearty from '../Images/hearty.png';
-import AnswerDisplay from '../Users/AnswerDisplay';
+import ConversationDisplay from '../ConfigUser/ConversationDisplay';
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
-  const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handleClick = () => {
-    setIsVisible(!isVisible);
-  };
+  const [conversation, setConversation] = useState({});
+  const [error, setError] = useState(null);
+
   const handleTextareaInput = (event) => {
     event.target.style.height = 'auto'; // Reset height to auto to recalculate scroll height
     event.target.style.height = event.target.scrollHeight + 'px'; // Set height to scroll height
   };
-  const handleKeyPress = async (event) => {
-    if (event.key === 'Enter') {
-      setIsLoading(true);
-      await onTextSubmit(event.target.value);
-      event.target.value = '';
-      setTimeout(() => {
-        setIsVisible(true);
-        setIsLoading(false);
-      }, 3000);
+
+  const handleKeyPressOrClick = async (event) => {
+    if (
+      event.type === 'click' ||
+      (event.type === 'keydown' && event.key === 'Enter')
+    ) {
+      if (event.type === 'click' || event.key === 'Enter') {
+        const inputElement = document.getElementById('myInput');
+        const question = inputElement.value;
+
+        setIsLoading(true);
+        try {
+          const response = await axios.post(
+            'http://4.255.69.143/heartie-be/talk_to_heartie/',
+            { question }
+          );
+          await onTextSubmit(question);
+          inputElement.value = '';
+          setIsLoading(false);
+          let conversation = {};
+          conversation.question = question;
+          conversation.answer = response.data;
+          setConversation(conversation);
+        } catch (error) {
+          console.log(error);
+          setError('There was an error fetching data. Please try again later.');
+          await onTextSubmit(question);
+          inputElement.value = '';
+          setIsLoading(false);
+        }
+      }
     }
   };
   return (
     <>
+      {error && ( // Display error message if there's an error
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
       <div className="container-fluid">
         <div class="dashboard-content">
           <div className="content">
@@ -44,16 +71,16 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 id="myInput"
                 className="input-group__input"
                 placeholder="Seeking answers? Ask your question here."
-                onKeyDown={handleKeyPress}
+                onKeyDown={handleKeyPressOrClick}
                 onInput={handleTextareaInput}
               />
               <i
                 className="fa-solid fa-arrow-up search-button"
-                onClick={handleClick}
+                onClick={handleKeyPressOrClick}
               ></i>
             </div>
           </div>
-          {isLoading ? (
+          {isLoading && (
             <div
               className="d-flex flex-column align-items-center"
               style={{ minHeight: '100px' }}
@@ -66,9 +93,8 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 question!
               </span>
             </div>
-          ) : (
-            isVisible && <AnswerDisplay />
           )}
+          <ConversationDisplay conversation={conversation} />
         </div>
       </div>
     </>
