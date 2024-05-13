@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../Components/Images/heartSourceLogoresize.png';
-import ConfigDashboard from './ConfigDashboard';
+import Logo from '../Components/../Images/heartSourceLogoresize.png';
+// import ConfigDashboard from './ConfigDashboard';
+import Configuration from './Configuration';
 
-import '../Styles/sidenavbar.css';
+import '../../Styles/sidenavbar.css';
 
 const Navbar = () => {
   useEffect(() => {
@@ -38,7 +39,7 @@ const Navbar = () => {
         <h1 className="gradient-text">Support Intelligence</h1>
         <div className="header_toggle"></div>
         <div className="header_img">
-          <img src="https://i.imgur.com/hczKIze.jpg" alt="" />
+          <i class="fa-solid fa-user"></i>
         </div>
       </header>
       <div className="l-navbar" id="nav-bar">
@@ -47,19 +48,12 @@ const Navbar = () => {
             <div className="nav_list">
               <i class="fa-solid fa-bars nav_link" id="header-toggle"></i>
               <a href="/" className="nav_link active">
-                <i className="fas fa-home"></i> Home
+                <i class="fa-solid fa-gears"></i> Configuration
               </a>
-              <a href="/" className="nav_link">
-                <i className="fas fa-tachometer-alt"></i> Dashboard
-              </a>
-              <a href="/" className="nav_link">
-                <i class="fa-solid fa-upload"></i>Upload Documents
-              </a>
-              <a href="/" className="nav_link">
-                <i class="fa-solid fa-link"></i>Upload Wiki Links
-              </a>
-
-              <Link to="/ask-hearty" className="nav_link">
+              <Link to="/upload" className="nav_link">
+                <i class="fa-solid fa-upload"></i>Knowledge Upload
+              </Link>
+              <Link to="/config-ask-hearty" className="nav_link">
                 <i className="fa-solid fa-heart"></i>Ask Hearty
               </Link>
             </div>
@@ -72,7 +66,8 @@ const Navbar = () => {
       </div>
       {/*Container Main start for dashboard*/}
       <div>
-        <ConfigDashboard />
+        {/* <ConfigDashboard /> */}
+        {/* <Configuration /> */}
       </div>
       {/*Container Main end for dashboard*/}
     </div>

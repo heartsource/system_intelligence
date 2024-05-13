@@ -1,11 +1,9 @@
-import ConfigNavbar from './ConfigNavbar';
-import Footer from './Footer';
+import Configuration from '../Components/ConfigUser/Configuration';
 
 const Home = () => {
   return (
     <>
-      <ConfigNavbar />
-      <Footer />
+      <Configuration />
     </>
   );
 };
