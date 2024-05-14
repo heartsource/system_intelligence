@@ -42,6 +42,7 @@ const Navbar = () => {
           <i class="fa-solid fa-user"></i>
         </div>
       </header>
+      <hr className="hr_header" />
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">
           <div>
@@ -64,11 +65,9 @@ const Navbar = () => {
           </a>
         </nav>
       </div>
+      <hr className="vertical-hr" />
       {/*Container Main start for dashboard*/}
-      <div>
-        {/* <ConfigDashboard /> */}
-        {/* <Configuration /> */}
-      </div>
+
       {/*Container Main end for dashboard*/}
     </div>
   );

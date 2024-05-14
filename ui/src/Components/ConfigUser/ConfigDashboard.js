@@ -85,15 +85,16 @@ const ConfigDashboard = () => {
         <div className="alert alert-success">{successMessage}</div>
       )}
       {/* <div className="container"> */}
-      <div className="knowledge">
+      {/* <div className="knowledge">
         <h2>Add to Knowledge Repository</h2>
-      </div>
+      </div> */}
 
       <div className="card">
-        <h3 className="text">
+        <h4 className="text">
           Upload Knowledge Documents &nbsp;
           <i className="fa-solid fa-file-arrow-up"></i>
-        </h3>
+        </h4>
+        <hr className="configuration_form" />
         <div className="drop_box">
           <header>
             <label htmlFor="fileID">

@@ -107,7 +107,8 @@
   transform: translateY(-50%);
 }
 h2 {
-  background: linear-gradient(
+  color: #fff;
+  /* background: linear-gradient(
     90deg,
     hsla(254, 68%, 9%, 1) 0%,
     hsla(269, 97%, 37%, 1) 33%,
@@ -115,7 +116,7 @@ h2 {
     hsla(316, 41%, 93%, 1) 100%
   );
 
-  -webkit-background-clip: text; /* For Safari */
+  -webkit-background-clip: text; 
   background-clip: text;
-  color: transparent;
+  color: transparent; */
 }

@@ -17,11 +17,12 @@ body {
   box-shadow: 0 5px 10px 0 rgba(29, 29, 29, 0.823);
   width: 700px;
   height: 400px;
-  background: linear-gradient(
+  background-color: transparent;
+  /* background: linear-gradient(
     90deg,
     rgba(238, 174, 202, 1) 0%,
     rgba(148, 187, 233, 1) 100%
-  );
+  ); */
   padding: 10px 30px 40px;
   position: absolute;
   top: 35%;
@@ -30,11 +31,12 @@ body {
   /*margin-top: calc(50% - 150px); */
 }
 
-.card h3 {
+.card h4 {
   font-size: 22px;
   font-weight: 600;
   text-align: center;
-
+  color: rgb(45, 182, 212);
+  /* 
   background-image: linear-gradient(
     to right bottom,
     #6613e0,
@@ -43,13 +45,21 @@ body {
     #d04ad2,
     #e562d0
   );
-  -webkit-background-clip: text; /* For Safari */
+  -webkit-background-clip: text; 
   background-clip: text;
-  color: transparent;
+  color: transparent; */
 }
 
-.card h3 i {
-  color: #342b47;
+.card h4,
+i {
+  color: rgb(45, 182, 212);
+}
+header h4 {
+  color: rgb(45, 182, 212);
+}
+h3,
+label {
+  color: white !important;
 }
 
 .drop_box {
@@ -83,12 +93,13 @@ body {
 
 .btn {
   text-decoration: none;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(175, 238, 174, 1) 0%,
     rgba(148, 187, 233, 1) 100%
-  );
-  color: #0f0f0f;
+  ); */
+  color: #fff;
+  background-color: transparent;
   padding: 10px 20px;
   border: none;
   outline: none;
@@ -97,12 +108,12 @@ body {
 
 .btn:hover {
   text-decoration: none;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(174, 238, 230, 1) 0%,
     rgba(148, 187, 233, 1) 100%
-  );
-  color: #1c1d1e;
+  ); */
+  color: #fff;
   padding: 10px 20px;
   border: none;
   outline: 1px solid #010101;
@@ -198,9 +209,10 @@ body {
 
 /* Button */
 .btn {
-  background-color: #007bff;
-  color: rgb(84, 6, 148);
-  border: none;
+  /* background-color: #007bff; */
+  background-color: rgb(45, 182, 212);
+  color: #000;
+  border: 1px solid #000;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -209,7 +221,9 @@ body {
 
 /* Button hover effect */
 .btn:hover {
-  background-color: #0056b3;
+  /* background-color: #0056b3; */
+  background-color: transparent;
+  border: 1px solid white;
 }
 
 /* Card styling */

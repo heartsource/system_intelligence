@@ -9,7 +9,7 @@ const Configuration = () => {
             Configuration
             <i class="fa-solid fa-gears"></i>
           </legend>
-          <hr />
+          <hr className="configuration_form" />
           <div>
             <label forHTML="model">Select Model</label>
             <select id="model">
@@ -32,11 +32,11 @@ const Configuration = () => {
             <label forHTML="template">Template</label>
             <textarea id="template"></textarea>
           </div>
-          <div>
+          {/* <div>
             <label forHTML="button"></label>
 
             <button className="btn-grad">Submit</button>
-          </div>
+          </div> */}
         </fieldset>
       </div>
     </>
