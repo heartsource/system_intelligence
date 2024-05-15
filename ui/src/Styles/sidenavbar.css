@@ -1,4 +1,4 @@
-/* @import url(https://fonts.googleapis.com/css?family=Cherry+Swash); */
+@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
 :root {
   --header-height: 4rem;
   /* --nav-width: 70px; */
@@ -15,8 +15,7 @@
   box-sizing: border-box;
 }
 body {
-  /* font-family: 'Snell Roundhand, cursive'; */
-  font-family: 'poppins, sans-serif;';
+  font-family: 'Proxima Nova, Open Sans;';
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
@@ -217,4 +216,5 @@ hr.vertical-hr {
   -webkit-text-fill-color: transparent; */
   color: #fff;
   padding-left: 130px;
+  font-family: 'Proxima Nova, Open Sans;';
 }

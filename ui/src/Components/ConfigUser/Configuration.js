@@ -32,11 +32,11 @@ const Configuration = () => {
             <label forHTML="template">Template</label>
             <textarea id="template"></textarea>
           </div>
-          {/* <div>
+          <div>
             <label forHTML="button"></label>
 
             <button className="btn-grad">Submit</button>
-          </div> */}
+          </div>
         </fieldset>
       </div>
     </>

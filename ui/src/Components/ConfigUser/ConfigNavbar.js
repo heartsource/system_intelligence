@@ -33,8 +33,9 @@ const Navbar = () => {
   return (
     <div id="body-pd">
       <header className="header" id="header">
-        <img src={Logo} height="70px" width="70px" />
-        <h1 className="gradient-text">Support Intelligence</h1>
+        <img src={Logo} height="85px" width="100px" />
+
+        <h1 className="gradient-text">Support Genie</h1>
         <div className="header_toggle"></div>
         <div className="header_img">
           <i class="fa-solid fa-user"></i>

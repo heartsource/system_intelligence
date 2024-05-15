@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../Styles/userdashboard.css';
+import '../../Styles/configAskHearty.css';
 import hearty from '../Images/hearty.png';
 import AnswerDisplay from '../Users/AnswerDisplay';
 
