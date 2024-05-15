@@ -25,10 +25,15 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
         setIsLoading(true);
         try {
+          // const response = await axios.post(
+          //   'http://4.255.69.143/heartie-be/talk_to_heartie/',
+          //   { question }
+          // );
           const response = await axios.post(
-            'http://4.255.69.143/heartie-be/talk_to_heartie/',
+            'http://localhost:8000/talk-to-heartie',
             { question }
           );
+
           await onTextSubmit(question);
           inputElement.value = '';
           setIsLoading(false);

@@ -49,9 +49,7 @@ const ConversationDisplay = ({ conversation }) => {
           <div key={index}>
             <div className="row justify-content-md">
               <div className="userInitial col-md-auto">
-                <span className="initialName">
-                  {item.speaker === 'You' ? 'AS' : 'Hearty'}
-                </span>
+                <span className="initialName">You</span>
               </div>
               <div className="col-md-auto">
                 <h5>
