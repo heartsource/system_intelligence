@@ -35,6 +35,12 @@
   "AZURE_DEPLOYMENT_NAME": "system-intelligence-gpt-35-turbo-instruct",
 
   "TEMPLATE_AI": "You are a bot that answers questions, using only the context provided.\n If you have complete information provide accurate answers. If you only have partial information from the context, please state that you do not have accurate information and try to provide a precise answer in a maximum of 2 sentences with a disclaimer that you did your best to answer but you are not sure. If there is no information from the context at all, please say you do not have an answer in a polite way. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}.",
-  "TEMPLATE_AI_DYN_PROMPT": "{}. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}."
+  "TEMPLATE_AI_DYN_PROMPT": "{}. \n Context: {} \n\n  Can you write a response to this customer question please? \n Prompt: {}.",
+
+  "AI_PROMPTS_4_UI": {
+    "models": ["model-1", "model-2", "model-3"],
+    "flows": ["flow-1", "flow-2", "flow-3"],
+    "template": "You are a bot that answers questions, using only the context provided. If you have complete information provide accurate answers. If you only have partial information from the context, please state that you do not have accurate information and try to provide a precise answer in a maximum of 2 sentences with a disclaimer that you did your best to answer but you are not sure. If there is no information from the context at all, please say you do not have an answer in a polite way."
+  }
 
 }

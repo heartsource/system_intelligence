@@ -1,8 +1,10 @@
 from typing import Optional
 import asyncio
 import os
+import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 from config_Loader import get_configs
 from key_vault_secret_loader import get_value_from_key_vault
 from chromadb.utils import embedding_functions
@@ -35,16 +37,27 @@ tags_metadata = [
 ]
 app = FastAPI(openapi_tags=tags_metadata)
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 async def root():
     return {"message": "Hello1 World"}
 
 
 @app.post("/talk_to_heartie/", tags=["talk_to_heartie"])
-async def talk_to_heartie(question: str, prompt: Optional[str] = None):
+async def talk_to_heartie(question: str, prompt: Optional[str] = None, model: Optional[str] = None, flow: Optional[str] = None):
     #Context creation
     from chromadb_reader_writer import chromadb_reader
     print('Heartie is in Action:  Started ... ')
+    print(f"Using [Model] {model} [Flow] {flow} [Question] {question} \n [Prompt] {prompt}")
     context = chromadb_reader(question)
 
     # Set your Azure Cognitive Services endpoint and API key
@@ -83,6 +96,10 @@ async def load_to_chromadb(file_content):
     from chromadb_reader_writer import chromadb_writer
     chromadb_writer(file_content)
     return return_value
+
+@app.get("/get_ai_prompts/", tags=["get_ai_prompts"])
+async def get_ai_prompts():
+    return config.get("AI_PROMPTS_4_UI")
 
 #return_value = asyncio.run(load_file_to_chromadb("pdf", context="Nissan Leaf", file_path="../knowledge/2020-nissan-leaf-owner-manual.pdf"))
 #return_value = asyncio.run(load_file_to_chromadb("wiki", context="Nissan Leaf", file_path="../knowledge/Derby_15_Jun_2023.pdf"))
