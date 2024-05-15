@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../../Styles/userdashboard.css';
+import '../../Styles/configAskHearty.css';
 import hearty from '../Images/hearty.png';
 import ConversationDisplay from '../ConfigUser/ConversationDisplay';
 

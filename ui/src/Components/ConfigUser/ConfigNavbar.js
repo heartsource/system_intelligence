@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Components/../Images/heartSourceLogoresize.png';
-// import ConfigDashboard from './ConfigDashboard';
-import Configuration from './Configuration';
 
 import '../../Styles/sidenavbar.css';
 
@@ -35,13 +33,15 @@ const Navbar = () => {
   return (
     <div id="body-pd">
       <header className="header" id="header">
-        <img src={Logo} height="70px" width="70px" />
-        <h1 className="gradient-text">Support Intelligence</h1>
+        <img src={Logo} height="85px" width="100px" />
+
+        <h1 className="gradient-text">Support Genie</h1>
         <div className="header_toggle"></div>
         <div className="header_img">
           <i class="fa-solid fa-user"></i>
         </div>
       </header>
+      <hr className="hr_header" />
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">
           <div>
@@ -64,11 +64,9 @@ const Navbar = () => {
           </a>
         </nav>
       </div>
+      <hr className="vertical-hr" />
       {/*Container Main start for dashboard*/}
-      <div>
-        {/* <ConfigDashboard /> */}
-        {/* <Configuration /> */}
-      </div>
+
       {/*Container Main end for dashboard*/}
     </div>
   );

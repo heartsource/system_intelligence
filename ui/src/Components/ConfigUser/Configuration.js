@@ -47,6 +47,7 @@ const Configuration = () => {
           </legend>
           <hr />
 
+          <hr className="configuration_form" />
           <div>
             <label htmlFor="model">Select Model</label>
             <select id="model">
@@ -73,9 +74,10 @@ const Configuration = () => {
               onChange={(e) => setTemplate(e.target.value)}
             ></textarea>
           </div>
-          {/* <div>
+          <div>
+            <label htmlFor="button"></label>
             <button className="btn-grad">Submit</button>
-          </div> */}
+          </div>
         </fieldset>
       </div>
     </>

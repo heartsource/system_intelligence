@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Cherry+Swash);
+@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
 :root {
   --header-height: 4rem;
   /* --nav-width: 70px; */
@@ -15,18 +15,19 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Snell Roundhand, cursive';
+  font-family: 'Proxima Nova, Open Sans;';
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
   font-family: 'Cherry Swash';
   font-size: var(--normal-font-size);
   transition: 0.5s;
-  background: linear-gradient(
+  background-color: rgb(20, 20, 22);
+  /* background: linear-gradient(
     90deg,
     hsla(260, 28%, 53%, 1) 0%,
     hsla(170, 42%, 71%, 1) 100%
-  );
+  ); */
 }
 a {
   text-decoration: none;
@@ -41,7 +42,8 @@ a {
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
-  background-color: #342b47;
+  background-color: rgb(20, 20, 22);
+  /* background-color: #342b47; */
   z-index: var(--z-fixed);
   transition: 0.5s;
 }
@@ -75,7 +77,21 @@ a {
   font-size: 2em;
   border-radius: 50%;
   /* border: 2px solid white; */
-  color: #b197fc;
+  /* color: #b197fc; */
+  color: #f7f6fb;
+}
+
+hr.hr_header {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+hr.vertical-hr {
+  border-left: 1px solid #fff;
+  height: 100%;
 }
 
 .l-navbar {
@@ -84,7 +100,9 @@ a {
   left: -30%;
   width: var(--nav-width);
   height: 100vh;
-  background-color: #342b47;
+  /* background-color: rgb(20, 20, 22); */
+  background-color: #1a1c1e;
+  /* background-color: #342b47; */
   padding: 0.5rem 1rem 0 0;
   transition: 0.5s;
   z-index: var(--z-fixed);
@@ -123,8 +141,9 @@ a {
   transition: color 0.3s ease;
 }
 .nav_link:hover {
-  background-color: #c1c0bf;
-  color: hsla(269, 97%, 37%, 1);
+  /* background-color: #c1c0bf; */
+  /* color: hsla(269, 97%, 37%, 1); */
+  color: rgb(45, 182, 212);
   font-size: small;
   border-radius: 10px;
 }
@@ -134,6 +153,7 @@ a {
 .show {
   left: 0;
 }
+
 .body-pd {
   padding-left: calc(var(--nav-width) + 1rem);
 }
@@ -173,11 +193,6 @@ a {
     width: 45px;
   }
 
-  /* .fa-user {
-    width: 7em;
-    height: 7em;
-    color: #5b2de6;
-  } */
   .l-navbar {
     left: 0;
     padding: 1rem 1rem 0 0;
@@ -191,13 +206,15 @@ a {
 }
 
 .gradient-text {
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(126, 106, 190, 1) 0%,
     rgba(53, 188, 146, 1) 100%
   );
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
+  color: #fff;
   padding-left: 130px;
+  font-family: 'Proxima Nova, Open Sans;';
 }

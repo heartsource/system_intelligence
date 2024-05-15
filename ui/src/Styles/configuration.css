@@ -2,35 +2,36 @@ fieldset {
   border: 2px solid #ccc;
   border-radius: 5px;
   padding: 20px;
-  margin: 0 auto; /* Center horizontally */
+  margin: 0 auto;
   min-width: 600px;
   min-height: 250px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(238, 174, 202, 1) 0%,
     rgba(148, 187, 233, 1) 100%
-  );
+  ); */
   text-align: center;
 }
 
 legend {
   font-size: 1.5em;
   font-weight: bold;
-  color: hsla(269, 97%, 37%, 1);
+  color: rgb(45, 182, 212);
+  /* color: hsla(269, 97%, 37%, 1); */
   padding: 5px 10px;
   margin-bottom: 10px;
 }
-hr {
+hr.configuration_form {
   overflow: visible;
   padding: 0;
   border: none;
-  border-top: medium double #333;
-  color: #000000;
+  border-top: medium double #a8a6a6;
+  color: #d7d5d5;
   text-align: center;
   margin: -1em;
 }
 
-hr:after {
+hr.configuration_form:after {
   content: '§';
   display: inline-block;
   position: relative;
@@ -54,39 +55,56 @@ hr:after {
   margin-bottom: 10px;
 }
 .fieldset-container label {
+  color: #fff;
   width: 120px;
   margin-right: 10px;
 }
-.fieldset-container select {
+.fieldset-container select,
+textarea {
   width: 250px;
   padding: 5px;
   box-sizing: border-box;
   transition: 0.5s ease-in;
 }
 
+#model,
+#flow,
+#template {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: white;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
+#model option:hover,
+#flow option:hover,
+#template:hover {
+  background-color: transparent;
+  border: 2px solid #ccc;
+  color: white;
+}
+
 /* Button Style */
 
 .btn-grad {
-  background-image: linear-gradient(
-    to right,
-    #77a1d3 0%,
-    #79cbca 51%,
-    #77a1d3 100%
-  );
+  text-decoration: none;
+  background-color: rgb(45, 182, 212);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  transition: 0.3s;
   margin: 10px;
   padding: 2px 15px;
   text-align: center;
   transition: 0.5s;
-  background-size: 200% auto;
   color: black;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
   display: block;
 }
 
 .btn-grad:hover {
-  background-position: right center; /* change the direction of the change here */
-  color: hsla(269, 97%, 37%, 1);
   text-decoration: none;
-  font-size: large;
+  color: #fff;
+  padding: 2px 15px;
+  border: none;
+  outline: 1px solid #fff;
 }
