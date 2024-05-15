@@ -39,3 +39,4 @@
 /ui/yarn.lock
 /ui/uploads/*
 
+.DS_Store
