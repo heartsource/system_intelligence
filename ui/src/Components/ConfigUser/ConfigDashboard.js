@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../../Styles/configDashboard.css';
+import '../../Styles/configurationDashboard.css';
 
 const ConfigDashboard = () => {
   const [files, setFiles] = useState(null);
@@ -89,39 +89,42 @@ const ConfigDashboard = () => {
         <h2>Add to Knowledge Repository</h2>
       </div> */}
 
-      <div className="card">
-        <h4 className="text">
-          Upload Knowledge Documents &nbsp;
-          <i className="fa-solid fa-file-arrow-up"></i>
-        </h4>
-        <hr className="configuration_form" />
-        <div className="drop_box">
-          <header>
-            <label htmlFor="fileID">
-              <h3>
-                Select File here &nbsp;
-                <i className="fa-solid fa-file-circle-plus fa-bounce"></i>
-              </h3>
-            </label>
-          </header>
-          <p>
-            <label htmlFor="fileID">
-              Files Supported: PDF, TEXT, DOC, DOCX, IMAGES
-            </label>
-          </p>
+      <div className="fieldset-container">
+        <fieldset>
+          <legend>
+            Upload Knowledge Documents{' '}
+            {/* <i className="fa-solid fa-file-arrow-up"></i> */}
+          </legend>
+          <hr className="configuration_form" />
 
-          {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}
-          <input
-            type="file"
-            multiple
-            id="fileID"
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-          <button className="btn" onClick={handleUpload}>
-            Upload
-          </button>
-        </div>
+          <div className="drop_box">
+            <header>
+              <label htmlFor="fileID">
+                <h3>
+                  Select File here &nbsp;
+                  <i className="fa-solid fa-file-circle-plus fa-bounce"></i>
+                </h3>
+              </label>
+            </header>
+            <p>
+              <label htmlFor="fileID">
+                Files Supported: PDF, TEXT, DOC, DOCX, IMAGES
+              </label>
+            </p>
+
+            {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}
+            <input
+              type="file"
+              multiple
+              id="fileID"
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            <button className="btn" onClick={handleUpload}>
+              Upload
+            </button>
+          </div>
+        </fieldset>
       </div>
 
       {showModal && (

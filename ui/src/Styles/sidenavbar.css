@@ -85,15 +85,14 @@ a {
 hr.hr_header {
   border: 0;
   height: 1px;
+  width: 100%;
   background: #333;
   background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 hr.vertical-hr {
-  border-left: 1px solid #fff; /* Adjust thickness and color as needed */
-  height: 100%; /* Make sure it spans the height of the sidebar */
-  background-image: linear-gradient(to right, #ccc, #333, #ccc);
-  margin: 0.5rem 0; /* Adjust margin as needed */
+  border-left: 1px solid #fff;
+  height: 100%;
 }
 
 .l-navbar {
@@ -102,7 +101,8 @@ hr.vertical-hr {
   left: -30%;
   width: var(--nav-width);
   height: 100vh;
-  background-color: rgb(20, 20, 22);
+  /* background-color: rgb(20, 20, 22); */
+  background-color: #1a1c1e;
   /* background-color: #342b47; */
   padding: 0.5rem 1rem 0 0;
   transition: 0.5s;

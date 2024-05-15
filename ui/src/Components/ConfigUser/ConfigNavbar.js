@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Components/../Images/heartSourceLogoresize.png';
-// import ConfigDashboard from './ConfigDashboard';
-import Configuration from './Configuration';
 
 import '../../Styles/sidenavbar.css';
 

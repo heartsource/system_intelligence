@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ConfigDashboard from '../Components/ConfigUser/ConfigDashboard';
+
 import Home from './Home';
 import ConfigAskHearty from '../Components/ConfigUser/ConfigAskHearty';
 import ConfigNavbar from '../Components/ConfigUser/ConfigNavbar';
