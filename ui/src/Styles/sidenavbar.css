@@ -22,11 +22,6 @@ body {
   font-size: var(--normal-font-size);
   transition: 0.5s;
   background-color: rgb(20, 20, 22);
-  /* background: linear-gradient(
-    90deg,
-    hsla(260, 28%, 53%, 1) 0%,
-    hsla(170, 42%, 71%, 1) 100%
-  ); */
 }
 a {
   text-decoration: none;
@@ -35,7 +30,8 @@ a {
   width: 100%;
   height: var(--header-height);
   position: fixed;
-  top: 0;
+  /* top: 0; */
+  top: 12px;
   left: 0;
   display: flex;
   align-items: center;

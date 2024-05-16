@@ -7,6 +7,7 @@ const Configuration = () => {
   const [models, setModels] = useState([]);
   const [flows, setFlows] = useState([]);
   const [template, setTemplate] = useState('');
+
   const [error, setError] = useState(null);
 
   useEffect(() => {

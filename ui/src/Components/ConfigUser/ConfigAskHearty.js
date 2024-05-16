@@ -1,56 +1,59 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../../Styles/configAskHearty.css';
 import hearty from '../Images/NewHeartyIcon-without-background.png';
 import ConversationDisplay from '../ConfigUser/ConversationDisplay';
+import '../../Styles/configAskHearty.css'; // Import your CSS file
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [conversation, setConversation] = useState({});
   const [error, setError] = useState(null);
+  const [inputValue, setInputValue] = useState('');
 
   const handleTextareaInput = (event) => {
     event.target.style.height = 'auto'; // Reset height to auto to recalculate scroll height
     event.target.style.height = event.target.scrollHeight + 'px'; // Set height to scroll height
+    setInputValue(event.target.value); // Update input value state
   };
 
   const handleKeyPressOrClick = async (event) => {
     if (
-      event.type === 'click' ||
-      (event.type === 'keydown' && event.key === 'Enter')
+      event.type === 'click' || // Check if it's a button click
+      (event.type === 'keydown' && event.key === 'Enter' && !event.shiftKey) // Check if it's Enter key press without Shift
     ) {
-      if (event.type === 'click' || event.key === 'Enter') {
-        const inputElement = document.getElementById('myInput');
-        const question = inputElement.value;
+      event.preventDefault();
+      const question = inputValue.trim();
 
-        setIsLoading(true);
-        try {
-          // const response = await axios.post(
-          //   'http://4.255.69.143/heartie-be/talk_to_heartie/',
-          //   { question }
-          // );
-          const response = await axios.post(
-            'http://localhost:8000/talk-to-heartie',
-            { question }
-          );
+      if (!question) return; // If question is empty, do nothing
 
-          await onTextSubmit(question);
-          inputElement.value = '';
-          setIsLoading(false);
-          let conversation = {};
-          conversation.question = question;
-          conversation.answer = response.data;
-          setConversation(conversation);
-        } catch (error) {
-          console.log(error);
-          setError('There was an error fetching data. Please try again later.');
-          await onTextSubmit(question);
-          inputElement.value = '';
-          setIsLoading(false);
-        }
+      setIsLoading(true);
+      try {
+        const response = await axios.post(
+          'http://localhost:8000/talk-to-heartie',
+          { question }
+        );
+
+        await onTextSubmit(question);
+        setInputValue(''); // Clear input value
+        setIsLoading(false);
+        let conversation = {};
+        conversation.question = question;
+        conversation.answer = response.data;
+        setConversation(conversation);
+
+        // Reset textarea size after submission
+        const textarea = document.querySelector('.chatbox-textbox textarea');
+        textarea.style.height = 'auto'; // Reset height to auto
+      } catch (error) {
+        console.log(error);
+        setError('There was an error fetching data. Please try again later.');
+        await onTextSubmit(question);
+        setInputValue(''); // Clear input value
+        setIsLoading(false);
       }
     }
   };
+
   return (
     <>
       {error && ( // Display error message if there's an error
@@ -59,7 +62,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         </div>
       )}
       <div className="container-fluid">
-        <div class="dashboard-content">
+        <div className="dashboard-content">
           <div className="content">
             <h2 style={{ textAlign: 'center' }}>
               Ask Hearty
@@ -71,18 +74,23 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               />
             </h2>
 
-            <div className="input-group" id="search-form">
+            <div className="chatbox-textbox">
               <textarea
-                id="myInput"
-                className="input-group__input"
                 placeholder="Seeking answers? Ask your question here."
+                rows="1"
+                value={inputValue} // Bind value to state
+                onChange={handleTextareaInput} // Use onChange instead of onInput
                 onKeyDown={handleKeyPressOrClick}
-                onInput={handleTextareaInput}
-              />
-              <i
-                className="fa-solid fa-arrow-up search-button"
+              ></textarea>
+              <button
+                className={`submit-btn ${
+                  !inputValue.trim() ? 'hover-disabled' : ''
+                }`}
                 onClick={handleKeyPressOrClick}
-              ></i>
+                disabled={!inputValue.trim()}
+              >
+                <b>↑</b>
+              </button>
             </div>
           </div>
           {isLoading && (

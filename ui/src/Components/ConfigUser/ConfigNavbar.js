@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../Components/../Images/heartSourceLogoresize.png';
+import Logo from '../Components/../Images/HEART SOURCE ICON.png';
 
 import '../../Styles/sidenavbar.css';
 
@@ -33,7 +33,12 @@ const Navbar = () => {
   return (
     <div id="body-pd">
       <header className="header" id="header">
-        <img src={Logo} height="85px" width="100px" />
+        <img
+          src={Logo}
+          height="105px"
+          width="105px"
+          style={{ backgroundColor: 'transparent' }}
+        />
 
         <h1 className="gradient-text">Support Genie</h1>
         <div className="header_toggle"></div>
@@ -41,7 +46,7 @@ const Navbar = () => {
           <i class="fa-solid fa-user"></i>
         </div>
       </header>
-      <hr className="hr_header" />
+      {/* <hr className="hr_header" /> */}
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">
           <div>
