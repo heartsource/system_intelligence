@@ -162,7 +162,7 @@ const ConfigDashboard = () => {
                         {uploadProgress < 100 ? (
                           <i
                             class="fa-solid fa-spinner"
-                            style={{ color: '#606876' }}
+                            style={{ color: '#2DB6D4' }}
                           ></i>
                         ) : (
                           <i

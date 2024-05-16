@@ -12,8 +12,8 @@
   width: 50px;
   height: 50px;
   border-radius: 50%; /* Makes it a circle */
-  background-color: #342b47; /* Background color of the circle */
-  color: #eae7e7; /* Text color */
+  background-color: #fff; /* Background color of the circle */
+  color: rgb(45, 182, 212); /* Text color */
   text-align: center; /* Center text horizontally */
   line-height: 50px; /* Center text vertically */
   font-size: 1rem; /* Adjust font size as needed */
@@ -32,29 +32,43 @@
 }
 
 /* Style for the tooltip */
-.tooltip {
+.tooltip-container {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
+.tooltip {
   visibility: hidden;
-  width: 120px;
-  background-color: #c91616;
-  color: #fff;
+  background-color: black;
+  color: white;
   text-align: center;
-  border-radius: 6px;
   padding: 5px;
+  border-radius: 5px;
   position: absolute;
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip-container:hover .tooltip {
   visibility: visible;
-  opacity: 1;
+}
+
+/* Add some border design */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+h5,
+.ques {
+  color: #fff;
 }

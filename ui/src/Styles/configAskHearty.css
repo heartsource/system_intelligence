@@ -117,3 +117,9 @@ h2 {
   background-clip: text;
   color: transparent; */
 }
+.spinner-border {
+  color: #2db6d4;
+}
+.loading-text {
+  color: #fff;
+}
