@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
 :root {
-  --header-height: 4rem;
+  --header-height: 5rem;
   /* --nav-width: 70px; */
   --nav-width: 4.5rem;
   --first-color: rgba(0, 0, 0, 0.9);
@@ -19,7 +19,6 @@ body {
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
-  font-family: 'Cherry Swash';
   font-size: var(--normal-font-size);
   transition: 0.5s;
   background-color: rgb(20, 20, 22);
@@ -52,17 +51,6 @@ a {
   font-size: 1.5rem;
   cursor: pointer;
 }
-/* .header_img {
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  border-radius: 50%;
-  overflow: hidden;
-}
-.header_img img {
-  width: 40px;
-} */
 
 .header_img {
   width: 40px;
@@ -215,6 +203,6 @@ hr.vertical-hr {
   -webkit-text-fill-color: transparent;
   -webkit-text-fill-color: transparent; */
   color: #fff;
-  padding-left: 130px;
+  padding-left: 150px;
   font-family: 'Proxima Nova, Open Sans;';
 }

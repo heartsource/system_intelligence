@@ -76,7 +76,7 @@ const Configuration = () => {
           </div>
           <div>
             <label htmlFor="button"></label>
-            <button className="btn-grad">Submit</button>
+            <button className="btn-grad">Save Configuration</button>
           </div>
         </fieldset>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../Styles/configAskHearty.css';
-import hearty from '../Images/hearty.png';
+import hearty from '../Images/NewHeartyIcon-without-background.png';
 import ConversationDisplay from '../ConfigUser/ConversationDisplay';
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
