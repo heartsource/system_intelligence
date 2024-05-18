@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../Styles/conversationDisplay.css';
-import hearty from '../Images/hearty.png';
+import hearty from '../Images/NewHeartyIcon-without-background.png';
 
 const ConversationDisplay = ({ conversation }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -95,16 +95,8 @@ const ConversationDisplay = ({ conversation }) => {
             {item.answer && (
               <div>
                 <div className="row justify-content-md">
-                  <div className="col-md-auto" style={{ paddingLeft: '10px' }}>
-                    <img
-                      src={hearty}
-                      height="50px"
-                      width="50px"
-                      style={{
-                        borderRadius: '50%',
-                        backgroundColor: 'white',
-                      }}
-                    />
+                  <div className="userInitial col-md-auto">
+                    <img src={hearty} height="50px" width="50px" />
                   </div>
                   <div className="col-md-auto">
                     <h5>

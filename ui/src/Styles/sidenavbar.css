@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Proxima Nova, Open Sans;';
+  font-family: 'Roboto';
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
@@ -200,5 +200,5 @@ hr.vertical-hr {
   -webkit-text-fill-color: transparent; */
   color: #fff;
   padding-left: 150px;
-  font-family: 'Proxima Nova, Open Sans;';
+  font-family: 'Roboto';
 }

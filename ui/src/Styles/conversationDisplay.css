@@ -11,13 +11,17 @@
 .userInitial {
   width: 50px;
   height: 50px;
+  border: 1px solid #fff;
   border-radius: 50%; /* Makes it a circle */
-  background-color: #fff; /* Background color of the circle */
+  background-color: transparent; /* Background color of the circle */
   color: rgb(45, 182, 212); /* Text color */
   text-align: center; /* Center text horizontally */
   line-height: 50px; /* Center text vertically */
   font-size: 1rem; /* Adjust font size as needed */
   padding-left: '10px';
+}
+.userInitial img {
+  margin-left: -0.8em;
 }
 
 .col-md-auto {

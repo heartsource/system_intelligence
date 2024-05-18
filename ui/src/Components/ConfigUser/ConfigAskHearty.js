@@ -89,25 +89,27 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 onClick={handleKeyPressOrClick}
                 disabled={!inputValue.trim()}
               >
-                <b>↑</b>
+                <b>&#x2B06;</b>
               </button>
             </div>
           </div>
-          {isLoading && (
-            <div
-              className="d-flex flex-column align-items-center"
-              style={{ minHeight: '100px' }}
-            >
-              <div className="spinner-border mb-2" role="status">
-                <span className="sr-only">Loading...</span>
+          <div
+            className="conversation-container"
+            style={{ position: 'relative' }}
+          >
+            {isLoading && (
+              <div className="spinner-overlay d-flex flex-column align-items-center justify-content-center">
+                <div className="spinner-border mb-2" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+                <span className="loading-text">
+                  Please wait while Hearty♥️ is fetching the Best Answer to your
+                  question!
+                </span>
               </div>
-              <span className="loading-text">
-                Please wait while Hearty♥️ is fetching the Best Answer to your
-                question!
-              </span>
-            </div>
-          )}
-          <ConversationDisplay conversation={conversation} />
+            )}
+            <ConversationDisplay conversation={conversation} />
+          </div>
         </div>
       </div>
     </>
