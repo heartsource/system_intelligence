@@ -43,9 +43,8 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
         // Reset textarea size after submission
         const textarea = document.querySelector('.chatbox-textbox textarea');
-        textarea.style.height = 'auto'; // Reset height to auto
+        textarea.style.height = 'auto';
       } catch (error) {
-        console.log(error);
         setError('There was an error fetching data. Please try again later.');
         await onTextSubmit(question);
         setInputValue(''); // Clear input value
@@ -78,8 +77,8 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               <textarea
                 placeholder="Seeking answers? Ask your question here."
                 rows="1"
-                value={inputValue} // Bind value to state
-                onChange={handleTextareaInput} // Use onChange instead of onInput
+                value={inputValue}
+                onChange={handleTextareaInput}
                 onKeyDown={handleKeyPressOrClick}
               ></textarea>
               <button

@@ -39,6 +39,10 @@ const Navbar = () => {
           width="105px"
           style={{ backgroundColor: 'transparent' }}
         />
+        {/* <div class="gradient-text">
+          <span class="support">Support</span>&nbsp;
+          <span class="support">Genie</span>
+        </div> */}
 
         <h1 className="gradient-text">Support Genie</h1>
         <div className="header_toggle"></div>
