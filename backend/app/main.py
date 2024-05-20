@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config_Loader import get_configs
 from key_vault_secret_loader import get_value_from_key_vault
 from chromadb.utils import embedding_functions
+from heartie_modals import HeartieQueryPayload
 import uuid
 
 config = get_configs()
@@ -53,7 +54,14 @@ async def root():
 
 
 @app.post("/talk_to_heartie/", tags=["talk_to_heartie"])
-async def talk_to_heartie(question: str, prompt: Optional[str] = None, model: Optional[str] = None, flow: Optional[str] = None):
+async def talk_to_heartie(question: Optional[str] = None, prompt: Optional[str] = None, model: Optional[str] = None, flow: Optional[str] = None, payload: Optional[HeartieQueryPayload] = None):
+    #If payload is available use it
+    if payload is not None:
+        question = payload.question
+        prompt = payload.prompt
+        model = payload.model
+        flow = payload.flow
+
     #Context creation
     from chromadb_reader_writer import chromadb_reader
     print('Heartie is in Action:  Started ... ')
