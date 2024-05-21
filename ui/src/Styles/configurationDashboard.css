@@ -103,7 +103,7 @@ label {
 
 .btn:hover {
   text-decoration: none;
-  color: #fff;
+  color: rgb(45, 182, 212);
   padding: 10px 20px;
   border: none;
   outline: 1px solid #010101;
@@ -328,8 +328,7 @@ hr.configuration_form:after {
 .btn-grad:hover {
   text-decoration: none;
   background-color: transparent;
-  color: #fff;
+  color: rgb(45, 182, 212);
   padding: 10px 20px;
-  border: none;
-  outline: 1px solid #010101;
+  border: 1px solid #010101;
 }

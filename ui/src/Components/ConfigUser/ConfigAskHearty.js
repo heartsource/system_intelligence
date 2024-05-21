@@ -10,6 +10,16 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [error, setError] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
+  const [template, setTemplate] = useState(
+    () => sessionStorage.getItem('template') || ''
+  );
+  const [selectedModel, setSelectedModel] = useState(
+    () => sessionStorage.getItem('model') || ''
+  );
+  const [selectedFlow, setSelectedFlow] = useState(
+    () => sessionStorage.getItem('flow') || ''
+  );
+
   const handleTextareaInput = (event) => {
     event.target.style.height = 'auto'; // Reset height to auto to recalculate scroll height
     event.target.style.height = event.target.scrollHeight + 'px'; // Set height to scroll height
@@ -28,10 +38,17 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
       setIsLoading(true);
       try {
+        const body = {};
+        body.question = question;
+        body.model = selectedModel;
+        body.flow = selectedFlow;
+        body.prompt = template;
         const response = await axios.post(
-          'http://localhost:8000/talk-to-heartie',
-          { question }
+          'http://4.255.69.143/heartie-be/talk_to_heartie/',
+          body
         );
+
+        console.log(body);
 
         await onTextSubmit(question);
         setInputValue(''); // Clear input value

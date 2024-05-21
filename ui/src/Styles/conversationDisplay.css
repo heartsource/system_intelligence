@@ -39,29 +39,29 @@
 .tooltip-container {
   position: relative;
   display: inline-block;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-.tooltip {
+.tooltip-container .tooltip-text {
   visibility: hidden;
-  background-color: black;
-  color: white;
+  width: 120px;
+  background-color: rgb(45, 182, 212);
+  color: #000;
   text-align: center;
-  padding: 5px;
   border-radius: 5px;
+  padding: 2px 0;
   position: absolute;
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-.tooltip-container:hover .tooltip {
-  visibility: visible;
-}
-
-/* Add some border design */
-.tooltip::before {
+.tooltip-container .tooltip-text::after {
   content: '';
   position: absolute;
   top: 100%;
@@ -69,7 +69,12 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: black transparent transparent transparent;
+  border-color: rgb(45, 182, 212) transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 h5,

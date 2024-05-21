@@ -5,7 +5,7 @@ import hearty from '../Images/NewHeartyIcon-without-background.png';
 const ConversationDisplay = ({ conversation }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [conversationHistory, setConversationHistory] = useState([]);
-  const [isCopied, setIsCopied] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState(null);
 
   // Function to update current time
   const updateCurrentTime = () => {
@@ -22,8 +22,7 @@ const ConversationDisplay = ({ conversation }) => {
       second: 'numeric',
       hour12: true,
     };
-    const formattedDate = date.toLocaleString(undefined, options);
-    return formattedDate;
+    return date.toLocaleString(undefined, options);
   };
 
   // Function to add a new conversation item to the history
@@ -46,21 +45,15 @@ const ConversationDisplay = ({ conversation }) => {
   }, [conversation]);
 
   // Function to copy text to clipboard
-  const copyToClipboard = (text) => {
+  const copyToClipboard = (text, index) => {
     navigator.clipboard
       .writeText(text)
-      .then(() => setIsCopied(true))
+      .then(() => {
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000); // Reset after 2 seconds
+      })
       .catch((error) => console.error('Error copying text: ', error));
   };
-
-  useEffect(() => {
-    if (isCopied) {
-      const timer = setTimeout(() => {
-        setIsCopied(false);
-      }, 10000); // Reset after 10 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [isCopied]);
 
   return (
     conversationHistory.length > 0 && (
@@ -96,7 +89,7 @@ const ConversationDisplay = ({ conversation }) => {
               <div>
                 <div className="row justify-content-md">
                   <div className="userInitial col-md-auto">
-                    <img src={hearty} height="50px" width="50px" />
+                    <img src={hearty} height="50px" width="50px" alt="Hearty" />
                   </div>
                   <div className="col-md-auto">
                     <h5>
@@ -108,17 +101,16 @@ const ConversationDisplay = ({ conversation }) => {
                   <div className="col-md-auto">
                     <p className="ques">{item.answer}</p>
 
-                    <div className="tooltip-container">
-                      <i
-                        className="fa-solid fa-copy"
-                        title={isCopied ? 'Copied!' : 'Copy'}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          copyToClipboard(item.answer);
-                        }}
-                      ></i>
-                      {isCopied && <span className="tooltip">Copied!</span>}
-                    </div>
+                    <button
+                      className="tooltip-container"
+                      onClick={() => copyToClipboard(item.answer, index)}
+                      data-tooltip="Copy to clipboard"
+                    >
+                      <i className="fa-solid fa-copy"></i>
+                      <span className="tooltip-text">
+                        {copiedIndex === index ? 'Copied!' : 'Copy'}
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>

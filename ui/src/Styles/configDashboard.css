@@ -108,12 +108,7 @@ label {
 
 .btn:hover {
   text-decoration: none;
-  /* background: linear-gradient(
-    90deg,
-    rgba(174, 238, 230, 1) 0%,
-    rgba(148, 187, 233, 1) 100%
-  ); */
-  color: #fff;
+  color: rgb(45, 182, 212);
   padding: 10px 20px;
   border: none;
   outline: 1px solid #010101;
