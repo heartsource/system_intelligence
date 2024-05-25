@@ -137,7 +137,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
         txt_content = " ".join(pdf_text)
         print(txt_content)
 
-        load_to_chromadb(txt_content)
+        response = await load_to_chromadb(txt_content)
 
         return response
 
