@@ -137,14 +137,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
         txt_content = " ".join(pdf_text)
         print(txt_content)
 
-        host = 'http://systemintelligencebackendapp.si-app.svc.cluster.local'
-        DATA_LOAD_API_URL = host + "/load_to_chromadb/"
-
-        data = {
-            "file_content": txt_content
-        }
-        response = requests.post(url=DATA_LOAD_API_URL, params=data)
-        print(f'${response} from chromadb load')
+        load_to_chromadb(txt_content)
 
         return response
 
