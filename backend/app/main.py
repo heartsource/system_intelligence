@@ -2,8 +2,10 @@ from typing import Optional
 import asyncio
 import os
 import json
+import requests
+import PyPDF2
 
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from config_Loader import get_configs
 from key_vault_secret_loader import get_value_from_key_vault
@@ -108,6 +110,47 @@ async def load_to_chromadb(file_content):
 @app.get("/get_ai_prompts/", tags=["get_ai_prompts"])
 async def get_ai_prompts():
     return config.get("AI_PROMPTS_4_UI")
+
+@app.post("/load_file_to_chromadb/", tags=["load_file_to_chromadb"])
+async def load_file_to_chromadb(file: UploadFile = File(...)):
+    try:
+        print("entering load_file_to_chromadb")
+        data = await file.read()
+        save_to = 'file.pdf'
+        pdf_text = []
+        with open(save_to, 'wb') as f:
+            f.write(data)
+            f.close()
+
+        with open(save_to, 'rb') as f:
+            reader = PyPDF2.PdfReader(f, strict=False)
+
+            for page in reader.pages:
+                content = page.extract_text()
+                pdf_text.append(content)
+
+            f.close()
+
+        if os.path.exists(save_to):
+            os.remove(save_to)
+
+        txt_content = " ".join(pdf_text)
+        print(txt_content)
+
+        host = 'http://systemintelligencebackendapp.si-app.svc.cluster.local'
+        DATA_LOAD_API_URL = host + "/load_to_chromadb/"
+
+        data = {
+            "file_content": txt_content
+        }
+        response = requests.post(url=DATA_LOAD_API_URL, params=data)
+        print(f'${response} from chromadb load')
+
+        return response
+
+    except Exception as e:
+        traceback.print_exception(e)
+
 
 #return_value = asyncio.run(load_file_to_chromadb("pdf", context="Nissan Leaf", file_path="../knowledge/2020-nissan-leaf-owner-manual.pdf"))
 #return_value = asyncio.run(load_file_to_chromadb("wiki", context="Nissan Leaf", file_path="../knowledge/Derby_15_Jun_2023.pdf"))
