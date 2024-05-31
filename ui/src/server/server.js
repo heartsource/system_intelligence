@@ -11,7 +11,7 @@ const PORT = 8000;
 
 // Add CORS middleware
 const corsOptions = {
-  origin: ['http://localhost:3000', /^https:\/\/.*\.vercel\.app$/], // Regex pattern to match any subdomain of vercel.app
+  origin: ['http://localhost:3000','http://localhost', /^https:\/\/.*\.vercel\.app$/], // Regex pattern to match any subdomain of vercel.app
   credentials: true,
   optionSuccessStatus: 200,
 };

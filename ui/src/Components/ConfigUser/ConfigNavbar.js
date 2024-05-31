@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import Logo from '../Components/../Images/HEART SOURCE ICON.png';
-
 import '../../Styles/sidenavbar.css';
 
-const Navbar = () => {
+const Navbar = ({ setCurrentComponent }) => {
   useEffect(() => {
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
       const toggle = document.getElementById(toggleId),
@@ -39,44 +37,35 @@ const Navbar = () => {
           width="105px"
           style={{ backgroundColor: 'transparent' }}
         />
-        {/* <div class="gradient-text">
-          <span class="support">Support</span>&nbsp;
-          <span class="support">Genie</span>
-        </div> */}
-
         <h1 className="gradient-text">Support Genie</h1>
         <div className="header_toggle"></div>
         <div className="header_img">
-          <i class="fa-solid fa-user"></i>
+          <i className="fa-solid fa-user"></i>
         </div>
       </header>
-      {/* <hr className="hr_header" /> */}
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">
           <div>
             <div className="nav_list">
-              <i class="fa-solid fa-bars nav_link" id="header-toggle"></i>
-              <a href="/" className="nav_link active">
-                <i class="fa-solid fa-gears"></i> Configuration
-              </a>
-              <Link to="/upload" className="nav_link">
-                <i class="fa-solid fa-upload"></i>Knowledge Upload
-              </Link>
-              <Link to="/config-ask-hearty" className="nav_link">
-                <i className="fa-solid fa-heart"></i>Ask Hearty
-              </Link>
+              <i className="fa-solid fa-bars nav_link" id="header-toggle"></i>
+              <div onClick={() => setCurrentComponent('home')} className="nav_link active">
+                <i className="fa-solid fa-gears"></i> Configuration
+              </div>
+              <div onClick={() => setCurrentComponent('upload')} className="nav_link">
+                <i className="fa-solid fa-upload"></i> Knowledge Upload
+              </div>
+              <div onClick={() => setCurrentComponent('config-ask-hearty')} className="nav_link">
+                <i className="fa-solid fa-heart"></i> Ask Hearty
+              </div>
             </div>
           </div>
-          <a href="/" className="nav_link">
-            <i class="fa-solid fa-right-from-bracket nav_icon"></i>
+          <div onClick={() => setCurrentComponent('home')} className="nav_link">
+            <i className="fa-solid fa-right-from-bracket nav_icon"></i>
             <span className="nav_name">SignOut</span>
-          </a>
+          </div>
         </nav>
       </div>
       <hr className="vertical-hr" />
-      {/*Container Main start for dashboard*/}
-
-      {/*Container Main end for dashboard*/}
     </div>
   );
 };

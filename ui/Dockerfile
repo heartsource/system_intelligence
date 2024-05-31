@@ -1,27 +1,20 @@
-# Fetching the latest node image on apline linux
-FROM node:alpine AS builder
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# Declaring env
-ENV NODE_ENV production
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# Setting up the work directory
-WORKDIR /app
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Installing dependencies
-COPY ./package.json ./
+# Install dependencies
 RUN npm install
 
-# Copying all the files in our project
+# Copy the rest of the application code
 COPY . .
 
-# Building our application
-RUN npm run build
+# Expose the ports the app runs on
+EXPOSE 3000 8000
 
-# Fetching the latest nginx image
-FROM nginx
-
-# Copying built assets from builder
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copying our nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Command to run the app
+CMD ["npm", "start"]
