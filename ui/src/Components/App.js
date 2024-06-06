@@ -10,7 +10,7 @@ const App = () => {
 
   const handleTextSubmit = (text) => {
     console.log('Text submitted:', text);
-    // perform any further actions here, such as making an API call, updating state, etc.
+    // any further actions here, such as making an API call, updating state, etc.
   };
 
   const renderComponent = () => {
@@ -41,18 +41,6 @@ const App = () => {
 
 export default App;
 
-
-// import React from 'react';
-// import Login from './ConfigUser/Login';
-// const App = () => {
-//   return (
-//     <>
-//       <Login />
-//     </>
-//   );
-// };
-
-// export default App;
 
 
 

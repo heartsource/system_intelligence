@@ -37,7 +37,7 @@ const Configuration = () => {
       const response = await axios.get(
         'http://4.255.69.143/heartie-be/get_ai_prompts/'
       );
-      // const response = await axios.get('http://localhost:8000/get-ai-prompts');
+      
       const { models, flows, template } = response.data;
 
       setModels(models);

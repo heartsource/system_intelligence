@@ -50,7 +50,7 @@ const ConversationDisplay = ({ conversation }) => {
       .writeText(text)
       .then(() => {
         setCopiedIndex(index);
-        setTimeout(() => setCopiedIndex(null), 2000); // Reset after 2 seconds
+        setTimeout(() => setCopiedIndex(null), 2000); 
       })
       .catch((error) => console.error('Error copying text: ', error));
   };

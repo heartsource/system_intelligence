@@ -18,9 +18,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start:frontend": "react-scripts start",
-    "start:backend": "node src/server/server.js",
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
