@@ -121,18 +121,20 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
         with open(save_to, 'wb') as f:
             f.write(data)
             f.close()
+        try:
+            with open(save_to, 'rb') as f:
+                reader = PyPDF2.PdfReader(f, strict=False)
 
-        with open(save_to, 'rb') as f:
-            reader = PyPDF2.PdfReader(f, strict=False)
-
-            for page in reader.pages:
-                content = page.extract_text()
-                pdf_text.append(content)
-
-            f.close()
-
-        if os.path.exists(save_to):
-            os.remove(save_to)
+                for page in reader.pages:
+                    content = page.extract_text()
+                    pdf_text.append(content)
+        except PyPDF2.errors.PdfReadError as e:
+                print(f"Error reading PDF: {e}")
+                return {"status": "error", "message": "Failed to read the PDF file. File might be corrupted."}
+                f.close()
+        finally:
+            if os.path.exists(save_to):
+                os.remove(save_to)
 
         txt_content = " ".join(pdf_text)
         print(txt_content)
@@ -143,6 +145,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
 
     except Exception as e:
         traceback.print_exception(e)
+        return {"status": "error", "message": str(e)}
 
 
 #return_value = asyncio.run(load_file_to_chromadb("pdf", context="Nissan Leaf", file_path="../knowledge/2020-nissan-leaf-owner-manual.pdf"))
