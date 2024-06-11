@@ -25,13 +25,13 @@ const ConfigDashboard = () => {
     }
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
+      formData.append('file', files[i]);
     }
     setShowModal(true);
     try {
       const response = await axios.post(
-        // 'http://4.255.69.143/heartie-be/load_file_to_chromadb/',
-        'http://localhost:8000/upload',
+        'http://4.255.69.143/heartie-be/load_file_to_chromadb/',
+        // 'http://localhost:8000/upload',
         formData,
         {
           headers: {
