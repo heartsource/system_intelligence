@@ -25,3 +25,10 @@ spec:
             name: systemintelligencefrontendapp
             port:
               number: 8501
+      - path: /ui(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: systemintelligenceui
+            port:
+              number: 80
