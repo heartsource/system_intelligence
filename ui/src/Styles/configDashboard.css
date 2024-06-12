@@ -18,11 +18,6 @@ body {
   width: 700px;
   height: 400px;
   background-color: transparent;
-  /* background: linear-gradient(
-    90deg,
-    rgba(238, 174, 202, 1) 0%,
-    rgba(148, 187, 233, 1) 100%
-  ); */
   padding: 10px 30px 40px;
   position: absolute;
   top: 35%;
@@ -36,18 +31,6 @@ body {
   font-weight: 600;
   text-align: center;
   color: rgb(45, 182, 212);
-  /* 
-  background-image: linear-gradient(
-    to right bottom,
-    #6613e0,
-    #9420da,
-    #b634d5,
-    #d04ad2,
-    #e562d0
-  );
-  -webkit-background-clip: text; 
-  background-clip: text;
-  color: transparent; */
 }
 
 .card h4,
@@ -93,11 +76,6 @@ label {
 
 .btn {
   text-decoration: none;
-  /* background: linear-gradient(
-    90deg,
-    rgba(175, 238, 174, 1) 0%,
-    rgba(148, 187, 233, 1) 100%
-  ); */
   color: #fff;
   background-color: transparent;
   padding: 10px 20px;
@@ -124,7 +102,6 @@ label {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  /* semi-transparent black overlay */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -253,6 +230,5 @@ label {
 
 .alert {
   z-index: 99;
-  /* --bs-alert-padding-x: 0.8rem;
-  --bs-alert-padding-y: 0.8rem; */
 }
+

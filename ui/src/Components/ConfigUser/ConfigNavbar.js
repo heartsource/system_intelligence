@@ -49,7 +49,10 @@ const Navbar = ({ setCurrentComponent }) => {
             <div className="nav_list">
               <i className="fa-solid fa-bars nav_link" id="header-toggle"></i>
               <div onClick={() => setCurrentComponent('home')} className="nav_link active">
-                <i className="fa-solid fa-gears"></i> Configuration
+                <i className="fa-solid fa-gears"></i> Agent Configuration
+              </div>
+              <div onClick={() => setCurrentComponent('agents')} className="nav_link">
+              <i class="fas fa-users"></i> Agents
               </div>
               <div onClick={() => setCurrentComponent('upload')} className="nav_link">
                 <i className="fa-solid fa-upload"></i> Knowledge Upload

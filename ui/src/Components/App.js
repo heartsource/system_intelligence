@@ -3,6 +3,7 @@ import ConfigDashboard from '../Components/ConfigUser/ConfigDashboard';
 import Home from './Home';
 import ConfigAskHearty from '../Components/ConfigUser/ConfigAskHearty';
 import ConfigNavbar from '../Components/ConfigUser/ConfigNavbar';
+import ConfigAgents from './ConfigUser/ConfigAgents';
 import Footer from './Footer';
 
 const App = () => {
@@ -17,6 +18,8 @@ const App = () => {
     switch (currentComponent) {
       case 'home':
         return <Home />;
+      case 'agents':
+        return <ConfigAgents/>  
       case 'upload':
         return <ConfigDashboard />;
       case 'config-ask-hearty':

@@ -1,0 +1,64 @@
+fieldset {
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+legend {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: rgb(45, 182, 212);
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+
+.custom-control-input {
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.search-box {
+    position: relative;
+    display: inline-block;
+}
+
+.search-box input {
+    padding-left: 10px; 
+}
+
+.search-box i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(45, 182, 212); 
+    pointer-events: none; 
+}
+
+th {
+    cursor: pointer;
+    user-select: none;
+    font-size: large;
+}
+table{
+    background-color: transparent;
+}
+
+.text-muted{
+    color: '#10004';
+}
+
+

@@ -103,7 +103,7 @@ const ConfigDashboard = () => {
         <div className="alert alert-success">{successMessage}</div>
       )}
 
-      <div className="fieldset-container">
+      <div className="fieldset-container" style={{marginTop:"-13em"}}>
         <fieldset>
           <legend>
             Upload Knowledge Documents

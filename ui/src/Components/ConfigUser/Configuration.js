@@ -105,13 +105,24 @@ const Configuration = () => {
       <div className="fieldset-container">
         <fieldset>
           <legend>
-            Configuration
+            Agent Configuration
             <i className="fa-solid fa-gears"></i>
           </legend>
           <hr />
           <hr className="configuration_form" />
           <div>
-            <label htmlFor="model">Select Model</label>
+            <label htmlFor="agentName">Agent Name <sup>*</sup></label>
+            <input type="text" id="agentName" placeholder='Enter Agent Name'/>
+          </div>
+          <div>
+            <label htmlFor="description">Agent Description</label>
+            <textarea
+              id="description"
+              placeholder='You can add a few lines here to describe what this Agent will do.'
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="model">Select Model <sup>*</sup></label>
             <select
               id="model"
               value={selectedModel}
@@ -127,7 +138,7 @@ const Configuration = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="flow">Select Flow</label>
+            <label htmlFor="flow">Select Flow<sup>*</sup></label>
             <select
               id="flow"
               value={selectedFlow}
@@ -143,7 +154,7 @@ const Configuration = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="template">Template</label>
+            <label htmlFor="template">Template <sup>*</sup></label>
             <textarea
               id="template"
               value={template}
@@ -161,7 +172,7 @@ const Configuration = () => {
               </button>
             ) : (
               <button className="btn-grad" onClick={handleSave}>
-                Save Configuration
+                Create Agent
               </button>
             )}
           </div>
