@@ -34,8 +34,9 @@
 /ui/yarn-debug.log*
 /ui/yarn-error.log*
 /ui/.vercel
-/ui/src/server
 /ui/package-lock.json
 /ui/yarn.lock
 /ui/uploads/*
 
+.DS_Store
+.DS_Store

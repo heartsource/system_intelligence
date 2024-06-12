@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../Styles/configDashboard.css';
+import '../../Styles/configurationDashboard.css';
 
 const ConfigDashboard = () => {
   const [files, setFiles] = useState(null);
@@ -8,7 +8,6 @@ const ConfigDashboard = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  // const [fileNames, setFileNames] = useState([]);
   const [fileCount, setFileCount] = useState(0);
 
   const handleFileChange = (event) => {
@@ -17,13 +16,6 @@ const ConfigDashboard = () => {
     setErrorMessage('');
     setSuccessMessage('');
     setFileCount(selectedFiles.length);
-
-    // Update state to store file names for display
-    // const fileNames = [];
-    // for (let i = 0; i < selectedFiles.length; i++) {
-    //     fileNames.push(selectedFiles[i].name);
-    // }
-    // setFileNames(fileNames);
   };
 
   const handleUpload = async () => {
@@ -33,12 +25,13 @@ const ConfigDashboard = () => {
     }
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
+      formData.append('file', files[i]);
     }
     setShowModal(true);
     try {
       const response = await axios.post(
-        'http://localhost:8000/upload',
+        'http://4.255.69.143/heartie-be/load_file_to_chromadb/',
+        // 'http://localhost:8000/upload',
         formData,
         {
           headers: {
@@ -46,15 +39,12 @@ const ConfigDashboard = () => {
           },
         }
       );
-      //setSuccessMessage('Files uploaded successfully!');
     } catch (error) {
-      // console.log(error);
       setErrorMessage('Error uploading files. Please try again.');
       setShowModal(false);
     }
     setUploadProgress(100);
     setFileCount(0);
-    // setSuccessMessage('Files uploaded successfully!');
     return;
   };
 
@@ -95,16 +85,19 @@ const ConfigDashboard = () => {
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>
       )}
-      <div className="container">
-        <div className="knowledge">
-          <h2>Add to Knowledge Repository</h2>
-        </div>
+      {/* <div className="container"> */}
+      {/* <div className="knowledge">
+        <h2>Add to Knowledge Repository</h2>
+      </div> */}
 
-        <div className="card">
-          <h3 className="text">
-            Upload Knowledge Documents &nbsp;
-            <i className="fa-solid fa-file-arrow-up"></i>
-          </h3>
+      <div className="fieldset-container">
+        <fieldset>
+          <legend>
+            Upload Knowledge Documents{' '}
+            {/* <i className="fa-solid fa-file-arrow-up"></i> */}
+          </legend>
+          <hr className="configuration_form" />
+
           <div className="drop_box">
             <header>
               <label htmlFor="fileID">
@@ -119,11 +112,7 @@ const ConfigDashboard = () => {
                 Files Supported: PDF, TEXT, DOC, DOCX, IMAGES
               </label>
             </p>
-            {/* <div>
-                    {fileNames.map((fileName, index) => (
-                        <div key={index}>{fileName}</div>
-                        ))}
-                    </div> */}
+
             {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}
             <input
               type="file"
@@ -136,60 +125,61 @@ const ConfigDashboard = () => {
               Upload
             </button>
           </div>
-        </div>
-
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={() => setShowModal(false)}>
-                &times;
-              </span>
-              <h3>
-                {uploadProgress < 100 ? 'Uploading...' : 'Uploaded'}{' '}
-                {files ? files.length : 0} file(s)
-              </h3>
-
-              <ul style={{ listStyle: 'none' }}>
-                {files instanceof FileList &&
-                  Array.from(files).map((file, index) => (
-                    <li key={index} style={{ marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ marginRight: '10px' }}>
-                          {' '}
-                          {getFileIcon(file.name.split('.').pop())}
-                        </div>
-                        <div
-                          style={{
-                            flex: '1',
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                            marginRight: '10px',
-                          }}
-                        >
-                          {file.name}
-                        </div>
-                        <div>
-                          {uploadProgress < 100 ? (
-                            <i
-                              class="fa-solid fa-spinner"
-                              style={{ color: '#606876' }}
-                            ></i>
-                          ) : (
-                            <i
-                              className="fa-solid fa-circle-check"
-                              id="checkGreen"
-                            ></i>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        </fieldset>
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModal(false)}>
+              &times;
+            </span>
+            <h3>
+              {uploadProgress < 100 ? 'Uploading...' : 'Uploaded'}{' '}
+              {files ? files.length : 0} file(s)
+            </h3>
+
+            <ul style={{ listStyle: 'none' }}>
+              {files instanceof FileList &&
+                Array.from(files).map((file, index) => (
+                  <li key={index} style={{ marginBottom: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div style={{ marginRight: '10px' }}>
+                        {' '}
+                        {getFileIcon(file.name.split('.').pop())}
+                      </div>
+                      <div
+                        style={{
+                          flex: '1',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          marginRight: '10px',
+                        }}
+                      >
+                        {file.name}
+                      </div>
+                      <div>
+                        {uploadProgress < 100 ? (
+                          <i
+                            class="fa-solid fa-spinner"
+                            style={{ color: '#2DB6D4' }}
+                          ></i>
+                        ) : (
+                          <i
+                            className="fa-solid fa-circle-check"
+                            id="checkGreen"
+                          ></i>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      )}
+      {/* </div> */}
     </>
   );
 };

@@ -1,6 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Cherry+Swash);
+@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
 :root {
-  --header-height: 4rem;
+  --header-height: 5rem;
   /* --nav-width: 70px; */
   --nav-width: 4.5rem;
   --first-color: rgba(0, 0, 0, 0.9);
@@ -15,18 +15,13 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Snell Roundhand, cursive';
+  font-family: 'Roboto';
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
-  font-family: 'Cherry Swash';
   font-size: var(--normal-font-size);
   transition: 0.5s;
-  background: linear-gradient(
-    90deg,
-    hsla(260, 28%, 53%, 1) 0%,
-    hsla(170, 42%, 71%, 1) 100%
-  );
+  background-color: rgb(20, 20, 22);
 }
 a {
   text-decoration: none;
@@ -35,13 +30,15 @@ a {
   width: 100%;
   height: var(--header-height);
   position: fixed;
-  top: 0;
+  /* top: 0; */
+  top: 12px;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
-  background-color: #342b47;
+  background-color: rgb(20, 20, 22);
+  /* background-color: #342b47; */
   z-index: var(--z-fixed);
   transition: 0.5s;
 }
@@ -50,24 +47,41 @@ a {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
 .header_img {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
-  border-radius: 50%;
+  align-items: center;
   overflow: hidden;
 }
-.header_img img {
-  width: 40px;
+.header_img i {
+  font-size: 2em;
+  border-radius: 50%;
+  color: #f7f6fb;
 }
+
+hr.hr_header {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+hr.vertical-hr {
+  border-left: 1px solid #fff;
+  height: 100%;
+}
+
 .l-navbar {
   position: fixed;
   top: 0;
   left: -30%;
   width: var(--nav-width);
   height: 100vh;
-  background-color: #342b47;
+  background-color: #1a1c1e;
   padding: 0.5rem 1rem 0 0;
   transition: 0.5s;
   z-index: var(--z-fixed);
@@ -106,9 +120,8 @@ a {
   transition: color 0.3s ease;
 }
 .nav_link:hover {
-  background-color: #c1c0bf;
-  color: hsla(269, 97%, 37%, 1);
-  font-size: large;
+  color: rgb(45, 182, 212);
+  font-size: small;
   border-radius: 10px;
 }
 .nav_icon {
@@ -117,6 +130,7 @@ a {
 .show {
   left: 0;
 }
+
 .body-pd {
   padding-left: calc(var(--nav-width) + 1rem);
 }
@@ -155,6 +169,7 @@ a {
   .header_img img {
     width: 45px;
   }
+
   .l-navbar {
     left: 0;
     padding: 1rem 1rem 0 0;
@@ -168,13 +183,12 @@ a {
 }
 
 .gradient-text {
-  background: linear-gradient(
-    90deg,
-    rgba(126, 106, 190, 1) 0%,
-    rgba(53, 188, 146, 1) 100%
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-fill-color: transparent;
-  padding-left: 130px;
+  color: #fff;
+  padding-left: 150px;
+  font-family: 'Roboto';
+  font-size: 38px;
+  font-weight: lighter;
+  /* white-space: nowrap; */
+  /* text-shadow: 4px 4px 5px rgb(45, 182, 212); */
+  text-align: center;
 }
