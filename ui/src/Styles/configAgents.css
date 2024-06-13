@@ -43,9 +43,13 @@ legend {
 .search-box i {
     position: absolute;
     top: 50%;
+    left:95%;
     transform: translateY(-50%);
     color: rgb(45, 182, 212); 
     pointer-events: none; 
+}
+.fa-circle-xmark{
+    color: #db0f00;
 }
 
 th {
@@ -53,12 +57,9 @@ th {
     user-select: none;
     font-size: large;
 }
-table{
-    background-color: transparent;
-}
-
-.text-muted{
-    color: '#10004';
-}
 
 
+  
+
+  
+ 

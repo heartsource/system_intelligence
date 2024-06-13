@@ -54,6 +54,8 @@ const ConfigAgents = () => {
         setAgents(sortedAgents);
     }, []);
 
+    //for sorting
+
     const sortAgents = (key) => {
         let direction = 'asc';
         if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -87,11 +89,13 @@ const ConfigAgents = () => {
         return <i className="bi bi-arrow-down-up"></i>;
     };
 
+    //for toggling action
     const requestToggleStatus = (index) => {
         const newStatus = agents[index].status === 'active' ? 'inactive' : 'active';
         setModalInfo({ show: true, index, newStatus });
     };
 
+    //for confirming toggle status
     const confirmToggleStatus = () => {
         const { index, newStatus } = modalInfo;
         const updatedAgents = agents.map((agent, idx) => {
@@ -104,6 +108,7 @@ const ConfigAgents = () => {
         setModalInfo({ show: false, index: null, newStatus: '' });
     };
 
+    //for closing modal
     const closeModal = () => {
         setModalInfo({ show: false, index: null, newStatus: '' });
     };
@@ -154,7 +159,7 @@ const ConfigAgents = () => {
                                     {agent.status === 'active' ? (
                                         <i className="fa-solid fa-circle-check" id="checkGreen"></i>
                                     ) : (
-                                        <i className="fa-solid fa-circle-check text-muted" id="checkGreen"></i>
+                                        <i className="fa-solid fa-circle-xmark" style={{color: "#db0f00"}}></i>
                                     )}
                                 </td>
                                 <td>{agent.model}</td>
@@ -171,6 +176,9 @@ const ConfigAgents = () => {
                                                 id={`flexSwitchCheckDefault${index}`}
                                                 onChange={() => requestToggleStatus(index)}
                                                 checked={agent.status === 'active'}
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                title={agent.status === 'active' ? 'Disable' : 'Enable'}
                                             />
                                         </div>
                                     ) : (

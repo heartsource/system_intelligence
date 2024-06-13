@@ -54,7 +54,7 @@ hr.configuration_form:after {
   margin-right: 10px;
 }
 .fieldset-container select,
-textarea {
+textarea,input[type=text] {
   width: 250px;
   padding: 5px;
   box-sizing: border-box;
@@ -92,7 +92,7 @@ textarea {
   outline: none;
   border-radius: 5px;
   transition: 0.3s;
-  margin: 0 0 0 8em;
+  margin: 0 0 0 17.9em;
   padding: 2px 15px;
   text-align: center;
   transition: 0.5s;
@@ -105,4 +105,7 @@ textarea {
   color: rgb(45, 182, 212);
   padding: 2px 15px;
   border: 1px solid #fff;
+}
+.error{
+  color: red;
 }
