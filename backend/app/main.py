@@ -12,6 +12,7 @@ from key_vault_secret_loader import get_value_from_key_vault
 from chromadb.utils import embedding_functions
 from heartie_modals import HeartieQueryPayload
 import uuid
+import re
 
 config = get_configs()
 
@@ -96,7 +97,8 @@ async def talk_to_heartie(question: Optional[str] = None, prompt: Optional[str] 
     print(f"Template with substitutions :{template_with_context_and_question}")
 
     response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=200)
-    return_value = response.choices[0].text
+  # Clean the response to remove newline characters
+    return_value = re.sub(r'\n+', ' ', response.choices[0].text).strip()
     print('Heartie is in Action:  Ended')
     return return_value
 
