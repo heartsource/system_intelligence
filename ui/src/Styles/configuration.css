@@ -37,15 +37,28 @@ hr.configuration_form:after {
 .fieldset-container {
   height: 100%;
   margin-top: -7em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; /* Center horizontally */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Center vertically */
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .fieldset-container div {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: 10px;
 }
 .fieldset-container label {
@@ -57,7 +70,10 @@ hr.configuration_form:after {
 textarea,input[type=text] {
   width: 250px;
   padding: 5px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: 0.5s ease-in;
+  -o-transition: 0.5s ease-in;
   transition: 0.5s ease-in;
 }
 
@@ -67,6 +83,10 @@ textarea,input[type=text] {
   background-color: transparent;
   border: 1px solid #ccc;
   color: white;
+  -webkit-transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+  -o-transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
   transition: background-color 0.3s ease, border-color 0.3s ease,
     color 0.3s ease;
 }
@@ -91,10 +111,14 @@ textarea,input[type=text] {
   border: none;
   outline: none;
   border-radius: 5px;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
   transition: 0.3s;
   margin: 0 0 0 17.9em;
   padding: 2px 15px;
   text-align: center;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
   color: black;
   display: block;

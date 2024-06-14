@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ConfigDashboard from '../Components/ConfigUser/ConfigDashboard';
+import ConfigFileUpload from '../Components/ConfigUser/ConfigFileUpload';
 import Home from './Home';
 import ConfigAskHearty from '../Components/ConfigUser/ConfigAskHearty';
 import ConfigNavbar from '../Components/ConfigUser/ConfigNavbar';
@@ -22,7 +22,7 @@ const App = () => {
       case 'agents':
         return <ConfigAgents/> 
       case 'upload':
-        return <ConfigDashboard />;
+        return <ConfigFileUpload />;
       case 'config-ask-hearty':
         return <ConfigAskHearty onTextSubmit={handleTextSubmit} />;
       default:

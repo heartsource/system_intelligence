@@ -20,11 +20,15 @@ legend {
 }
 
 .d-flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 
 .justify-content-end {
-    justify-content: flex-end;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
 }
 
 .w-25 {
@@ -44,7 +48,9 @@ legend {
     position: absolute;
     top: 50%;
     left:95%;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
     color: rgb(45, 182, 212); 
     pointer-events: none; 
 }
@@ -54,7 +60,10 @@ legend {
 
 th {
     cursor: pointer;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
     font-size: large;
 }
 

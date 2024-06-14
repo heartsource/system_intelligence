@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../Styles/configurationDashboard.css';
 
-const ConfigDashboard = () => {
+const ConfigFileUpload = () => {
   const [files, setFiles] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -195,4 +195,4 @@ const ConfigDashboard = () => {
   );
 };
 
-export default ConfigDashboard;
+export default ConfigFileUpload;

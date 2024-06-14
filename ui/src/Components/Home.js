@@ -1,9 +1,9 @@
-import Configuration from '../Components/ConfigUser/Configuration';
+import ConfigAddAgent from './ConfigUser/ConfigAddAgent';
 
 const Home = () => {
   return (
     <>
-      <Configuration />
+      <ConfigAddAgent />
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../Styles/configuration.css';
 
-const Configuration = () => {
+const ConfigAddAgent = () => {
   const [models, setModels] = useState([]);
   const [flows, setFlows] = useState([]);
   const [template, setTemplate] = useState(
@@ -239,4 +239,4 @@ const Configuration = () => {
   );
 };
 
-export default Configuration;
+export default ConfigAddAgent;
