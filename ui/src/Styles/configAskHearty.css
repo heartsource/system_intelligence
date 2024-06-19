@@ -7,7 +7,8 @@
 
 .container {
   height: 100vh;
-  width: 100%;
+  /* width: 100%; */
+  width: 80em;
   align-items: center;
   justify-content: center;
 }
@@ -21,38 +22,6 @@
     background-position: max(100vw, 40em) 0, 0 0;
   }
 }
-.input-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
-  margin-top: -1em;
-}
-
-.input-group__input {
-  color: #fff;
-  font-size: x-large;
-  line-height: 0.2;
-  border: 1px solid #fff;
-  outline: none;
-  height: auto;
-  min-height: calc(1em + 0.5em); /* Set a minimum height */
-  width: 100%;
-  padding: 0.8em 1.2em;
-  padding-right: 3em;
-  background-color: transparent;
-  border-radius: 4em;
-  background-size: 200% 100%;
-  transition: background-position 0.8s ease-out;
-  box-sizing: border-box;
-}
-.input-group__input:hover {
-  background-position: 100% 0;
-}
-.input-group__input:focus {
-  /* outline: 2px dashed #ad2b89; */
-  outline-offset: 0.1em;
-}
 
 .dashboard-content {
   -webkit-box-flex: 2;
@@ -62,24 +31,24 @@
   padding: 25px;
 }
 .content {
-  margin-top: -3em;
+  margin-top: -4em;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .dashboard-content {
     padding: 15px 0px;
   }
-}
+} */
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .container,
   .container-lg,
   .container-md,
   .container-sm {
-    /* max-width: 760px; */
+   
     max-width: 85%;
   }
-}
+} */
 
 .col {
   padding: 20px;
@@ -92,18 +61,10 @@
 }
 
 h2 {
+  color: #2db6d4;
+}
+h5 b {
   color: #fff;
-  /* background: linear-gradient(
-    90deg,
-    hsla(254, 68%, 9%, 1) 0%,
-    hsla(269, 97%, 37%, 1) 33%,
-    hsla(320, 77%, 55%, 1) 66%,
-    hsla(316, 41%, 93%, 1) 100%
-  );
-
-  -webkit-background-clip: text; 
-  background-clip: text;
-  color: transparent; */
 }
 .spinner-border {
   color: #2db6d4;
@@ -118,23 +79,22 @@ h2 {
   position: relative;
   display: block;
   width: 100%;
-  max-width: 90%; /* You can adjust or remove this max-width as needed */
-  margin: 0 auto; /* Center the container if needed */
+  max-width: 90%;
+  margin: 0 auto;
   margin-top: -1em;
 }
 
 .chatbox-textbox textarea {
-  position: relative; /* Ensure the button stays inside the textarea */
+  position: relative;
   width: 100%;
-  padding: 10px 40px 10px 10px; /* Adjusted padding for button */
+  padding: 10px 40px 10px 10px;
   background-color: transparent;
   color: #fff;
   box-sizing: border-box;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 1.5em;
   border: 1px solid #ccc;
   border-radius: 50px;
-  /* resize: none; prevent manual resizing */
   overflow: auto; /* enable scrollbars when needed */
   min-height: 50px; /* initial height */
   max-height: 150px; /* 50% increase from initial height */
@@ -180,15 +140,25 @@ h2 {
   cursor: not-allowed;
 }
 
-/* Spinner overlay styling */
 .spinner-overlay {
-  position: 'absolute';
-  top: 100;
-  left: 0;
-  width: '80%';
-  height: '30%';
-  background-color: 'rgba(255, 255, 255, 0.8)';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 30%;
+  background-color: rgba(45, 182, 212, 0.8);
   z-index: 10;
-  border: '1px solid black';
-  border-radius: '20px';
+  border: 1px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.spinner-overlay .loading-text {
+  color: #000;
+}
+.spinner-border {
+  color: #000;
 }

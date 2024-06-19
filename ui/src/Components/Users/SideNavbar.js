@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-// import Logo from '../../Components/Images/Logo.png';
-import Logo from '../../Components/Images/heartSourceLogoresize.png';
-import UserDashboard from './UserDashboard';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Logo from "../../Components/Images/heartSourceLogoresize.png";
+import UserDashboard from "./UserDashboard";
 
-import '../../Styles/sidenavbar.css';
+import "../../Styles/sidenavbar.css";
 
 const Navbar = () => {
   useEffect(() => {
@@ -16,25 +15,25 @@ const Navbar = () => {
 
       if (toggle && nav && bodypd && headerpd) {
         const toggleHandler = () => {
-          nav.classList.toggle('show');
-          toggle.classList.toggle('bx-x');
-          bodypd.classList.toggle('body-pd');
-          headerpd.classList.toggle('body-pd');
+          nav.classList.toggle("show");
+          toggle.classList.toggle("bx-x");
+          bodypd.classList.toggle("body-pd");
+          headerpd.classList.toggle("body-pd");
         };
-        toggle.addEventListener('click', toggleHandler);
+        toggle.addEventListener("click", toggleHandler);
 
         return () => {
-          toggle.removeEventListener('click', toggleHandler);
+          toggle.removeEventListener("click", toggleHandler);
         };
       }
     };
 
-    showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
+    showNavbar("header-toggle", "nav-bar", "body-pd", "header");
   }, []);
 
   const handleTextSubmit = (text) => {
     // Handle text submission logic here
-    console.log('Text submitted:', text);
+    console.log("Text submitted:", text);
   };
 
   return (
