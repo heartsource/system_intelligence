@@ -286,6 +286,7 @@ const ConfigAgents = () => {
                 </button>
                 <button
                   type="button"
+                  id="configYes"
                   className="btn btn-primary"
                   onClick={confirmToggleStatus}>
                   Yes

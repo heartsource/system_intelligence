@@ -106,3 +106,19 @@
 h5 {
   color: #000;
 }
+.btn-secondary,
+.btn-primary {
+  background-color: black;
+  color: rgb(45, 182, 212);
+  border: none;
+}
+.btn-secondary:hover,
+.btn-primary:hover {
+  color: black;
+  border: none;
+}
+
+.form-check-input:checked {
+  background-color: rgb(45, 182, 212);
+  border-color: rgb(45, 182, 212);
+}

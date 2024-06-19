@@ -264,17 +264,10 @@ const ConfigAddAgent = () => {
               {formErrors.template}
             </span>
           )}
-
           <div>
-            {isSaved ? (
-              <button className="btn-grad" onClick={handleEdit}>
-                Edit Configuration
-              </button>
-            ) : (
-              <button className="btn-grad" onClick={handleSave}>
-                Create Agent
-              </button>
-            )}
+            <button className="btn-grad" onClick={handleSave}>
+              Create Agent
+            </button>
           </div>
         </fieldset>
       </div>
