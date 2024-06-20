@@ -1,8 +1,5 @@
 body {
   overflow-y: hidden;
-  /* Hide vertical scrollbar */
-  /* overflow-x: hidden; */
-  /* Optionally hide horizontal scrollbar */
 }
 
 .container {
@@ -23,7 +20,6 @@ body {
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /*margin-top: calc(50% - 150px); */
 }
 
 .card h4 {
@@ -45,8 +41,8 @@ label {
   color: white !important;
 }
 
-.drop_box {
-  margin: 10px 0;
+.drop_box_fileUpload {
+  margin: 0;
   padding: 30px;
   display: flex;
   align-items: center;
@@ -55,19 +51,24 @@ label {
   border: 3px dotted #121111;
   border-radius: 5px;
 }
+.drop_box_fileUpload label {
+  color: #fff;
+  width: max-content !important;
+  margin-right: 10px;
+}
 
-.drop_box h2 {
+.drop_box_fileUpload h2 {
   font-size: 16px;
   font-weight: 400;
   color: #2e2e2e;
 }
-.drop_box h4 {
+.drop_box_fileUpload h4 {
   font-size: 16px;
   font-weight: 400;
   color: #2e2e2e;
 }
 
-.drop_box p {
+.drop_box_fileUpload p {
   margin-top: 10px;
   margin-bottom: 20px;
   font-size: 12px;
@@ -102,6 +103,7 @@ label {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,29 +111,24 @@ label {
 
 /* Modal content */
 .modal-content {
-  background: linear-gradient(
-    90deg,
-    hsla(186, 33%, 94%, 1) 0%,
-    hsla(216, 41%, 79%, 1) 100%
-  );
+  /* background-color: transparent; */
+  background-color: rgb(45, 182, 212);
+  border: 1px solid #fff;
   font-size: 1.3em;
+  color: black;
   position: fixed !important;
   bottom: 0;
   right: 0;
-  border-radius: 10px;
   position: relative;
   max-width: 600px;
   width: 100%;
 }
 .modal-content > h3 {
-  background: linear-gradient(
-    90deg,
-    hsla(332, 53%, 82%, 1) 0%,
-    hsla(176, 57%, 89%, 1) 100%
-  );
   border-bottom: 1px solid #b3b3b3;
   font-size: 24px;
   font-weight: 400;
+  color: #000 !important;
+  /* color: rgb(45, 182, 212) !important; */
   margin: 0;
   border-radius: 5px;
   padding: 0.8em 56px 0.8em 27px;
@@ -142,8 +139,8 @@ label {
   position: absolute;
   top: 5px;
   right: 5px;
-  color: #0085a6;
-  background-color: #fff;
+  color: rgb(45, 182, 212);
+  background-color: black;
   border-radius: 50%;
   height: 40px;
   width: 40px;
@@ -156,15 +153,16 @@ label {
 }
 
 .close:hover {
-  background-color: #0085a6;
-  color: #fff;
+  background-color: transparent;
+  color: black;
   cursor: pointer;
+  border: 1px solid #000;
 }
 
 /* Progress bar */
 .progress-bar {
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
   border-radius: 5px;
   margin-top: 10px;
 }
@@ -183,7 +181,7 @@ label {
 .btn {
   /* background-color: #007bff; */
   background-color: rgb(45, 182, 212);
-  color: #000;
+  color: black;
   border: 1px solid #000;
   padding: 10px 20px;
   border-radius: 5px;
@@ -193,8 +191,8 @@ label {
 
 /* Button hover effect */
 .btn:hover {
-  /* background-color: #0056b3; */
   background-color: transparent;
+  color: rgb(45, 182, 212);
   border: 1px solid white;
 }
 
@@ -216,7 +214,7 @@ label {
   margin-left: 5px;
 }
 #checkGreen {
-  color: #73a437;
+  color: rgb(45, 182, 212);
 }
 
 .knowledge h2 {
@@ -232,3 +230,75 @@ label {
   z-index: 99;
 }
 
+#fileUploadFieldset {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 0 2em 0 0;
+  min-width: 600px;
+  min-height: 250px;
+  text-align: center;
+  height: 50%;
+}
+.fieldset-container-fileUpload {
+  margin-top: 0;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column;
+}
+.fieldset-container div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+legend {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: rgb(45, 182, 212);
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+hr.configuration_form {
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double #a8a6a6;
+  color: #d7d5d5;
+  text-align: center;
+  margin: -1em;
+}
+
+hr.configuration_form:after {
+  content: "§";
+  display: inline-block;
+  position: relative;
+  top: -0.9em;
+  font-size: 1.5em;
+  padding: 0 0.25em;
+}
+
+/* Button Style */
+
+.btn-grad {
+  text-decoration: none;
+  background-color: rgb(45, 182, 212);
+  border: none;
+  outline: none;
+  transition: 0.3s;
+  margin: 10px;
+  padding: 2px 15px;
+  text-align: center;
+  transition: 0.5s;
+  color: transparent;
+  display: block;
+}
+
+.btn-grad:hover {
+  text-decoration: none;
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+  padding: 10px 20px;
+  border: 1px solid #010101;
+}

@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import hearty from '../Images/NewHeartyIcon-without-background.png';
-import ConversationDisplay from '../ConfigUser/ConversationDisplay';
-import '../../Styles/configAskHearty.css'; 
+import React, { useState } from "react";
+import axios from "axios";
+import hearty from "../Images/NewHeartyIcon-without-background.png";
+import ConversationDisplay from "../ConfigUser/ConversationDisplay";
+import "../../Styles/configAskHearty.css";
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [conversation, setConversation] = useState({});
   const [error, setError] = useState(null);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const [template, setTemplate] = useState(
-    () => sessionStorage.getItem('template') || ''
+    () => sessionStorage.getItem("template") || ""
   );
   const [selectedModel, setSelectedModel] = useState(
-    () => sessionStorage.getItem('model') || ''
+    () => sessionStorage.getItem("model") || ""
   );
   const [selectedFlow, setSelectedFlow] = useState(
-    () => sessionStorage.getItem('flow') || ''
+    () => sessionStorage.getItem("flow") || ""
   );
 
   const handleTextareaInput = (event) => {
-    event.target.style.height = 'auto'; // Reset height to auto to recalculate scroll height
-    event.target.style.height = event.target.scrollHeight + 'px'; // Set height to scroll height
+    event.target.style.height = "auto"; // Reset height to auto to recalculate scroll height
+    event.target.style.height = event.target.scrollHeight + "px"; // Set height to scroll height
     setInputValue(event.target.value); // Update input value state
   };
 
   const handleKeyPressOrClick = async (event) => {
     if (
-      event.type === 'click' || // Check if it's a button click
-      (event.type === 'keydown' && event.key === 'Enter' && !event.shiftKey) // Check if it's Enter key press without Shift
+      event.type === "click" || // Check if it's a button click
+      (event.type === "keydown" && event.key === "Enter" && !event.shiftKey) // Check if it's Enter key press without Shift
     ) {
       event.preventDefault();
       const question = inputValue.trim();
@@ -44,14 +44,14 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         body.flow = selectedFlow;
         body.prompt = template;
         const response = await axios.post(
-          'http://4.255.69.143/heartie-be/talk_to_heartie/',
+          "http://4.255.69.143/heartie-be/talk_to_heartie/",
           body
         );
 
         console.log(body);
 
         await onTextSubmit(question);
-        setInputValue(''); // Clear input value
+        setInputValue(""); // Clear input value
         setIsLoading(false);
         let conversation = {};
         conversation.question = question;
@@ -59,12 +59,12 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         setConversation(conversation);
 
         // Reset textarea size after submission
-        const textarea = document.querySelector('.chatbox-textbox textarea');
-        textarea.style.height = 'auto';
+        const textarea = document.querySelector(".chatbox-textbox textarea");
+        textarea.style.height = "auto";
       } catch (error) {
-        setError('There was an error fetching data. Please try again later.');
+        setError("There was an error fetching data. Please try again later.");
         await onTextSubmit(question);
-        setInputValue(''); // Clear input value
+        setInputValue(""); // Clear input value
         setIsLoading(false);
       }
     }
@@ -72,7 +72,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
   return (
     <>
-      {error && ( // Display error message if there's an error
+      {error && (
         <div className="alert alert-danger" role="alert">
           {error}
         </div>
@@ -80,14 +80,14 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
       <div className="container-fluid">
         <div className="dashboard-content">
           <div className="content">
-            <h2 style={{ textAlign: 'center' }}>
+            <h2 style={{ textAlign: "center" }}>
               Ask Hearty
               <img
                 src={hearty}
-                alt=''
+                alt=""
                 height="70px"
                 width="70px"
-                style={{ borderRadius: '50%', marginLeft: '-0.3em' }}
+                style={{ borderRadius: "50%", marginLeft: "-0.3em" }}
               />
             </h2>
 
@@ -97,27 +97,24 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 rows="1"
                 value={inputValue}
                 onChange={handleTextareaInput}
-                onKeyDown={handleKeyPressOrClick}
-              ></textarea>
+                onKeyDown={handleKeyPressOrClick}></textarea>
               <button
                 className={`submit-btn ${
-                  !inputValue.trim() ? 'hover-disabled' : ''
+                  !inputValue.trim() ? "hover-disabled" : ""
                 }`}
                 onClick={handleKeyPressOrClick}
-                disabled={!inputValue.trim()}
-              >
+                disabled={!inputValue.trim()}>
                 <b>&#x2B06;</b>
               </button>
             </div>
           </div>
           <div
             className="conversation-container"
-            style={{ position: 'relative' }}
-          >
+            style={{ position: "relative" }}>
             {isLoading && (
-              <div className="spinner-overlay d-flex flex-column align-items-center justify-content-center">
+              <div className="spinner-overlay">
                 <div className="spinner-border mb-2" role="status">
-                  <span className="sr-only">Loading...</span>
+                  <span className="sr-only"></span>
                 </div>
                 <span className="loading-text">
                   Please wait while Hearty♥️ is fetching the Best Answer to your

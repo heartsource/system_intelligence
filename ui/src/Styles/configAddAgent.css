@@ -1,0 +1,114 @@
+#fieldsetAddAgent {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  height: 77vh;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.fieldset-container {
+  position: fixed;
+  top: 64%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+.fieldset-container div {
+  display: flex;
+  align-items: center;
+}
+.fieldset-container label {
+  color: #fff;
+  width: 140px;
+  margin-right: 10px;
+}
+.fieldset-container select,
+textarea,
+input[type="text"] {
+  width: 250px;
+  box-sizing: border-box;
+  transition: 0.5s ease-in;
+}
+
+legend {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: rgb(45, 182, 212);
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+hr.configuration_form {
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double #a8a6a6;
+  color: #d7d5d5;
+  text-align: center;
+  margin: -1em;
+  content: "§";
+  top: -0.9em;
+  font-size: 1em;
+  padding: 0 0.25em;
+}
+
+#model,
+#flow,
+#template,
+#description,
+#agentName {
+  width: 250px;
+  padding: 5px;
+  box-sizing: border-box;
+  transition: 0.5s ease-in;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: white;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
+#model option,
+#flow option,
+#template {
+  background-color: transparent;
+  border: 2px solid #ccc;
+  color: white;
+}
+
+#template {
+  height: 15em;
+  width: 37.5em;
+}
+#description {
+  height: 5.2em;
+  width: 37.5em;
+}
+
+.btn-grad {
+  text-decoration: none;
+  background-color: rgb(45, 182, 212);
+  color: black;
+  border: 1px solid transparent;
+  outline: none;
+  border-radius: 5px;
+  transition: 0.3s;
+  margin: 0 0 0 19em;
+  padding: 2px 15px;
+  text-align: center;
+  display: block;
+}
+.btn-grad:hover {
+  text-decoration: none;
+  color: rgb(45, 182, 212);
+  padding: 2px 15px;
+  border: 1px solid white;
+}
+.error {
+  font-size: small;
+  color: #bb2124;
+  margin-left: -19em;
+}
