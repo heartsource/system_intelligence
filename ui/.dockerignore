@@ -1,0 +1,23 @@
+# Node modules directory
+node_modules
+
+# Local development logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Testing directories and files
+coverage
+
+# Optional npm cache directory
+.npm
+
+# Docker ignore file
+.dockerignore
+
+# Git related files
+.git
+.gitignore
+
+# Build output
+build

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import ConfigDashboard from '../Components/ConfigUser/ConfigDashboard';
+import ConfigFileUpload from '../Components/ConfigUser/ConfigFileUpload';
 import Home from './Home';
 import ConfigAskHearty from '../Components/ConfigUser/ConfigAskHearty';
 import ConfigNavbar from '../Components/ConfigUser/ConfigNavbar';
+import ConfigAgents from './ConfigUser/ConfigAgents';
+
 import Footer from './Footer';
 
 const App = () => {
@@ -10,15 +12,17 @@ const App = () => {
 
   const handleTextSubmit = (text) => {
     console.log('Text submitted:', text);
-    // perform any further actions here, such as making an API call, updating state, etc.
+    // any further actions here, such as making an API call, updating state, etc.
   };
 
   const renderComponent = () => {
     switch (currentComponent) {
       case 'home':
         return <Home />;
+      case 'agents':
+        return <ConfigAgents/> 
       case 'upload':
-        return <ConfigDashboard />;
+        return <ConfigFileUpload />;
       case 'config-ask-hearty':
         return <ConfigAskHearty onTextSubmit={handleTextSubmit} />;
       default:
@@ -41,18 +45,6 @@ const App = () => {
 
 export default App;
 
-
-// import React from 'react';
-// import Login from './ConfigUser/Login';
-// const App = () => {
-//   return (
-//     <>
-//       <Login />
-//     </>
-//   );
-// };
-
-// export default App;
 
 
 

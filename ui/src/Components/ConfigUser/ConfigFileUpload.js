@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../Styles/configurationDashboard.css';
 
-const ConfigDashboard = () => {
+const ConfigFileUpload = () => {
   const [files, setFiles] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -23,29 +23,45 @@ const ConfigDashboard = () => {
       setErrorMessage('Please select at least one file for upload.');
       return;
     }
+
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append('file', files[i]);
+      formData.append('file', files[i]); 
     }
+
     setShowModal(true);
     try {
       const response = await axios.post(
         'http://4.255.69.143/heartie-be/load_file_to_chromadb/',
-        // 'http://localhost:8000/upload',
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'accept': 'application/json',
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(percentCompleted);
           },
         }
       );
+      setSuccessMessage('Files uploaded successfully.');
+      setShowModal(false);
     } catch (error) {
-      setErrorMessage('Error uploading files. Please try again.');
+      if (error.response) {
+        setErrorMessage(`Error: ${error.response.data.message || 'Unknown error occurred.'}`);
+      } else if (error.request) {
+        setErrorMessage('Error: No response received from the server.');
+      } else {
+        setErrorMessage(`Error: ${error.message}`);
+      }
       setShowModal(false);
     }
+
     setUploadProgress(100);
     setFileCount(0);
-    return;
+    setFiles(null);
   };
 
   const getFileIcon = (extension) => {
@@ -79,22 +95,18 @@ const ConfigDashboard = () => {
         );
     }
   };
+
   return (
     <>
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>
       )}
-      {/* <div className="container"> */}
-      {/* <div className="knowledge">
-        <h2>Add to Knowledge Repository</h2>
-      </div> */}
 
-      <div className="fieldset-container">
+      <div className="fieldset-container" style={{marginTop:"-13em"}}>
         <fieldset>
           <legend>
-            Upload Knowledge Documents{' '}
-            {/* <i className="fa-solid fa-file-arrow-up"></i> */}
+            Upload Knowledge Documents
           </legend>
           <hr className="configuration_form" />
 
@@ -162,7 +174,7 @@ const ConfigDashboard = () => {
                       <div>
                         {uploadProgress < 100 ? (
                           <i
-                            class="fa-solid fa-spinner"
+                            className="fa-solid fa-spinner"
                             style={{ color: '#2DB6D4' }}
                           ></i>
                         ) : (
@@ -179,8 +191,8 @@ const ConfigDashboard = () => {
           </div>
         </div>
       )}
-      {/* </div> */}
     </>
   );
 };
-export default ConfigDashboard;
+
+export default ConfigFileUpload;

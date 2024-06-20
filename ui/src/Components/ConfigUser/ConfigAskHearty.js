@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import hearty from '../Images/NewHeartyIcon-without-background.png';
 import ConversationDisplay from '../ConfigUser/ConversationDisplay';
-import '../../Styles/configAskHearty.css'; // Import your CSS file
+import '../../Styles/configAskHearty.css'; 
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +84,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               Ask Hearty
               <img
                 src={hearty}
+                alt=''
                 height="70px"
                 width="70px"
                 style={{ borderRadius: '50%', marginLeft: '-0.3em' }}
