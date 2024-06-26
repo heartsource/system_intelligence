@@ -54,7 +54,7 @@ async def fetch_agents_list(agent_model: AgentListModel) -> List[Dict[str, Any]]
 
         return filtered_agents_data
     except Exception as e:
-        traceback.print_exception(e)
+        traceback.print_exc()
         raise Exception(e)
 
 async def fetchAgentDetails(id: str) -> Dict[str, Any]:
@@ -69,7 +69,7 @@ async def fetchAgentDetails(id: str) -> Dict[str, Any]:
         if agentAvailable == False:
                 return None
     except Exception as e:
-        traceback.print_exception(e)
+        traceback.print_exc()
         raise Exception(e)
 
 
@@ -85,7 +85,7 @@ async def createAgent(agent: AgentModel):
         # Serialize AgentModel instance to JSON using model_dump_json()
         return await add_data_to_json_file(agent.model_dump_json(), existingAgentData)
     except Exception as e:
-        traceback.print_exception(e)
+        traceback.print_exc()
         raise Exception(e)
 
 async def updateAgentDetails(id:str, agent: AgentListModel):
@@ -108,7 +108,7 @@ async def updateAgentDetails(id:str, agent: AgentListModel):
         # Serialize AgentModel instance to JSON using model_dump_json()
         return await update_json_file(existingAgentData)
     except Exception as e:
-        traceback.print_exception(e)
+        traceback.print_exc()
         raise Exception(e)
     
 async def deleteAgent(id:str):
@@ -127,7 +127,7 @@ async def deleteAgent(id:str):
             # Serialize AgentModel instance to JSON using model_dump_json()
             return await update_json_file(existingAgentData)
         except Exception as e:
-            traceback.print_exception(e)
+            traceback.print_exc()
             raise Exception(e)
 
 async def add_data_to_json_file(newAgentData, existingAgentData):

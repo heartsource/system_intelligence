@@ -148,7 +148,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
         return response
 
     except Exception as e:
-        traceback.print_exception(e)
+        traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
 # Agentes Router
