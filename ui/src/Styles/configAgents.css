@@ -4,16 +4,21 @@
   padding: 20px;
   min-width: 70%;
   width: 90%;
-  height: 77vh;
+  height: 70vh;
   text-align: center;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 .fieldset-container {
   position: fixed;
+  top: 70%;
+  left: 52%;
   width: 80%;
   min-height: 70%;
   height: 100%;
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 #pagination {

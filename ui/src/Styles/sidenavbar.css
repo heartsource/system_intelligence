@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
 :root {
   --header-height: 5rem;
   --nav-width: 4.5rem;
@@ -9,12 +10,14 @@
   --normal-font-size: 1rem;
   --z-fixed: 100;
 }
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 400;
   position: relative;
   padding: 0 1rem;
@@ -23,8 +26,8 @@ body {
   background-color: var(--bg-color);
   display: grid;
   place-items: center;
-  height: 100vh; /* Ensure body height is full view height */
-  margin: 0; 
+  height: 100vh;
+  margin: 0;
 }
 a {
   text-decoration: none;
@@ -69,15 +72,22 @@ a {
   color: #f7f6fb;
 }
 
-hr.hr_header {
+/* hr.hr_header {
   border: 0;
   height: 1px;
   width: 100%;
   background: #333;
-  background-image: -webkit-gradient(linear, left top, right top, from(#ccc), color-stop(#333), to(#ccc));
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#ccc),
+    color-stop(#333),
+    to(#ccc)
+  );
   background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
   background-image: linear-gradient(to right, #ccc, #333, #ccc);
-}
+} */
 
 hr.vertical-hr {
   border-left: 1px solid #fff;
@@ -115,11 +125,11 @@ hr.vertical-hr {
   grid-template-columns: -webkit-max-content -webkit-max-content;
   grid-template-columns: max-content max-content;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-column-gap: 1rem;
-     -moz-column-gap: 1rem;
-          column-gap: 1rem;
+  -moz-column-gap: 1rem;
+  column-gap: 1rem;
   padding: 0.5rem 0 0.5rem 1.5rem;
 }
 .nav_logo {
@@ -161,7 +171,7 @@ hr.vertical-hr {
   color: var(--white-color);
 }
 .active::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   width: 2px;
@@ -205,10 +215,11 @@ hr.vertical-hr {
 }
 
 .gradient-text {
+  font-family: "Orbitron";
   color: #fff;
   padding-left: 150px;
-  font-family: 'Roboto';
   font-size: 38px;
-  font-weight: lighter;
+  font-weight: bold;
   text-align: center;
+  letter-spacing: 0.1em;
 }

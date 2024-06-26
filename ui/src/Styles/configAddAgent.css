@@ -4,19 +4,21 @@
   padding: 20px;
   width: 80%;
   max-width: 800px;
-  height: 77vh;
+  height: 70vh;
   text-align: center;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .fieldset-container {
   position: fixed;
-  top: 64%;
+  top: 70%;
   left: 52%;
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
   z-index: 10;
+  box-sizing: border-box;
 }
 .fieldset-container div {
   display: flex;
@@ -111,4 +113,53 @@ hr.configuration_form {
   font-size: small;
   color: #bb2124;
   margin-left: -19em;
+}
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  #fieldsetAddAgent {
+    width: 90%;
+    height: 70vh;
+    padding: 15px;
+  }
+
+  .fieldset-container {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+  }
+  .fieldset-container label {
+    width: 120px;
+  }
+
+  .fieldset-container select,
+  textarea,
+  input[type="text"] {
+    width: 220px;
+  }
+}
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+  #fieldsetAddAgent {
+    width: 95%;
+    height: 65vh;
+    padding: 10px;
+  }
+
+  .fieldset-container {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px;
+  }
+  .fieldset-container label {
+    width: 100px;
+  }
+
+  .fieldset-container select,
+  textarea,
+  input[type="text"] {
+    width: 180px;
+  }
 }

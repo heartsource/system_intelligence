@@ -160,7 +160,7 @@ label {
 }
 
 /* Progress bar */
-.progress-bar {
+/* .progress-bar {
   width: 100%;
   background-color: #f8f8f8;
   border-radius: 5px;
@@ -169,13 +169,12 @@ label {
 
 .progress {
   background-color: #4caf50;
-  /* Green progress bar */
   height: 20px;
   border-radius: 5px;
   text-align: center;
   line-height: 20px;
   color: white;
-}
+} */
 
 /* Button */
 .btn {
@@ -234,7 +233,7 @@ label {
   border: 2px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-  margin: 0 2em 0 0;
+  margin: 5em 2em 0 0;
   min-width: 600px;
   min-height: 250px;
   text-align: center;
