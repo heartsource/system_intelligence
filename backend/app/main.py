@@ -13,6 +13,8 @@ from chromadb.utils import embedding_functions
 from heartie_modals import HeartieQueryPayload
 import uuid
 import re
+from modules.agents.agents_controller import router as agents_router
+import traceback
 
 config = get_configs()
 
@@ -148,6 +150,9 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
     except Exception as e:
         traceback.print_exception(e)
         return {"status": "error", "message": str(e)}
+
+# Agentes Router
+app.include_router(agents_router, prefix='/agents')
 
 
 #return_value = asyncio.run(load_file_to_chromadb("pdf", context="Nissan Leaf", file_path="../knowledge/2020-nissan-leaf-owner-manual.pdf"))

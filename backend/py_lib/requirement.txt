@@ -5,3 +5,4 @@ langchain_community
 sentence_transformers
 openai
 PyPDF2
+aiofiles
