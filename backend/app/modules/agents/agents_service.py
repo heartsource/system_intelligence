@@ -10,11 +10,11 @@ import uuid
 import aiofiles
 
 # async def load_agents_data():
-#     with open(r"utils\agentsData.json") as agents_data_file:
+#     with open(r"config\agentsData.json") as agents_data_file:
 #         return json.load(agents_data_file) # returns JSON object as a dictionary
     
 async def load_agents_data():
-    async with aiofiles.open(r"utils\agentsData.json", "r") as agents_data_file:
+    async with aiofiles.open("../config/agentsData.json", "r") as agents_data_file:
         data = await agents_data_file.read()
         return json.loads(data)
 
@@ -82,8 +82,9 @@ async def createAgent(agent: AgentModel):
         agent.created_dt = datetime.now()
         agent.id = uuid.uuid4()
 
-        # Serialize AgentModel instance to JSON using model_dump_json()
-        return await add_data_to_json_file(agent.model_dump_json(), existingAgentData)
+        # Serialize AgentModel instance to JSON using json() method
+        new_agent_data = json.loads(agent.json())  # Convert JSON string to dict
+        return await add_data_to_json_file(new_agent_data, existingAgentData)
     except Exception as e:
         traceback.print_exc()
         raise Exception(e)
@@ -130,13 +131,13 @@ async def deleteAgent(id:str):
             traceback.print_exc()
             raise Exception(e)
 
-async def add_data_to_json_file(newAgentData, existingAgentData):
-    existingAgentData.append(json.loads(newAgentData)) # Append the new agent data
+async def add_data_to_json_file(newAgentData: dict, existingAgentData: List[dict]):
+    existingAgentData.append(newAgentData)
     # Write the updated data back to the JSON file
-    async with aiofiles.open("utils/agentsData.json", "w") as json_file:
+    async with aiofiles.open("../config/agentsData.json", "w") as json_file:
         await json_file.write(json.dumps(existingAgentData, default=str))  # Use default=str to handle UUID and date serialization
 
 async def update_json_file(existingAgentData):
     # Write the updated data back to the JSON file
-    async with aiofiles.open("utils/agentsData.json", "w") as json_file:
+    async with aiofiles.open("../config/agentsData.json", "w") as json_file:
         await json_file.write(json.dumps(existingAgentData, default=str))  # Use default=str to handle UUID and date serialization

@@ -15,10 +15,10 @@
         "name": "Jira Support Agent",
         "description": "",
         "template": "You are a bot that answers questions, using only the context provided. If you have complete information provide accurate answers. If you only have partial information from the context, please state that you do not have accurate information and try to provide a precise answer in a maximum of 2 sentences with a disclaimer that you did your best to answer but you are not sure. If there is no information from the context at all, please say you do not have an answer in a polite way.",
-        "status": "inactive",
+        "status": "active",
         "model": "ChatGPT4",
         "flow": "RAG",
-        "updated_dt": "2024-06-26 11:07:18.412658",
+        "updated_dt": "2024-06-27 18:14:30.088158",
         "created_dt": "2024-05-07T11:08:12"
     },
     {
