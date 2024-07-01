@@ -44,11 +44,9 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         body.flow = selectedFlow;
         body.prompt = template;
         const response = await axios.post(
-          "http://http://4.255.69.143/heartie-be/talk_to_heartie/",
+          "http://4.255.69.143/heartie-be/talk_to_heartie/",
           body
         );
-
-        console.log(body);
 
         await onTextSubmit(question);
         setInputValue(""); // Clear input value

@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
 :root {
-  --header-height: 5rem;
+  --header-height: 4rem;
   --nav-width: 4.5rem;
   --bg-color: rgb(20, 20, 22);
   --first-color: rgba(0, 0, 0, 0.9);
@@ -48,7 +48,7 @@ a {
   z-index: var(--z-fixed);
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
-  transition: 0.5s;
+  transition: padding-left 0.5s;
 }
 .header_toggle {
   color: var(--first-color);
@@ -65,34 +65,12 @@ a {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-top: -50px;
+  margin-top: -40px;
 }
 .header_img i {
   font-size: 1em;
   border-radius: 50%;
   color: #f7f6fb;
-}
-
-/* hr.hr_header {
-  border: 0;
-  height: 1px;
-  width: 100%;
-  background: #333;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#ccc),
-    color-stop(#333),
-    to(#ccc)
-  );
-  background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
-  background-image: linear-gradient(to right, #ccc, #333, #ccc);
-} */
-
-hr.vertical-hr {
-  border-left: 1px solid #fff;
-  height: 100%;
 }
 
 .l-navbar {
@@ -133,17 +111,7 @@ hr.vertical-hr {
   column-gap: 1rem;
   padding: 0.5rem 0 0.5rem 1.5rem;
 }
-.nav_logo {
-  margin-bottom: 2rem;
-}
-.nav_logo-icon {
-  font-size: 1.25rem;
-  color: var(--white-color);
-}
-.nav_logo-name {
-  color: var(--white-color);
-  font-weight: 700;
-}
+
 .nav_link {
   position: relative;
   color: var(--first-color-light);
@@ -167,6 +135,7 @@ hr.vertical-hr {
 
 .body-pd {
   padding-left: calc(var(--nav-width) + 1rem);
+  transition: padding-left 0.5s;
 }
 .active {
   color: var(--white-color);

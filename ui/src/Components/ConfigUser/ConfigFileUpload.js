@@ -54,7 +54,7 @@ const ConfigFileUpload = () => {
           `Error: ${error.response.data.message || "Unknown error occurred."}`
         );
       } else if (error.request) {
-        setErrorMessage("Error: No response received from the server.");
+        setErrorMessage("No response received from the server.");
       } else {
         setErrorMessage(`Error: ${error.message}`);
       }
@@ -120,9 +120,7 @@ const ConfigFileUpload = () => {
               </label>
             </header>
             <p>
-              <label htmlFor="fileID">
-                Files Supported: PDF, TEXT, DOC, DOCX, IMAGES
-              </label>
+              <label htmlFor="fileID">Files Supported: PDF, TEXT</label>
             </p>
 
             {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}

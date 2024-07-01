@@ -159,23 +159,6 @@ label {
   border: 1px solid #000;
 }
 
-/* Progress bar */
-/* .progress-bar {
-  width: 100%;
-  background-color: #f8f8f8;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.progress {
-  background-color: #4caf50;
-  height: 20px;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 20px;
-  color: white;
-} */
-
 /* Button */
 .btn {
   /* background-color: #007bff; */
@@ -240,7 +223,7 @@ label {
   height: 50%;
 }
 .fieldset-container-fileUpload {
-  margin-top: 0;
+  margin-top: -120px;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */

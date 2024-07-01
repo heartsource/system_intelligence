@@ -7,6 +7,12 @@
  */
 
 export const sortItems = (items, key, direction = "asc") => {
+  // Ensure items is an array and has items to sort
+  if (!Array.isArray(items) || items.length === 0) {
+    console.warn("sortItems: Invalid items array or empty array passed.");
+    return [];
+  }
+
   return [...items].sort((a, b) => {
     if (key === "updated" || key === "created") {
       return direction === "asc"

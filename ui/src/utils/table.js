@@ -1,7 +1,6 @@
-// src/utils/Table.js
 import React from "react";
 import PropTypes from "prop-types";
-import { getSortIcon } from "./sort"; // Adjust the import path if necessary
+import { getSortIcon } from "./sort";
 
 const Table = ({ data, columns, sortConfig, onSort, customRenderers }) => {
   return (

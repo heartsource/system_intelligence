@@ -20,6 +20,8 @@ const ConfigAddAgent = () => {
     template: "",
   });
 
+  const CHATGPT4_FLOW = ["RAG"];
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -37,7 +39,6 @@ const ConfigAddAgent = () => {
       setTemplate(template);
       setError(null);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setError("There was an error fetching data. Please try again later.");
     }
   };
@@ -57,25 +58,30 @@ const ConfigAddAgent = () => {
           }
         );
 
-        if (response.status === 200 || response.status === 201) {
+        if (response.status >= 200 && response.status <= 299) {
           setIsSaved(true);
           setShowSuccess(true);
-          console.log("Configuration saved:", {
-            model,
-            flow,
-            template,
-          });
-
           setTimeout(() => {
             setShowSuccess(false);
           }, 3000);
+          //Reset the form
+          setName("");
+          setDescription("");
+          setModel("");
+          setFlow("");
+          setTemplate("");
+          setFormErrors({
+            name: "",
+            model: "",
+            flow: "",
+            template: "",
+          });
         } else {
           setError(
             "There was an error saving the configuration. Please try again later."
           );
         }
       } catch (error) {
-        console.error("Error saving data:", error);
         setError(
           "There was an error saving the configuration. Please try again later."
         );
@@ -109,6 +115,7 @@ const ConfigAddAgent = () => {
     const { value } = e.target;
     if (field === "model") {
       setModel(value);
+      setFlow(""); // Reset flow when model changes
     } else if (field === "flow") {
       setFlow(value);
     } else if (field === "template") {
@@ -119,6 +126,8 @@ const ConfigAddAgent = () => {
       setDescription(value);
     }
   };
+
+  const filteredFlows = model === "ChatGPT4" ? CHATGPT4_FLOW : flows;
 
   return (
     <>
@@ -220,7 +229,7 @@ const ConfigAddAgent = () => {
               disabled={isSaved}
             >
               <option value="Select">Select</option>
-              {flows.map((flow, index) => (
+              {filteredFlows.map((flow, index) => (
                 <option key={index} value={flow}>
                   {flow}
                 </option>

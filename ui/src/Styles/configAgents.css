@@ -1,6 +1,7 @@
 #configAgents {
   border: 2px solid #ccc;
   border-radius: 5px;
+  margin-top: -3em;
   padding: 20px;
   min-width: 70%;
   width: 90%;
@@ -19,6 +20,9 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
+}
+Table {
+  margin-top: -30em;
 }
 
 #pagination {
@@ -76,7 +80,7 @@
 
 .table-container {
   width: 100%;
-  height: 480px; /* Set the height you want for the scrollable area */
+  height: 60em; /* Set the height for the scrollable area */
   overflow-y: auto; /* Enable vertical scrolling */
   padding-top: 0px;
 }
@@ -95,19 +99,19 @@
   cursor: pointer;
   color: #ffffff;
   user-select: none;
-  padding: 0.8em;
+  padding: 0.5em;
   text-align: left;
   z-index: 1;
 }
 .table tbody td {
-  padding: 0.8em;
+  padding: 0.4em;
   text-align: left;
   position: relative;
 }
 
-.table tbody tr:first-child td {
-  padding-top: 12em;
-}
+/* .table tbody tr:first-child td {
+  padding-top: 1em;
+} */
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-color-type: var(--bs-table-striped-color);

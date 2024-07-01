@@ -55,7 +55,7 @@ const ConfigAgentLogs = () => {
 
   return (
     <>
-      <div className="fieldset-container">
+      <div className="fieldset-container" id="fieldset-container-logs">
         <fieldset id="agentLogsFieldset">
           <legend>Agent Logs</legend>
           <hr className="configuration_form" />

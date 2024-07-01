@@ -85,13 +85,14 @@ const ConfigKnowledgeEnhancement = () => {
   };
   return (
     <>
-      <div className="fieldset-container">
+      <div className="fieldset-container" id="fieldset-container-knowledge">
         <fieldset id="knowledgeFieldset">
           <legend>Knowledge Enhancement Requests</legend>
           <hr className="configuration_form" />
           <div
             className="logs-table-container table-responsive"
-            id="knowledgeEnhancement">
+            id="knowledgeEnhancement"
+          >
             <Table
               data={knowledge}
               columns={columns}

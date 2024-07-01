@@ -1,100 +1,24 @@
-// src/components/ConfigAgents.js
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
 import Table from "../../utils/table"; // Adjust the import path
-
-const initialAgents = [
-  {
-    name: "Telecom Support Agent",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "June 12, 2024 11:35",
-    created: "May 12, 2024 18:21",
-  },
-
-  {
-    name: "Jira Support Agent",
-    status: "active",
-    model: "Llama 3",
-    flow: "Fine Tuning",
-    updated: "June 9, 2024 09:44",
-    created: "May 12, 2024 18:21",
-  },
-  {
-    name: "ERP Support Agent",
-    status: "inactive",
-    model: "ChatGPT4",
-    flow: "Fine Tuning",
-    updated: "June 7, 2024 11:35",
-    created: "May 12, 2024 18:21",
-  },
-  {
-    name: "Default System Agent",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "May 12, 2024 11:35",
-    created: "May 12, 2024 07:21",
-  },
-  {
-    name: "Telecom Support Agent",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "June 12, 2024 11:35",
-    created: "May 12, 2024 18:21",
-  },
-  {
-    name: "Jira Support Agent",
-    status: "active",
-    model: "Llama 3",
-    flow: "Fine Tuning",
-    updated: "June 9, 2024 09:44",
-    created: "May 12, 2024 18:21",
-  },
-  {
-    name: "ERP Support Agent",
-    status: "inactive",
-    model: "ChatGPT4",
-    flow: "Fine Tuning",
-    updated: "June 7, 2024 11:35",
-    created: "May 12, 2024 18:21",
-  },
-  {
-    name: "Default System Agent",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "May 12, 2024 11:35",
-    created: "May 12, 2024 07:21",
-  },
-  {
-    name: "Agent",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "May 12, 2024 11:35",
-    created: "May 12, 2024 07:21",
-  },
-];
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
   { key: "status", label: "Status", sortable: true },
   { key: "model", label: "Model", sortable: true },
   { key: "flow", label: "Flow", sortable: true },
-  { key: "updated", label: "Updated", sortable: true },
-  { key: "created", label: "Created", sortable: true },
+  { key: "updated_dt", label: "Updated", sortable: true },
+  { key: "created_dt", label: "Created", sortable: true },
   { key: "action", label: "Action", sortable: false }, // Disable sorting for the action column
 ];
 
 const ConfigAgents = () => {
   const [agents, setAgents] = useState([]);
   const [sortConfig, setSortConfig] = useState({
-    key: "updated",
+    key: "updated_dt",
     direction: "desc",
   });
   const [modalInfo, setModalInfo] = useState({
@@ -104,8 +28,25 @@ const ConfigAgents = () => {
   });
 
   useEffect(() => {
-    const sortedAgents = sortItems(initialAgents, "updated", "desc");
-    setAgents(sortedAgents);
+    const fetchData = async () => {
+      try {
+        const payload = {};
+        const response = await axios.post(
+          "http://4.255.69.143/heartie-be/agents/",
+          payload
+        );
+        const data = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        const sortedAgents = sortItems(data, "updated_dt", "desc");
+
+        setAgents(sortedAgents);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const sortAgents = (key) => {
