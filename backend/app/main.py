@@ -3,8 +3,8 @@ import asyncio
 import os
 import json
 import requests
-import PyPDF2
-
+from PyPDF2 import PdfReader
+from PyPDF2.errors import PdfReadError
 from fastapi import FastAPI, Response, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from config_Loader import get_configs
@@ -106,7 +106,7 @@ async def talk_to_heartie(question: Optional[str] = None, prompt: Optional[str] 
 
 @app.post("/load_to_chromadb/", tags=["load_to_chromadb"])
 async def load_to_chromadb(file_content):
-    return_value = True
+    return_value = {"status": "success", "message": "File uploaded successfully."}
     from chromadb_reader_writer import chromadb_writer
     chromadb_writer(file_content)
     return return_value
@@ -119,26 +119,37 @@ async def get_ai_prompts():
 async def load_file_to_chromadb(file: UploadFile = File(...)):
     try:
         print("entering load_file_to_chromadb")
+        filename = file.filename
+        file_extension = filename.split(".")[-1].lower()
+        
         data = await file.read()
-        save_to = 'file.pdf'
-        pdf_text = []
+        save_to = f'temporary_file.{file_extension}'
+        
         with open(save_to, 'wb') as f:
             f.write(data)
-            f.close()
-        try:
-            with open(save_to, 'rb') as f:
-                reader = PyPDF2.PdfReader(f, strict=False)
 
-                for page in reader.pages:
-                    content = page.extract_text()
-                    pdf_text.append(content)
-        except PyPDF2.errors.PdfReadError as e:
+        pdf_text = []
+
+        if file_extension == 'pdf':
+            try:
+                with open(save_to, 'rb') as f:
+                    reader = PdfReader(f, strict=False)
+                    for page in reader.pages:
+                        content = page.extract_text()
+                        pdf_text.append(content)
+            except PdfReadError as e:
                 print(f"Error reading PDF: {e}")
-                return {"status": "error", "message": "Failed to read the PDF file. File might be corrupted."}
-                f.close()
-        finally:
-            if os.path.exists(save_to):
-                os.remove(save_to)
+                return {"status": "error", "message": "Failed to read the PDF file. The file might be corrupted."}
+        
+        elif file_extension == 'txt':
+            with open(save_to, 'r') as f:
+                pdf_text.append(f.read())
+        
+        else:
+            return {"status": "error", "message": "Unsupported file type. Only PDF and TXT files are supported."}
+
+        if os.path.exists(save_to):
+            os.remove(save_to)
 
         txt_content = " ".join(pdf_text)
         print(txt_content)

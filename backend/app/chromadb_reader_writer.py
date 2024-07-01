@@ -41,19 +41,22 @@ def chromadb_reader(question: str):
     return query_results["documents"][0]
 
 def get_client():
-    import chromadb
-    #client = chromadb.PersistentClient(path=config.get("CHROMA_DB_PATH"))
-    chromaHost = ""
-    chromaPort = ""
     try:
-        chromaHost = os.environ['CHROMA_HOST']
-        chromaPort = os.environ['CHROMA_PORT']
-    except Exception:
-        if chromaHost == "" or chromaPort == "":
-            chromaHost = config.get("CHROMA_HOST")
-            chromaPort = config.get("CHROMA_PORT")
-    client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
-    return client
+        import chromadb
+        #client = chromadb.PersistentClient(path=config.get("CHROMA_DB_PATH"))
+        chromaHost = ""
+        chromaPort = ""
+        try:
+            chromaHost = os.environ['CHROMA_HOST']
+            chromaPort = os.environ['CHROMA_PORT']
+        except Exception:
+            if chromaHost == "" or chromaPort == "":
+                chromaHost = config.get("CHROMA_HOST")
+                chromaPort = config.get("CHROMA_PORT")
+        client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
+        return client
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 def get_collection_name():
     collection_name = config.get("CHROMA_DB_COLLECTION_NAME")
