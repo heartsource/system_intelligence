@@ -44,7 +44,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         body.flow = selectedFlow;
         body.prompt = template;
         const response = await axios.post(
-          "http://4.255.69.143/heartie-be/talk_to_heartie/",
+          "http://http://4.255.69.143/heartie-be/talk_to_heartie/",
           body
         );
 
@@ -97,20 +97,23 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 rows="1"
                 value={inputValue}
                 onChange={handleTextareaInput}
-                onKeyDown={handleKeyPressOrClick}></textarea>
+                onKeyDown={handleKeyPressOrClick}
+              ></textarea>
               <button
                 className={`submit-btn ${
                   !inputValue.trim() ? "hover-disabled" : ""
                 }`}
                 onClick={handleKeyPressOrClick}
-                disabled={!inputValue.trim()}>
+                disabled={!inputValue.trim()}
+              >
                 <b>&#x2B06;</b>
               </button>
             </div>
           </div>
           <div
             className="conversation-container"
-            style={{ position: "relative" }}>
+            style={{ position: "relative" }}
+          >
             {isLoading && (
               <div className="spinner-overlay">
                 <div className="spinner-border mb-2" role="status">

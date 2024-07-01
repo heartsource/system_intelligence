@@ -32,7 +32,7 @@ const ConfigFileUpload = () => {
     setShowModal(true);
     try {
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/load_file_to_chromadb/",
+        "http://http://4.255.69.143/heartie-be/load_file_to_chromadb/",
         formData,
         {
           headers: {
@@ -88,7 +88,8 @@ const ConfigFileUpload = () => {
         return (
           <i
             className="fa-solid fa-file-image"
-            style={{ color: "#16a777" }}></i>
+            style={{ color: "#16a777" }}
+          ></i>
         );
       default:
         return (
@@ -166,18 +167,21 @@ const ConfigFileUpload = () => {
                           whiteSpace: "nowrap",
                           textOverflow: "ellipsis",
                           marginRight: "10px",
-                        }}>
+                        }}
+                      >
                         {file.name}
                       </div>
                       <div>
                         {uploadProgress < 100 ? (
                           <i
                             className="fa-solid fa-spinner"
-                            style={{ color: "black" }}></i>
+                            style={{ color: "black" }}
+                          ></i>
                         ) : (
                           <i
                             className="fa-solid fa-circle-check"
-                            id="checkGreen"></i>
+                            id="checkGreen"
+                          ></i>
                         )}
                       </div>
                     </div>

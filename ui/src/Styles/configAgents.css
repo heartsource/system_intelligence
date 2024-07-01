@@ -108,6 +108,22 @@
 .table tbody tr:first-child td {
   padding-top: 12em;
 }
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: #000;
+  color: #fff;
+}
+.table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: #181818;
+  color: #fff;
+}
+.table-hover {
+  --bs-table-hover-color: #181818;
+  --bs-table-hover-bg: rgba(24, 24, 24, 255);
+}
+
 h5 {
   color: #000;
 }

@@ -33,8 +33,8 @@ const Navbar = ({ setCurrentComponent }) => {
       <header className="header" id="header">
         <img
           src={Logo}
-          height="105px"
-          width="105px"
+          height="80px"
+          width="80px"
           style={{ backgroundColor: "transparent" }}
         />
 
@@ -51,34 +51,40 @@ const Navbar = ({ setCurrentComponent }) => {
               <i className="fa-solid fa-bars nav_link" id="header-toggle"></i>
               <div
                 onClick={() => setCurrentComponent("home")}
-                className="nav_link active">
+                className="nav_link active"
+              >
                 <i className="fa-solid fa-gears"></i> Agent Configuration
               </div>
               <div
                 onClick={() => setCurrentComponent("agents")}
-                className="nav_link">
+                className="nav_link"
+              >
                 <i class="fas fa-users"></i> Agents
               </div>
               <div
                 onClick={() => setCurrentComponent("agentLogs")}
-                className="nav_link">
+                className="nav_link"
+              >
                 <i class="fa-solid fa-headset"></i> Agent Logs
               </div>
               <div
                 onClick={() => setCurrentComponent("upload")}
-                className="nav_link">
+                className="nav_link"
+              >
                 <i className="fa-solid fa-upload"></i> Knowledge Upload
               </div>
               <div
                 onClick={() => setCurrentComponent("config-ask-hearty")}
-                className="nav_link">
+                className="nav_link"
+              >
                 <i className="fa-solid fa-heart"></i> Ask Hearty
               </div>
               <div
                 onClick={() =>
                   setCurrentComponent("config-knowledge-enhancement")
                 }
-                className="nav_link">
+                className="nav_link"
+              >
                 <i class="fa-solid fa-chart-line"></i> Knowledge <br />
                 Enhancement
               </div>

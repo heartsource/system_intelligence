@@ -3,39 +3,24 @@ import axios from "axios";
 import "../../Styles/configAddAgent.css";
 
 const ConfigAddAgent = () => {
-  const [agentName, setAgentName] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [models, setModels] = useState([]);
   const [flows, setFlows] = useState([]);
-  const [template, setTemplate] = useState(
-    () => sessionStorage.getItem("template") || ""
-  );
-  const [selectedModel, setSelectedModel] = useState(
-    () => sessionStorage.getItem("model") || ""
-  );
-  const [selectedFlow, setSelectedFlow] = useState(
-    () => sessionStorage.getItem("flow") || ""
-  );
-  const [isSaved, setIsSaved] = useState(
-    () => sessionStorage.getItem("isSaved") === "true"
-  );
+  const [template, setTemplate] = useState("");
+  const [model, setModel] = useState("");
+  const [flow, setFlow] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
-
   const [formErrors, setFormErrors] = useState({
-    agentName: "",
+    name: "",
     model: "",
     flow: "",
     template: "",
   });
 
   useEffect(() => {
-    console.log("Session storage on mount:", {
-      model: sessionStorage.getItem("model"),
-      flow: sessionStorage.getItem("flow"),
-      template: sessionStorage.getItem("template"),
-      isSaved: sessionStorage.getItem("isSaved"),
-    });
-
     fetchData();
   }, []);
 
@@ -49,12 +34,7 @@ const ConfigAddAgent = () => {
 
       setModels(models);
       setFlows(flows);
-
-      if (!sessionStorage.getItem("template")) {
-        setTemplate(template);
-        sessionStorage.setItem("template", template);
-      }
-
+      setTemplate(template);
       setError(null);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -62,55 +42,58 @@ const ConfigAddAgent = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("model", selectedModel);
-  }, [selectedModel]);
-
-  useEffect(() => {
-    sessionStorage.setItem("flow", selectedFlow);
-  }, [selectedFlow]);
-
-  useEffect(() => {
-    sessionStorage.setItem("template", template);
-  }, [template]);
-
-  useEffect(() => {
-    sessionStorage.setItem("isSaved", isSaved);
-  }, [isSaved]);
-
-  const handleSave = () => {
+  const handleSave = async () => {
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
-      setIsSaved(true);
-      setShowSuccess(true);
-      console.log("Configuration saved:", {
-        selectedModel,
-        selectedFlow,
-        template,
-      });
+      try {
+        const response = await axios.post(
+          "http://4.255.69.143/heartie-be/agents/create-agent",
+          {
+            name,
+            description,
+            model,
+            flow,
+            template,
+          }
+        );
 
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
+        if (response.status === 200 || response.status === 201) {
+          setIsSaved(true);
+          setShowSuccess(true);
+          console.log("Configuration saved:", {
+            model,
+            flow,
+            template,
+          });
+
+          setTimeout(() => {
+            setShowSuccess(false);
+          }, 3000);
+        } else {
+          setError(
+            "There was an error saving the configuration. Please try again later."
+          );
+        }
+      } catch (error) {
+        console.error("Error saving data:", error);
+        setError(
+          "There was an error saving the configuration. Please try again later."
+        );
+      }
     } else {
       setFormErrors(errors);
     }
   };
 
-  const handleEdit = () => {
-    setIsSaved(false);
-    console.log("Editing configuration");
-  };
-
   const validateForm = () => {
     const errors = {};
-    if (!agentName) {
-      errors.agentName = "* Agent Name is required.";
+    if (!name) {
+      errors.name = "* Agent Name is required.";
     }
-    if (!selectedModel || selectedModel === "Select") {
+    if (!model || model === "Select") {
       errors.model = "* Model is required";
     }
-    if (!selectedFlow || selectedFlow === "Select") {
+    if (!flow || flow === "Select") {
       errors.flow = "* Flow is required";
     }
     if (!template) {
@@ -125,13 +108,15 @@ const ConfigAddAgent = () => {
     }
     const { value } = e.target;
     if (field === "model") {
-      setSelectedModel(value);
+      setModel(value);
     } else if (field === "flow") {
-      setSelectedFlow(value);
+      setFlow(value);
     } else if (field === "template") {
       setTemplate(value);
-    } else if (field === "agentName") {
-      setAgentName(value);
+    } else if (field === "name") {
+      setName(value);
+    } else if (field === "description") {
+      setDescription(value);
     }
   };
 
@@ -156,26 +141,26 @@ const ConfigAddAgent = () => {
           <hr className="configuration_form" />
 
           <div>
-            <label htmlFor="agentName">
+            <label htmlFor="name">
               Agent Name <sup>*</sup>
             </label>
             <input
               type="text"
-              id="agentName"
-              value={agentName}
+              id="name"
+              value={name}
               style={{
-                border: formErrors.agentName
+                border: formErrors.name
                   ? "2px solid #bb2124"
                   : "1px solid #ccc",
-                marginBottom: formErrors.agentName ? "0" : "initial",
+                marginBottom: formErrors.name ? "0" : "initial",
               }}
               placeholder="Enter Agent Name"
-              onChange={(e) => handleInputChange(e, "agentName")}
+              onChange={(e) => handleInputChange(e, "name")}
               disabled={isSaved}
             />
-            {formErrors.agentName && (
+            {formErrors.name && (
               <span className="error" style={{ marginTop: "5em" }}>
-                {formErrors.agentName}
+                {formErrors.name}
               </span>
             )}
           </div>
@@ -184,7 +169,9 @@ const ConfigAddAgent = () => {
             <textarea
               id="description"
               placeholder="You can add a few lines here to describe what this Agent will do."
-              disabled={isSaved}></textarea>
+              disabled={isSaved}
+              onChange={(e) => handleInputChange(e, "description")}
+            ></textarea>
           </div>
           <div>
             <label htmlFor="model">
@@ -192,7 +179,7 @@ const ConfigAddAgent = () => {
             </label>
             <select
               id="model"
-              value={selectedModel}
+              value={model}
               style={{
                 border: formErrors.model
                   ? "2px solid #bb2124"
@@ -200,7 +187,8 @@ const ConfigAddAgent = () => {
                 marginBottom: formErrors.model ? "0" : "initial",
               }}
               onChange={(e) => handleInputChange(e, "model")}
-              disabled={isSaved}>
+              disabled={isSaved}
+            >
               <option value="Select">Select</option>
               {models.map((model, index) => (
                 <option key={index} value={model}>
@@ -221,7 +209,7 @@ const ConfigAddAgent = () => {
             </label>
             <select
               id="flow"
-              value={selectedFlow}
+              value={flow}
               style={{
                 border: formErrors.flow
                   ? "2px solid #bb2124"
@@ -229,11 +217,12 @@ const ConfigAddAgent = () => {
                 marginBottom: formErrors.flow ? "0" : "initial",
               }}
               onChange={(e) => handleInputChange(e, "flow")}
-              disabled={isSaved}>
+              disabled={isSaved}
+            >
               <option value="Select">Select</option>
-              {models.map((model, index) => (
-                <option key={index} value={flows}>
-                  {flows}
+              {flows.map((flow, index) => (
+                <option key={index} value={flow}>
+                  {flow}
                 </option>
               ))}
             </select>
@@ -257,7 +246,8 @@ const ConfigAddAgent = () => {
                 marginBottom: formErrors.template ? "0" : "initial",
               }}
               onChange={(e) => handleInputChange(e, "template")}
-              disabled={isSaved}></textarea>
+              disabled={isSaved}
+            ></textarea>
           </div>
           {formErrors.template && (
             <span className="error" style={{ marginTop: "5em" }}>

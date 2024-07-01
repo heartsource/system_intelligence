@@ -79,14 +79,6 @@ const initialAgents = [
     updated: "May 12, 2024 11:35",
     created: "May 12, 2024 07:21",
   },
-  {
-    name: "Agent2",
-    status: "active",
-    model: "ChatGPT4",
-    flow: "RAG",
-    updated: "May 12, 2024 11:35",
-    created: "May 12, 2024 07:21",
-  },
 ];
 
 const columns = [
@@ -148,7 +140,8 @@ const ConfigAgents = () => {
       ) : (
         <i
           className="fa-solid fa-circle-xmark"
-          style={{ color: "#db0f00" }}></i>
+          style={{ color: "#db0f00" }}
+        ></i>
       ),
     action: (agent, index) =>
       agent.name !== "Default System Agent" ? (
@@ -198,7 +191,8 @@ const ConfigAgents = () => {
                 <button
                   type="button"
                   className="close"
-                  onClick={() => closeModal(setModalInfo)}>
+                  onClick={() => closeModal(setModalInfo)}
+                >
                   <span>&times;</span>
                 </button>
               </div>
@@ -213,14 +207,16 @@ const ConfigAgents = () => {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={() => closeModal(setModalInfo)}>
+                  onClick={() => closeModal(setModalInfo)}
+                >
                   No
                 </button>
                 <button
                   type="button"
                   id="configYes"
                   className="btn btn-primary"
-                  onClick={confirmToggleStatus}>
+                  onClick={confirmToggleStatus}
+                >
                   Yes
                 </button>
               </div>

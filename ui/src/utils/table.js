@@ -13,7 +13,8 @@ const Table = ({ data, columns, sortConfig, onSort, customRenderers }) => {
               <th
                 key={column.key}
                 onClick={() => column.sortable && onSort(column.key)}
-                style={{ cursor: column.sortable ? "pointer" : "default" }}>
+                style={{ cursor: column.sortable ? "pointer" : "default" }}
+              >
                 {column.label}{" "}
                 {column.sortable && getSortIcon(column.key, sortConfig)}
               </th>
