@@ -51,4 +51,11 @@ class AgentListModel(BaseModel):
     limit: Optional[int] = 10
 
 
+class AgentUpdateModel(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    template: Optional[str] = None
+    model: Optional[Model] = None
+    flow: Optional[Flow] = None
+    status: Optional[Status]= None
 

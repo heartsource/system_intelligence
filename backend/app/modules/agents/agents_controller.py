@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status, HTTPException
-from modules.agents.agents_model import AgentListModel, AgentModel
+from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
 from modules.agents.agents_service import deleteAgent, fetch_agents_list, createAgent, fetchAgentDetails, updateAgentDetails
 
 router = APIRouter()
@@ -43,7 +43,7 @@ async def create_agent(body: AgentModel, response: Response):
         return internalServerError(e, response)
 
 @router.put('/{id}')
-async def update_agent(id: str, body: AgentListModel, response: Response):
+async def update_agent(id: str, body: AgentUpdateModel, response: Response):
     try:
         await updateAgentDetails(id, body)
         response.status_code = status.HTTP_200_OK

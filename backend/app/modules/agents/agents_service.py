@@ -5,7 +5,7 @@ import json
 import traceback
 
 from fastapi import HTTPException
-from modules.agents.agents_model import AgentListModel, AgentModel
+from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
 import uuid
 import aiofiles
 
@@ -89,21 +89,27 @@ async def createAgent(agent: AgentModel):
         traceback.print_exc()
         raise Exception(e)
 
-async def updateAgentDetails(id:str, agent: AgentListModel):
+async def updateAgentDetails(id:str, agent: AgentUpdateModel):
     try:
         existingAgentData = await load_agents_data() # Read the JSON into the buffer
         agentAvailable = False
         for existingAgent in existingAgentData:
             if existingAgent['id'] == id :
                 agentAvailable = True
-                existingAgent['name'] = agent.name
-                existingAgent['description'] = agent.description
-                existingAgent['model'] = agent.model
-                existingAgent['status'] = agent.status
-                existingAgent['flow'] = agent.flow
-                existingAgent['template'] = agent.template
+                if agent.name is not None:
+                    existingAgent['name'] = agent.name
+                if agent.description is not None:
+                    existingAgent['description'] = agent.description
+                if agent.model is not None:
+                    existingAgent['model'] = agent.model
+                if agent.status is not None:
+                    existingAgent['status'] = agent.status
+                if agent.flow is not None:
+                    existingAgent['flow'] = agent.flow
+                if agent.template is not None:
+                    existingAgent['template'] = agent.template
                 existingAgent['updated_dt'] = datetime.now()
-                break        
+                break
         if agentAvailable == False:
             raise Exception("No record found with id " + id)
         # Serialize AgentModel instance to JSON using model_dump_json()
