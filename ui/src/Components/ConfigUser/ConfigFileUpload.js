@@ -54,7 +54,7 @@ const ConfigFileUpload = () => {
           `Error: ${error.response.data.message || "Unknown error occurred."}`
         );
       } else if (error.request) {
-        setErrorMessage("Error: No response received from the server.");
+        setErrorMessage("No response received from the server.");
       } else {
         setErrorMessage(`Error: ${error.message}`);
       }
@@ -88,7 +88,8 @@ const ConfigFileUpload = () => {
         return (
           <i
             className="fa-solid fa-file-image"
-            style={{ color: "#16a777" }}></i>
+            style={{ color: "#16a777" }}
+          ></i>
         );
       default:
         return (
@@ -119,9 +120,7 @@ const ConfigFileUpload = () => {
               </label>
             </header>
             <p>
-              <label htmlFor="fileID">
-                Files Supported: PDF, TEXT, DOC, DOCX, IMAGES
-              </label>
+              <label htmlFor="fileID">Files Supported: PDF, TEXT</label>
             </p>
 
             {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}
@@ -166,18 +165,21 @@ const ConfigFileUpload = () => {
                           whiteSpace: "nowrap",
                           textOverflow: "ellipsis",
                           marginRight: "10px",
-                        }}>
+                        }}
+                      >
                         {file.name}
                       </div>
                       <div>
                         {uploadProgress < 100 ? (
                           <i
                             className="fa-solid fa-spinner"
-                            style={{ color: "black" }}></i>
+                            style={{ color: "black" }}
+                          ></i>
                         ) : (
                           <i
                             className="fa-solid fa-circle-check"
-                            id="checkGreen"></i>
+                            id="checkGreen"
+                          ></i>
                         )}
                       </div>
                     </div>

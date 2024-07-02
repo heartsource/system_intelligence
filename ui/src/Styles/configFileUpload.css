@@ -159,24 +159,6 @@ label {
   border: 1px solid #000;
 }
 
-/* Progress bar */
-.progress-bar {
-  width: 100%;
-  background-color: #f8f8f8;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.progress {
-  background-color: #4caf50;
-  /* Green progress bar */
-  height: 20px;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 20px;
-  color: white;
-}
-
 /* Button */
 .btn {
   /* background-color: #007bff; */
@@ -234,14 +216,14 @@ label {
   border: 2px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-  margin: 0 2em 0 0;
+  margin: 5em 2em 0 0;
   min-width: 600px;
   min-height: 250px;
   text-align: center;
   height: 50%;
 }
 .fieldset-container-fileUpload {
-  margin-top: 0;
+  margin-top: -120px;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */

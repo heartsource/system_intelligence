@@ -1,0 +1,37 @@
+#fieldset-container-logs {
+  position: fixed;
+  top: 50%;
+  left: 52%;
+  width: 90%;
+  height: 70vh;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+#agentLogsFieldset {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  min-width: 70%;
+  width: 70%;
+  height: 70vh;
+  text-align: center;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#agentLogs {
+  width: 100%;
+  height: 80em;
+  overflow-y: auto;
+}
+#agentLogs div {
+  margin-top: -36em;
+}
+
+#agentLogs tbody tr:first-child td {
+  padding-top: 1em;
+}

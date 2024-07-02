@@ -1,19 +1,28 @@
 #configAgents {
   border: 2px solid #ccc;
   border-radius: 5px;
+  margin-top: -3em;
   padding: 20px;
   min-width: 70%;
   width: 90%;
-  height: 77vh;
+  height: 70vh;
   text-align: center;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 .fieldset-container {
   position: fixed;
+  top: 70%;
+  left: 52%;
   width: 80%;
   min-height: 70%;
   height: 100%;
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
+}
+Table {
+  margin-top: -30em;
 }
 
 #pagination {
@@ -71,7 +80,7 @@
 
 .table-container {
   width: 100%;
-  height: 480px; /* Set the height you want for the scrollable area */
+  height: 60em; /* Set the height for the scrollable area */
   overflow-y: auto; /* Enable vertical scrolling */
   padding-top: 0px;
 }
@@ -90,19 +99,35 @@
   cursor: pointer;
   color: #ffffff;
   user-select: none;
-  padding: 0.8em;
+  padding: 0.5em;
   text-align: left;
   z-index: 1;
 }
 .table tbody td {
-  padding: 0.8em;
+  padding: 0.4em;
   text-align: left;
   position: relative;
 }
 
-.table tbody tr:first-child td {
-  padding-top: 12em;
+/* .table tbody tr:first-child td {
+  padding-top: 1em;
+} */
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: #000;
+  color: #fff;
 }
+.table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: #181818;
+  color: #fff;
+}
+.table-hover {
+  --bs-table-hover-color: #181818;
+  --bs-table-hover-bg: rgba(24, 24, 24, 255);
+}
+
 h5 {
   color: #000;
 }

@@ -48,8 +48,6 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           body
         );
 
-        console.log(body);
-
         await onTextSubmit(question);
         setInputValue(""); // Clear input value
         setIsLoading(false);
@@ -97,20 +95,23 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 rows="1"
                 value={inputValue}
                 onChange={handleTextareaInput}
-                onKeyDown={handleKeyPressOrClick}></textarea>
+                onKeyDown={handleKeyPressOrClick}
+              ></textarea>
               <button
                 className={`submit-btn ${
                   !inputValue.trim() ? "hover-disabled" : ""
                 }`}
                 onClick={handleKeyPressOrClick}
-                disabled={!inputValue.trim()}>
+                disabled={!inputValue.trim()}
+              >
                 <b>&#x2B06;</b>
               </button>
             </div>
           </div>
           <div
             className="conversation-container"
-            style={{ position: "relative" }}>
+            style={{ position: "relative" }}
+          >
             {isLoading && (
               <div className="spinner-overlay">
                 <div className="spinner-border mb-2" role="status">
