@@ -4,8 +4,13 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow-y: scroll;
-  max-height: 550px;
+  max-height: 600px;
   margin-top: 0.3em;
+}
+@media (max-width: 768px), (max-height: 768px) {
+  .answerContainer {
+    max-height: 400px;
+  }
 }
 
 .userInitial {
@@ -18,7 +23,7 @@
   text-align: center; /* Center text horizontally */
   line-height: 50px; /* Center text vertically */
   font-size: 1rem; /* Adjust font size as needed */
-  padding-left: '10px';
+  padding-left: "10px";
 }
 .userInitial img {
   margin-left: -0.8em;
@@ -62,7 +67,7 @@
 }
 
 .tooltip-container .tooltip-text::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 50%;

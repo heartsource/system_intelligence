@@ -30,24 +30,23 @@
   padding: 25px;
 }
 .content {
-  margin-top: -2em;
+  margin-top: -3em;
 }
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .dashboard-content {
     padding: 15px 0px;
   }
-} */
+}
 
-/* @media (min-width: 992px) {
+@media (min-width: 992px) {
   .container,
   .container-lg,
   .container-md,
   .container-sm {
-   
     max-width: 85%;
   }
-} */
+}
 
 .col {
   padding: 20px;

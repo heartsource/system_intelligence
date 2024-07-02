@@ -5,7 +5,7 @@
   padding: 20px;
   min-width: 70%;
   width: 90%;
-  height: 70vh;
+  height: 80vh;
   text-align: center;
   overflow-y: auto;
   box-sizing: border-box;
@@ -83,16 +83,17 @@ Table {
   height: 60em; /* Set the height for the scrollable area */
   overflow-y: auto; /* Enable vertical scrolling */
   padding-top: 0px;
+  box-sizing: border-box;
 }
 
 .table {
   width: 100%;
+
   border-collapse: collapse;
 }
-
+/* Sticky header */
 .table thead th {
   position: sticky;
-  position: -webkit-sticky;
   top: 0;
   background-color: #54585d;
   font-size: large;
@@ -103,15 +104,16 @@ Table {
   text-align: left;
   z-index: 1;
 }
+/* Table body styling */
 .table tbody td {
   padding: 0.4em;
   text-align: left;
-  position: relative;
+  /* position: relative; */
 }
 
-/* .table tbody tr:first-child td {
+.table tbody tr:first-child td {
   padding-top: 1em;
-} */
+}
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-color-type: var(--bs-table-striped-color);

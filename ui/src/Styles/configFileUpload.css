@@ -2,12 +2,12 @@ body {
   overflow-y: hidden;
 }
 
-.container {
+/* .container {
   height: 100vh;
   width: 100%;
   align-items: center;
   justify-content: center;
-}
+} */
 
 .card {
   border-radius: 10px;
@@ -223,7 +223,7 @@ label {
   height: 50%;
 }
 .fieldset-container-fileUpload {
-  margin-top: -120px;
+  margin-top: 1em;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
