@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { writeText } from "clipboard-polyfill";
 import "../../Styles/conversationDisplay.css";
 import hearty from "../Images/NewHeartyIcon-without-background.png";
 
@@ -47,7 +48,7 @@ const ConversationDisplay = ({ conversation }) => {
   // Function to copy text to clipboard
   const copyToClipboard = async (text, index) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await writeText(text);
       setCopiedIndex(index);
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch (error) {

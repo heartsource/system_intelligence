@@ -106,7 +106,7 @@ const ConfigAgents = () => {
 
   return (
     <>
-      <div className="fieldset-container">
+      <div className="fieldset-container" id="configAgentContainer">
         <fieldset id="configAgents">
           <legend>Agents</legend>
           <hr className="configuration_form" />
