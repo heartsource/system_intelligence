@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import '../../Styles/conversationDisplay.css';
-import hearty from '../Images/NewHeartyIcon-without-background.png';
+import React, { useState, useEffect } from "react";
+import "../../Styles/conversationDisplay.css";
+import hearty from "../Images/NewHeartyIcon-without-background.png";
 
 const ConversationDisplay = ({ conversation }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -15,11 +15,11 @@ const ConversationDisplay = ({ conversation }) => {
   // Function to format the date and time
   const formatDate = (date) => {
     const options = {
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
       hour12: true,
     };
     return date.toLocaleString(undefined, options);
@@ -45,14 +45,14 @@ const ConversationDisplay = ({ conversation }) => {
   }, [conversation]);
 
   // Function to copy text to clipboard
-  const copyToClipboard = (text, index) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopiedIndex(index);
-        setTimeout(() => setCopiedIndex(null), 2000); 
-      })
-      .catch((error) => console.error('Error copying text: ', error));
+  const copyToClipboard = async (text, index) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (error) {
+      console.error("Error copying text: ", error);
+    }
   };
 
   return (
@@ -70,9 +70,9 @@ const ConversationDisplay = ({ conversation }) => {
                   &nbsp;&nbsp;
                   <span
                     style={{
-                      color: 'rgb(45, 182, 212)',
-                      marginRight: '5px',
-                      fontSize: 'small',
+                      color: "rgb(45, 182, 212)",
+                      marginRight: "5px",
+                      fontSize: "small",
                     }}
                   >
                     {formatDate(item.currentTime)}
@@ -108,7 +108,7 @@ const ConversationDisplay = ({ conversation }) => {
                     >
                       <i className="fa-solid fa-copy"></i>
                       <span className="tooltip-text">
-                        {copiedIndex === index ? 'Copied!' : 'Copy'}
+                        {copiedIndex === index ? "Copied!" : "Copy"}
                       </span>
                     </button>
                   </div>
