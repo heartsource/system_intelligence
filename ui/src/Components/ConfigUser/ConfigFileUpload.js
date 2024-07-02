@@ -32,7 +32,7 @@ const ConfigFileUpload = () => {
     setShowModal(true);
     try {
       const response = await axios.post(
-        "http://http://4.255.69.143/heartie-be/load_file_to_chromadb/",
+        "http://4.255.69.143/heartie-be/load_file_to_chromadb/",
         formData,
         {
           headers: {
