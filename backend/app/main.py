@@ -98,7 +98,7 @@ async def talk_to_heartie(question: Optional[str] = None, prompt: Optional[str] 
 
     print(f"Template with substitutions :{template_with_context_and_question}")
 
-    response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=200)
+    response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=250)
   # Clean the response to remove newline characters
     return_value = re.sub(r'\n+', ' ', response.choices[0].text).strip()
     print('Heartie is in Action:  Ended')
@@ -142,8 +142,19 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
                 return {"status": "error", "message": "Failed to read the PDF file. The file might be corrupted."}
         
         elif file_extension == 'txt':
-            with open(save_to, 'r') as f:
-                pdf_text.append(f.read())
+            try:
+                with open(save_to, 'rt', encoding='utf-8') as f:
+                    pdf_text.append(f.read())
+            except UnicodeDecodeError:
+                try:
+                    with open(save_to, 'rt', encoding='latin-1') as f:
+                        pdf_text.append(f.read())
+                except Exception as e:
+                    print(f"Error reading TXT file with fallback encoding: {e}")
+                    return {"status": "error", "message": "Failed to read the TXT file."}
+            except Exception as e:
+                print(f"Error reading TXT file: {e}")
+                return {"status": "error", "message": "Failed to read the TXT file."}
         
         else:
             return {"status": "error", "message": "Unsupported file type. Only PDF and TXT files are supported."}
