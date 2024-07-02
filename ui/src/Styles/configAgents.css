@@ -21,6 +21,9 @@
   justify-content: center;
   box-sizing: border-box;
 }
+#configAgentContainer div {
+  margin-bottom: 0px;
+}
 Table {
   margin-top: -30em;
 }
@@ -93,7 +96,6 @@ Table {
 }
 /* Sticky header */
 .table thead th {
-  position: sticky;
   top: 0;
   background-color: #54585d;
   font-size: large;
@@ -102,7 +104,6 @@ Table {
   user-select: none;
   padding: 0.5em;
   text-align: left;
-  z-index: 1;
 }
 /* Table body styling */
 .table tbody td {
