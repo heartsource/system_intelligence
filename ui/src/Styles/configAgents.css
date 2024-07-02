@@ -1,151 +1,140 @@
-#configAgents {
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  margin-top: -3em;
+.agent-fieldset-container {
+  width: 100%;
   padding: 20px;
-  min-width: 70%;
-  width: 90%;
-  height: 80vh;
-  text-align: center;
-  overflow-y: auto;
   box-sizing: border-box;
 }
-.fieldset-container {
-  position: fixed;
-  top: 70%;
-  left: 52%;
-  width: 80%;
-  min-height: 70%;
-  height: 100%;
+
+#configAgents {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: transparent;
+  height: 75vh;
+}
+
+#agentListLengend {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.agent-table-container {
   display: flex;
-  justify-content: center;
-  box-sizing: border-box;
+  flex-direction: column;
 }
-#configAgentContainer div {
-  margin-bottom: 0px;
+.row-container {
+  height: 50vh;
+  overflow-y: auto;
 }
-Table {
-  margin-top: -30em;
+.grid-header,
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  color: #fff;
+}
+
+.grid-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid-header .grid-cell {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.grid-header .sortable:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
 }
 
 #pagination {
-  text-align: center;
-  width: 100%;
-}
-
-.custom-control-input {
-  cursor: pointer;
-}
-
-.text-center {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #fff;
   text-align: center;
 }
 
-.d-flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.justify-content-end {
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.w-25 {
-  width: 25%;
-}
-
-.search-box {
-  position: relative;
-  display: inline-block;
-}
-
-.search-box input {
-  padding-left: 10px;
-}
-
-.search-box i {
-  position: absolute;
-  top: 50%;
-  left: 95%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  color: rgb(45, 182, 212);
-  pointer-events: none;
-}
-
-.fa-circle-xmark {
-  color: #db0f00;
-}
-
-.table-container {
-  width: 100%;
-  height: 60em; /* Set the height for the scrollable area */
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding-top: 0px;
-  box-sizing: border-box;
-}
-
-.table {
-  width: 100%;
-
-  border-collapse: collapse;
-}
-/* Sticky header */
-.table thead th {
+.modal {
+  position: fixed;
   top: 0;
-  background-color: #54585d;
-  font-size: large;
-  cursor: pointer;
-  color: #ffffff;
-  user-select: none;
-  padding: 0.5em;
-  text-align: left;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-/* Table body styling */
-.table tbody td {
-  padding: 0.4em;
-  text-align: left;
-  /* position: relative; */
-}
-
-.table tbody tr:first-child td {
-  padding-top: 1em;
-}
-
-.table-striped > tbody > tr:nth-of-type(odd) > * {
-  --bs-table-color-type: var(--bs-table-striped-color);
-  --bs-table-bg-type: #000;
-  color: #fff;
-}
-.table-striped > tbody > tr:nth-of-type(even) > * {
-  --bs-table-color-type: var(--bs-table-striped-color);
-  --bs-table-bg-type: #181818;
-  color: #fff;
-}
-.table-hover {
-  --bs-table-hover-color: #181818;
-  --bs-table-hover-bg: rgba(24, 24, 24, 255);
-}
-
-h5 {
-  color: #000;
-}
-.btn-secondary,
-.btn-primary {
-  background-color: black;
-  color: rgb(45, 182, 212);
-  border: none;
-}
-.btn-secondary:hover,
-.btn-primary:hover {
+.modal-title {
   color: black;
-  border: none;
 }
 
+.modal-dialog {
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header .close {
+  border: none;
+  background: none;
+  font-size: 1.2em;
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: none;
+}
+
+.modal-footer .btn {
+  margin-left: 10px;
+}
+
+#configYes,
+#configNo {
+  background-color: black;
+  border-color: rgb(45, 182, 212);
+  color: #fff;
+}
+
+#configYes:hover {
+  background-color: rgb(45, 182, 212);
+  border-color: rgb(45, 182, 212);
+  color: black;
+}
+#configNo:hover {
+  background-color: rgb(45, 182, 212);
+  border-color: black;
+  color: black;
+}
+
+#checkGreen {
+  color: rgb(45, 182, 212);
+}
 .form-check-input:checked {
   background-color: rgb(45, 182, 212);
   border-color: rgb(45, 182, 212);

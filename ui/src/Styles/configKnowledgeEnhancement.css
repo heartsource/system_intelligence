@@ -14,13 +14,13 @@
   border: 2px solid #ccc;
   border-radius: 5px;
   padding: 18px;
-
   width: 80%;
   height: 70vh;
   text-align: center;
   overflow-y: auto;
   box-sizing: border-box;
 }
+
 .logs-table-container {
   width: 100%;
   height: 480px;
@@ -36,4 +36,19 @@
 }
 #knowledgeEnhancement tbody tr:first-child td {
   padding-top: 1em;
+}
+.styled-fieldset {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px 0;
+  position: relative;
+}
+
+.styled-legend {
+  font-weight: bold;
+  padding: 0 10px;
+  position: absolute;
+  top: -12px; /* Adjust this value as needed */
+  left: 10px; /* Adjust this value as needed */
+  background: white; /* Ensure the background matches your form's background */
 }

@@ -5,36 +5,30 @@ import { getSortIcon } from "./sort";
 const Table = ({ data, columns, sortConfig, onSort, customRenderers }) => {
   return (
     <div className="table-container">
-      <table className="table table-striped table-bordered table-hover">
-        <thead>
-          <tr>
+      <div className="grid-header">
+        {columns.map((column) => (
+          <div
+            key={column.key}
+            onClick={() => column.sortable && onSort(column.key)}
+            style={{ cursor: column.sortable ? "pointer" : "default" }}
+          >
+            {column.label}{" "}
+            {column.sortable && getSortIcon(column.key, sortConfig)}
+          </div>
+        ))}
+      </div>
+      {Array.isArray(data) &&
+        data.map((row, index) => (
+          <div className="grid-row" key={index}>
             {columns.map((column) => (
-              <th
-                key={column.key}
-                onClick={() => column.sortable && onSort(column.key)}
-                style={{ cursor: column.sortable ? "pointer" : "default" }}
-              >
-                {column.label}{" "}
-                {column.sortable && getSortIcon(column.key, sortConfig)}
-              </th>
+              <div className="grid-cell" key={column.key}>
+                {customRenderers && customRenderers[column.key]
+                  ? customRenderers[column.key](row, index)
+                  : row[column.key]}
+              </div>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(data) &&
-            data.map((row, index) => (
-              <tr key={index}>
-                {columns.map((column) => (
-                  <td key={column.key}>
-                    {customRenderers && customRenderers[column.key]
-                      ? customRenderers[column.key](row, index)
-                      : row[column.key]}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </table>
+          </div>
+        ))}
     </div>
   );
 };

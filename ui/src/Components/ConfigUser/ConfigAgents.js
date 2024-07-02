@@ -3,7 +3,6 @@ import axios from "axios";
 import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
-import Table from "../../utils/table"; // Adjust the import path
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -12,8 +11,34 @@ const columns = [
   { key: "flow", label: "Flow", sortable: true },
   { key: "updated_dt", label: "Updated", sortable: true },
   { key: "created_dt", label: "Created", sortable: true },
-  { key: "action", label: "Action", sortable: false }, // Disable sorting for the action column
+  { key: "action", label: "Action", sortable: false },
 ];
+
+const TableHeader = ({ columns, sortConfig, onSort }) => (
+  <div className="grid-header">
+    {columns.map((column) => (
+      <div
+        key={column.key}
+        className={`grid-cell ${column.sortable ? "sortable" : ""}`}
+        onClick={() => column.sortable && onSort(column.key)}
+      >
+        {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
+      </div>
+    ))}
+  </div>
+);
+
+const TableRow = ({ agent, index, columns, customRenderers }) => (
+  <div className="grid-row">
+    {columns.map((column) => (
+      <div key={column.key} className="grid-cell">
+        {customRenderers && customRenderers[column.key]
+          ? customRenderers[column.key](agent, index)
+          : agent[column.key]}
+      </div>
+    ))}
+  </div>
+);
 
 const ConfigAgents = () => {
   const [agents, setAgents] = useState([]);
@@ -106,21 +131,31 @@ const ConfigAgents = () => {
 
   return (
     <>
-      <div className="fieldset-container" id="configAgentContainer">
+      <div className="agent-fieldset-container" id="configAgentContainer">
         <fieldset id="configAgents">
-          <legend>Agents</legend>
-          <hr className="configuration_form" />
-
-          <Table
-            data={agents}
-            columns={columns}
-            sortConfig={sortConfig}
-            onSort={sortAgents}
-            customRenderers={customRenderers}
-          />
-          <label id="pagination">
-            Showing {agents.length} of {agents.length} Agents
-          </label>
+          <legend id="agentListLengend">Agents</legend>
+          <hr />
+          <div className="agent-table-container">
+            <TableHeader
+              columns={columns}
+              sortConfig={sortConfig}
+              onSort={sortAgents}
+            />
+            <div className="row-container">
+              {agents.map((agent, index) => (
+                <TableRow
+                  key={index}
+                  agent={agent}
+                  index={index}
+                  columns={columns}
+                  customRenderers={customRenderers}
+                />
+              ))}
+            </div>
+            <div id="pagination">
+              Showing {agents.length} of {agents.length} Agents
+            </div>
+          </div>
         </fieldset>
       </div>
 
@@ -148,6 +183,7 @@ const ConfigAgents = () => {
               <div className="modal-footer">
                 <button
                   type="button"
+                  id="configNo"
                   className="btn btn-secondary"
                   onClick={() => closeModal(setModalInfo)}
                 >

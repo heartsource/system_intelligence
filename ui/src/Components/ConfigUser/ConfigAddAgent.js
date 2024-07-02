@@ -142,11 +142,11 @@ const ConfigAddAgent = () => {
       )}
       <div className="fieldset-container">
         <fieldset id="fieldsetAddAgent">
-          <legend>
+          <legend id="agentLegend">
             Agent Configuration
             <i className="fa-solid fa-gears"></i>
           </legend>
-          <hr className="configuration_form" />
+          <hr style={{ border: "1px solid white" }} />
 
           <div>
             <label htmlFor="name">
@@ -264,7 +264,7 @@ const ConfigAddAgent = () => {
           )}
           <div>
             <button className="btn-grad" onClick={handleSave}>
-              Create Agent
+              Save
             </button>
           </div>
         </fieldset>

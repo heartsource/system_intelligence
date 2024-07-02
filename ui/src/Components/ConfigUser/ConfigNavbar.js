@@ -96,7 +96,6 @@ const Navbar = ({ setCurrentComponent }) => {
           </div>
         </nav>
       </div>
-      <hr className="vertical-hr" />
     </div>
   );
 };
