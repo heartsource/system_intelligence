@@ -110,6 +110,7 @@ const ConfigAgents = () => {
         <fieldset id="configAgents">
           <legend>Agents</legend>
           <hr className="configuration_form" />
+
           <Table
             data={agents}
             columns={columns}

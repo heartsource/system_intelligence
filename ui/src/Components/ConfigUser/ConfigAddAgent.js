@@ -69,7 +69,6 @@ const ConfigAddAgent = () => {
           setDescription("");
           setModel("");
           setFlow("");
-          setTemplate("");
           setFormErrors({
             name: "",
             model: "",

@@ -4,7 +4,7 @@ import { getSortIcon } from "./sort";
 
 const Table = ({ data, columns, sortConfig, onSort, customRenderers }) => {
   return (
-    <div className="table-container table-responsive">
+    <div className="table-container">
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
