@@ -1,21 +1,18 @@
-.fieldset-container {
-  position: fixed;
-  top: 50%;
-  left: 52%;
-  transform: translate(-50%, -50%);
+.addAgent-fieldset-container {
+  width: 100%;
+  margin-top: 1em;
   display: flex;
   justify-content: center;
-  z-index: 10;
   box-sizing: border-box;
 }
 #fieldsetAddAgent {
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-top: -3em;
-  padding: 5px;
-  width: 85%;
-  max-width: 900em;
-  height: 70vh;
+  padding: 20px;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
   text-align: left;
   overflow-y: auto;
   box-sizing: border-box;
@@ -23,76 +20,54 @@
 }
 
 #agentLegend {
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: bold;
   text-align: left;
   color: rgb(45, 182, 212);
   background-color: transparent;
-  padding: 0;
+  padding: 1px;
   margin-bottom: 0;
 }
-@media (max-width: 768px), (max-height: 768px) {
-  .fieldset-container {
-    top: 50%;
-    left: 52%;
-    max-height: 800px;
-  }
-  #fieldsetAddAgent {
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    margin-top: -3em;
-    padding: 20px;
-    width: 70%;
-    max-width: 1000em;
-    height: 80vh;
-    text-align: left;
-    overflow-y: auto;
-    box-sizing: border-box;
-  }
-  hr {
-    overflow: visible;
-    color: #d7d5d5;
-    padding: 0;
-  }
+
+.agent-details-new {
+  display: flex;
+  flex-direction: column;
 }
-.alert {
-  z-index: 100;
-}
-.fieldset-container div {
+
+.agent-input-row {
+  display: flex;
   align-items: center;
+  margin-bottom: 1em;
+  color: white;
 }
-.fieldset-container label {
+.agent-input-row label {
   color: #fff;
   width: 140px;
   margin-right: 10px;
   text-align: left;
 }
-.fieldset-container select,
-textarea,
-input[type="text"] {
+.agent-input-row input[type="text"],
+.agent-input-row textarea,
+.agent-input-row select {
   width: 250px;
   box-sizing: border-box;
   transition: 0.5s ease-in;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: white;
 }
-
 hr {
   overflow: visible;
   color: #d7d5d5;
   padding: 0;
 }
-/* hr.configuration_form {
-  overflow: visible;
-  padding: 0;
-  border: none;
-  border-top: medium double #a8a6a6;
-  color: #d7d5d5;
-  text-align: center;
-  margin: -1em;
-  content: "§";
-  top: -0.9em;
-  font-size: 1em;
-  padding: 0 0.25em;
-} */
+.alert-danger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 30%;
+  z-index: 1050;
+}
 
 #model,
 #flow,
@@ -118,12 +93,16 @@ hr {
 }
 
 #template {
-  height: 15em;
-  width: 37.5em;
+  height: 13em;
+  width: 90%;
 }
 #description {
   height: 5.2em;
-  width: 37.5em;
+  width: 92%;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 
 .btn-grad {
@@ -134,10 +113,10 @@ hr {
   outline: none;
   border-radius: 5px;
   transition: 0.3s;
-  margin: 0 0 0 22em;
+  margin: 0;
   padding: 2px 15px;
   text-align: center;
-  display: block;
+  display: inline-block;
 }
 .btn-grad:hover {
   text-decoration: none;
@@ -151,51 +130,60 @@ hr {
   margin-left: -19em;
 }
 
-/* Media query for tablets */
 @media (max-width: 768px) {
+  .addAgent-fieldset-container {
+    justify-content: center;
+  }
+
   #fieldsetAddAgent {
     width: 90%;
-    height: 70vh;
     padding: 15px;
   }
-
-  .fieldset-container {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 10px;
-  }
-  .fieldset-container label {
-    width: 120px;
+  .agent-input-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .fieldset-container select,
-  textarea,
-  input[type="text"] {
-    width: 220px;
+  .agent-input-row label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .agent-input-row input[type="text"],
+  .agent-input-row textarea,
+  .agent-input-row select {
+    width: 100%;
   }
 }
-/* Media query for mobile devices */
+
 @media (max-width: 480px) {
   #fieldsetAddAgent {
     width: 95%;
-    height: 65vh;
     padding: 10px;
   }
 
-  .fieldset-container {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 5px;
-  }
-  .fieldset-container label {
+  .agent-input-row label {
     width: 100px;
+    margin-bottom: 5px;
   }
 
-  .fieldset-container select,
-  textarea,
-  input[type="text"] {
-    width: 180px;
+  .agent-input-row input[type="text"],
+  .agent-input-row textarea,
+  .agent-input-row select {
+    width: 100%;
   }
 }
+
+/* hr.configuration_form {
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double #a8a6a6;
+  color: #d7d5d5;
+  text-align: center;
+  margin: -1em;
+  content: "§";
+  top: -0.9em;
+  font-size: 1em;
+  padding: 0 0.25em;
+} */

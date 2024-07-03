@@ -133,7 +133,9 @@ const ConfigAgents = () => {
     <>
       <div className="agent-fieldset-container" id="configAgentContainer">
         <fieldset id="configAgents">
-          <legend id="agentListLengend">Agents</legend>
+          <legend id="agentListLengend">
+            Agents <i class="fas fa-users"></i>
+          </legend>
           <hr />
           <div className="agent-table-container">
             <TableHeader
