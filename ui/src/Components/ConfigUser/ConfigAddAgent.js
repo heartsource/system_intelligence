@@ -39,7 +39,7 @@ const ConfigAddAgent = () => {
       setTemplate(template);
       setError(null);
     } catch (error) {
-      setError("There was an error fetching data. Please try again later.");
+      setError("Server is down. Please try again later.");
       setTimeout(() => {
         setError(null);
       }, 5000);
@@ -172,7 +172,10 @@ const ConfigAddAgent = () => {
                 disabled={isSaved}
               />
               {formErrors.name && (
-                <span className="error" style={{ marginTop: "5em" }}>
+                <span
+                  className="error"
+                  style={{ marginTop: "5em", padding: "0px" }}
+                >
                   {formErrors.name}
                 </span>
               )}
@@ -267,7 +270,10 @@ const ConfigAddAgent = () => {
             </div>
           </div>
           {formErrors.template && (
-            <span className="error" style={{ marginTop: "5em" }}>
+            <span
+              className="error"
+              style={{ marginTop: "10em", marginLeft: "10em" }}
+            >
               {formErrors.template}
             </span>
           )}
