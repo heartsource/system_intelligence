@@ -3,16 +3,16 @@ from enum import Enum
 from typing import Optional, List, Dict, Any
 import json
 import traceback
-
+from bson import ObjectId
 from fastapi import HTTPException
+from utils.common_utilities import custom_serializer
+from config.mongodb_config import mongo_client
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
 import uuid
 import aiofiles
+import utils.constants.error_constants as ERROR_CONSTANTS
 
-# async def load_agents_data():
-#     with open(r"config\agentsData.json") as agents_data_file:
-#         return json.load(agents_data_file) # returns JSON object as a dictionary
-    
+   
 async def load_agents_data():
     async with aiofiles.open("../config/agentsData.json", "r") as agents_data_file:
         data = await agents_data_file.read()
@@ -25,49 +25,66 @@ def sortBy(agent, sort_key):
         return (1, None)
     return (0, value)
 
-async def fetch_agents_list(agent_model: AgentListModel) -> List[Dict[str, Any]]:
+async def fetchAgentsList(agent_model: AgentListModel) -> List[Dict[str, Any]]:
     try:
-        filtered_agents_data = await load_agents_data()
+        async with mongo_client("agents") as agents_collection:
+            query = {}
 
-        filtered_agents_data = [agent for agent in filtered_agents_data if 'deleted_dt' not in agent or agent['deleted_dt'] is None ]
+            if agent_model.name:
+                query['name'] = agent_model.name
 
-        if agent_model.name:
-            filtered_agents_data = [agent for agent in filtered_agents_data if agent['name'] == agent_model.name ]
+            if agent_model.model:
+                query['model'] = agent_model.model.value
 
-        if agent_model.model:
-            filtered_agents_data = [agent for agent in filtered_agents_data if agent['model'] == agent_model.model.value ]
+            if agent_model.flow:
+                query['model'] = agent_model.flow.value
 
-        if agent_model.flow:
-            filtered_agents_data = [agent for agent in filtered_agents_data if agent['flow'] == agent_model.flow.value ]
+            if agent_model.status:
+                query['model'] = agent_model.status.value
 
-        if agent_model.status:
-            filtered_agents_data = [agent for agent in filtered_agents_data if agent['status'] == agent_model.status.value ]
+            # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
+            query['$or'] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
 
-        if agent_model.sort_by:
-            sort_order_value = agent_model.sort_order.value if isinstance(agent_model.sort_order, Enum) else agent_model.sort_order
-            reverse = sort_order_value.lower() == 'desc'
-            # filtered_agents_data.sort(key = sortBy(agent_model.sort_by), reverse = reverse)
-            filtered_agents_data = sorted(filtered_agents_data, key=lambda agent: sortBy(agent, agent_model.sort_by), reverse=reverse)
+            if agent_model.sort_by:
+                sort_field = agent_model.sort_by
+                sort_order = -1 if agent_model.sort_order.value.lower() == 'desc' else 1
+                sort_dict = {sort_field: sort_order}
+            else:
+                sort_dict = None
 
-        if agent_model.limit:
-            filtered_agents_data = filtered_agents_data[:agent_model.limit]
+            limit = agent_model.limit if agent_model.limit else None
 
-        return filtered_agents_data
+            # Perform the MongoDB find operation with the constructed query
+            filtered_agents_data = await agents_collection.find(query).sort(sort_dict).limit(limit).to_list(None)
+
+            return json.loads(json.dumps(filtered_agents_data, default=str))
     except Exception as e:
         traceback.print_exc()
         raise Exception(e)
 
 async def fetchAgentDetails(id: str) -> Dict[str, Any]:
     try:
-        agents_data = await load_agents_data()
-        agents_data = [agent for agent in agents_data if 'deleted_dt' not in agent or agent['deleted_dt'] is None ]
-        agentAvailable = False
-        for agent in agents_data:
-            if agent['id'] == id :
-                agentAvailable = True
+        # Validate the ObjectId
+        if not ObjectId.is_valid(id):
+            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+        async with mongo_client("agents") as agents_collection:
+            # Construct the query
+            query = {
+                "_id": ObjectId(id),
+                "$or": [
+                    {"deleted_dt": {"$exists": False}},
+                    {"deleted_dt": None}
+                ]
+            }
+
+            # Execute the query
+            agent = await agents_collection.find_one(query) 
+
+            if agent is not None:
+                # Convert ObjectId to string for JSON serialization
+                agent["_id"] = str(agent["_id"])
                 return agent
-        if agentAvailable == False:
-                return None
+            return None
     except Exception as e:
         traceback.print_exc()
         raise Exception(e)
@@ -75,66 +92,75 @@ async def fetchAgentDetails(id: str) -> Dict[str, Any]:
 
 async def createAgent(agent: AgentModel):
     try:
-        existingAgentData = await load_agents_data() # Read the JSON into the buffer
-        for existingAgent in existingAgentData:
-            if existingAgent['name'] == agent.name :
-                raise Exception(agent.name + " agent is already available")
-        agent.created_dt = datetime.now()
-        agent.id = uuid.uuid4()
+        agent.name = agent.name.strip()
 
-        # Serialize AgentModel instance to JSON using json() method
-        new_agent_data = json.loads(agent.json())  # Convert JSON string to dict
-        return await add_data_to_json_file(new_agent_data, existingAgentData)
+        # Check if agent with the same name already exists
+        async with mongo_client("agents") as agents_collections:
+            existing_agent = await agents_collections.find_one({"name": agent.name})
+
+        if existing_agent:
+            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
+        
+        agent.created_dt = datetime.now()
+        agent_dict = agent.model_dump()  # Convert AgentModel to dictionary
+        # Convert agent_dict to a plain Python dictionary
+        document = json.loads(json.dumps(agent_dict, default=custom_serializer))
+
+        async with mongo_client("agents") as agents_collections:
+            return await agents_collections.insert_one(document)
+        
     except Exception as e:
         traceback.print_exc()
         raise Exception(e)
 
-async def updateAgentDetails(id:str, agent: AgentUpdateModel):
+async def updateAgentDetails(agent_id:str, updatedAgentData: AgentUpdateModel):
     try:
-        existingAgentData = await load_agents_data() # Read the JSON into the buffer
-        agentAvailable = False
-        for existingAgent in existingAgentData:
-            if existingAgent['id'] == id :
-                agentAvailable = True
-                if agent.name is not None:
-                    existingAgent['name'] = agent.name
-                if agent.description is not None:
-                    existingAgent['description'] = agent.description
-                if agent.model is not None:
-                    existingAgent['model'] = agent.model
-                if agent.status is not None:
-                    existingAgent['status'] = agent.status
-                if agent.flow is not None:
-                    existingAgent['flow'] = agent.flow
-                if agent.template is not None:
-                    existingAgent['template'] = agent.template
-                existingAgent['updated_dt'] = datetime.now()
-                break
-        if agentAvailable == False:
-            raise Exception("No record found with id " + id)
-        # Serialize AgentModel instance to JSON using model_dump_json()
-        return await update_json_file(existingAgentData)
+        if not ObjectId.is_valid(agent_id):
+             raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+        async with mongo_client("agents") as agents_collection:
+            agent = await agents_collection.find_one({"_id": ObjectId(agent_id)})
+        if not agent:
+            raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)
+
+        # Update agent attributes
+        if updatedAgentData.name is not None:
+            agent['name'] = updatedAgentData.name.strip()
+        if updatedAgentData.description is not None:
+            agent['description'] = updatedAgentData.description
+        if updatedAgentData.model is not None:
+            agent['model'] = updatedAgentData.model
+        if updatedAgentData.status is not None:
+            agent['status'] = updatedAgentData.status
+        if updatedAgentData.flow is not None:
+            agent['flow'] = updatedAgentData.flow
+        if updatedAgentData.template is not None:
+            agent['template'] = updatedAgentData.template
+        agent['updated_dt'] = datetime.now()
+        del agent['_id']
+        # Convert updated agent to a dictionary
+        agent_dict = json.loads(json.dumps(agent, default=str))
+        
+        async with mongo_client("agents") as agents_collection:
+            return await agents_collection.update_one({"_id": ObjectId(agent_id)}, { "$set": agent_dict})
     except Exception as e:
         traceback.print_exc()
         raise Exception(e)
     
-async def deleteAgent(id:str):
+async def deleteAgent(agent_id:str):
         try:
-            existingAgentData = await load_agents_data() # Read the JSON into the buffer
-            agentAvailable = False
-            for existingAgent in existingAgentData:
-                if existingAgent['id'] == id :
-                    if existingAgent['deleted_dt'] is not None:
-                        raise Exception("Agent details cannot be updated as agent is already deleted")
-                    agentAvailable = True
-                    existingAgent['deleted_dt'] = datetime.now()
-                    break        
-            if agentAvailable == False:
-                raise Exception("No record found with id " + id)
-            # Serialize AgentModel instance to JSON using model_dump_json()
-            return await update_json_file(existingAgentData)
+            if not ObjectId.is_valid(agent_id):
+                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+            async with mongo_client("agents") as agents_collection:
+                agent = await agents_collection.find_one({"_id": ObjectId(agent_id)})
+            if not agent:
+                raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)   
+
+            if agent['deleted_dt'] is not None or agent['deleted_dt'] :
+                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_UPDATE_ERROR)
+
+            async with mongo_client("agents") as agents_collection:
+                return await agents_collection.update_one({"_id": ObjectId(agent_id)}, {"$set": {'deleted_dt': datetime.now() }})
         except Exception as e:
-            traceback.print_exc()
             raise Exception(e)
 
 async def add_data_to_json_file(newAgentData: dict, existingAgentData: List[dict]):

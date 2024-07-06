@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import Optional
 import asyncio
 import os
@@ -5,8 +6,9 @@ import json
 import requests
 from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
-from fastapi import FastAPI, Response, File, UploadFile
+from fastapi import FastAPI, HTTPException, Response, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from config.mongodb_config import MONGO_DB, mongo_client
 from config_Loader import get_configs
 from key_vault_secret_loader import get_value_from_key_vault
 from chromadb.utils import embedding_functions
@@ -15,6 +17,8 @@ import uuid
 import re
 from modules.agents.agents_controller import router as agents_router
 import traceback
+import utils.constants.app_constants as APP_CONSTANTS
+import utils.constants.error_constants as ERROR_CONSTANTS
 
 config = get_configs()
 
@@ -41,6 +45,16 @@ tags_metadata = [
         },
     },
 ]
+
+# @asynccontextmanager
+# async def app_lifespan(app: FastAPI):
+#     async with mongo_client() as client:
+#         if client is None:
+#             raise HTTPException(status_code=500, detail="MongoDB client is None")
+#         app.mongodb_client = client
+#         app.mongodb = client.get_database(name=MONGO_DB)
+#         yield
+        
 app = FastAPI(openapi_tags=tags_metadata)
 
 origins = ["*"]
@@ -106,7 +120,7 @@ async def talk_to_heartie(question: Optional[str] = None, prompt: Optional[str] 
 
 @app.post("/load_to_chromadb/", tags=["load_to_chromadb"])
 async def load_to_chromadb(file_content):
-    return_value = {"status": "success", "message": "File uploaded successfully."}
+    return_value = {"status": "success", "message": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
     from chromadb_reader_writer import chromadb_writer
     chromadb_writer(file_content)
     return return_value
@@ -139,7 +153,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
                         pdf_text.append(content)
             except PdfReadError as e:
                 print(f"Error reading PDF: {e}")
-                return {"status": "error", "message": "Failed to read the PDF file. The file might be corrupted."}
+                return {"status": "error", "message": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
         
         elif file_extension == 'txt':
             try:
@@ -151,13 +165,13 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
                         pdf_text.append(f.read())
                 except Exception as e:
                     print(f"Error reading TXT file with fallback encoding: {e}")
-                    return {"status": "error", "message": "Failed to read the TXT file."}
+                    return {"status": "error", "message": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
             except Exception as e:
                 print(f"Error reading TXT file: {e}")
-                return {"status": "error", "message": "Failed to read the TXT file."}
+                return {"status": "error", "message": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
         
         else:
-            return {"status": "error", "message": "Unsupported file type. Only PDF and TXT files are supported."}
+            return {"status": "error", "message": ERROR_CONSTANTS.FILE_SUPPORT_ERROR }
 
         if os.path.exists(save_to):
             os.remove(save_to)
@@ -173,7 +187,7 @@ async def load_file_to_chromadb(file: UploadFile = File(...)):
         traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
-# Agentes Router
+# Agents Router
 app.include_router(agents_router, prefix='/agents')
 
 
