@@ -5,6 +5,8 @@ from config.mongodb_config import MONGO_DB, mongo_client
 from modules.agents.agents_controller import router as agents_router
 from modules.knowledge_upload.knowledge_upload_controller import router as knowledge_upload_router
 from modules.hearty.hearty_controller import router as ask_hearty_router
+from modules.logs.logs_controller import router as agents_logs_router
+
 tags_metadata = [
     {
         "name": "load_to_chromadb",
@@ -57,4 +59,5 @@ async def root():
 app.include_router(agents_router, prefix='/agents') # Agents Router
 app.include_router(knowledge_upload_router) # Knowledge Upload Router
 app.include_router(ask_hearty_router) # Ask Hearty Router
+app.include_router(agents_logs_router, prefix='/logs')
 

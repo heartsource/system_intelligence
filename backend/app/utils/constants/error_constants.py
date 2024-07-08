@@ -7,3 +7,4 @@ TXT_FILE_READ_ERROR = "Failed to read the PDF file. The file might be corrupted.
 FILE_SUPPORT_ERROR = "This file type is not supported. Only PDF and TXT files are supported."
 
 INVALID_ID_ERROR="Invalid id, id should be valid ObjectID"
+INVALID_INTERACTION_ID_ERROR="Interaction Id should be valid UUID"
