@@ -1,18 +1,14 @@
+from typing import Optional
 from fastapi import APIRouter, Response, status, HTTPException
+from utils.enums.shared_enum import AgentType
+from utils.common_utilities import internalServerError
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
-from modules.agents.agents_service import deleteAgent, createAgent, fetchAgentDetails, fetchAgentsList, updateAgentDetails
+from modules.agents.agents_service import deleteAgent, createAgent, fetchAgentDetails, fetchAgentsList, fetchAgentsNames, updateAgentDetails
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
 import json
 
 router = APIRouter()
-
-def internalServerError(e, response):
-    if e.args[0] and isinstance(e.args[0], HTTPException):
-        response.status_code = e.args[0].status_code
-        return { "status": "error", "data": e.args[0].detail}
-    response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-    return { "status": "error", "data": str(e)}
 
 @router.post('/')
 async def fetch_agents(body: AgentListModel, response: Response):
@@ -22,8 +18,22 @@ async def fetch_agents(body: AgentListModel, response: Response):
             response.status_code = status.HTTP_404_NOT_FOUND
             return { "status": "error", "data": ERROR_CONSTANTS.NOT_FOUND_ERROR }
         response.status_code = status.HTTP_200_OK
-        # Manually serialize res to JSON to handle any serialization issues
         return { "status": "success", "data": agentsListData }
+    except Exception as e:
+        return internalServerError(e, response)
+
+@router.get('/names')
+async def fetch_agent_names(response: Response, agent_type:  Optional[AgentType] = None):
+    try: 
+        agentsNames = await fetchAgentsNames(agent_type)
+        if agentsNames == [] or agentsNames == None:
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return { "status": "error", "data": ERROR_CONSTANTS.NOT_FOUND_ERROR }
+        if agentsNames is not None:
+            response.status_code = status.HTTP_200_OK
+            return { "status": "success", "data": agentsNames }
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"status": "error", "data": ERROR_CONSTANTS.NOT_FOUND_ERROR }
     except Exception as e:
         return internalServerError(e, response)
 
@@ -66,7 +76,3 @@ async def delete_agent(id: str, response: Response):
         return { "status": "success", "data": APP_CONSTANTS.AGENT_DELETED_SUCCESS }
     except Exception as e:
         return internalServerError(e, response)
-    
-
-
-

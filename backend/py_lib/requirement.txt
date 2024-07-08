@@ -8,3 +8,4 @@ PyPDF2
 aiofiles
 motor
 pydantic
+bson

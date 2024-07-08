@@ -5,6 +5,7 @@ import json
 import traceback
 from bson import ObjectId
 from fastapi import HTTPException
+from utils.enums.shared_enum import AgentType
 from utils.common_utilities import custom_serializer
 from config.mongodb_config import mongo_client
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
@@ -37,10 +38,10 @@ async def fetchAgentsList(agent_model: AgentListModel) -> List[Dict[str, Any]]:
                 query['model'] = agent_model.model.value
 
             if agent_model.flow:
-                query['model'] = agent_model.flow.value
+                query['flow'] = agent_model.flow.value
 
             if agent_model.status:
-                query['model'] = agent_model.status.value
+                query['status'] = agent_model.status.value
 
             # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
             query['$or'] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
@@ -56,6 +57,25 @@ async def fetchAgentsList(agent_model: AgentListModel) -> List[Dict[str, Any]]:
 
             # Perform the MongoDB find operation with the constructed query
             filtered_agents_data = await agents_collection.find(query).sort(sort_dict).limit(limit).to_list(None)
+
+            return json.loads(json.dumps(filtered_agents_data, default=str))
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(e)
+
+async def fetchAgentsNames(agent_type: Optional[AgentType] = None):
+    try:
+        async with mongo_client("agents") as agents_collection:
+            query = {}
+            if agent_type and (agent_type.value == "custom" or agent_type.value == "default"):
+                query = {
+                    "type": agent_type.value
+                }
+            # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
+            query["$or"] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
+
+            # Perform the MongoDB find operation with the constructed query
+            filtered_agents_data = await agents_collection.find(query, {"name": 1}).sort({"name": 1}).to_list(None)
 
             return json.loads(json.dumps(filtered_agents_data, default=str))
     except Exception as e:
