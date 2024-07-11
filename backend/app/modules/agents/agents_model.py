@@ -1,53 +1,44 @@
-from datetime import date, datetime
+from datetime import datetime
 from uuid import UUID
+import uuid
 from pydantic import BaseModel
 from typing import Optional
-from enum import Enum
-
-class Status(str, Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-
-class Model(str, Enum):
-    ChatGPT4 = 'ChatGPT4'
-    Llama3 = 'Llama 3'
-    Mistral = 'Mistral'
-
-class Flow(str,Enum):
-    RAG = 'RAG'
-    FineTuning = 'Fine Tuning'
-
-class SortOrder(Enum):
-    ASC = 'asc'
-    DESC = 'desc'
+from utils.enums.shared_enum import Model, Flow, AgentType, SortOrder, Status
 
 class AgentModel(BaseModel):
-    id: Optional[UUID] = None
     name: str
     description: Optional[str] = None
     template: str
     model: Model
     flow: Flow
+    type: Optional[str] = AgentType.CUSTOM
     status: Optional[str] = Status.ACTIVE
     created_dt: Optional[datetime] = None
     updated_dt: Optional[datetime] = None
     deleted_dt: Optional[datetime] = None
 
-    class Config:
-        use_enum_values = True  # Ensure enums are serialized as their values
+    # class Config:
+    #     json_encoders = {
+    #         AgentType: lambda v: v.value,
+    #         Status: lambda v: v.value,
+    #         Model: lambda v: v.value,
+    #         Flow: lambda v: v.value,
+    #         datetime: lambda v: v.isoformat()
+    #     }
     # Enum Configuration (Config class): Pydantic's Config class allows us to specify serialization behavior. 
     # use_enum_values = True instructs Pydantic to serialize enums using their values (str representations), instead of their internal representations (typically Python objects).
 
 class AgentListModel(BaseModel):
-    id: Optional[UUID] = None
+    id: Optional[uuid.UUID] = None
     name: Optional[str] = None
     description: Optional[str] = None,
     template: Optional[str] = None,
     model: Optional[Model] = None
     flow: Optional[Flow] = None
     status: Optional[Status] = None
-    sort_order: Optional[SortOrder] = 'desc'
-    sort_by: Optional[str] = 'updated_dt'
+    type: Optional[str] = AgentType.CUSTOM
+    sort_order: Optional[SortOrder] = SortOrder.DESC
+    sort_by: Optional[str] = 'created_dt'
     limit: Optional[int] = 10
 
 
