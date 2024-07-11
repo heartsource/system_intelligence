@@ -1,6 +1,6 @@
 from datetime import datetime
-from modules.agents.agents_service import fetchAgentDetails
-from modules.logs.logs_service import createAgentLogs
+from modules.agents.agents_service import AgentService
+from modules.logs.logs_service import LogService
 from modules.logs.logs_model import AgentLogsModel
 from config_Loader import get_configs
 from uuid import uuid4
@@ -10,7 +10,8 @@ from fastapi import HTTPException
 import utils.constants.error_constants as ERROR_CONSTANTS
 
 config = get_configs()
-
+agent_service = AgentService()
+logs_service = LogService()
 async def talkToHeartie(question = None, prompt= None, model = None, flow= None, payload= None):
     try:
         #If payload is available use it
@@ -20,13 +21,13 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             model = payload.model
             flow = payload.flow
 
-        await fetchAgentDetails(payload.agent_id)
+        await agent_service.fetchAgentDetails(payload.agent_id)
         #Context creation
         from chromadb_reader_writer import chromadb_reader
         print('Heartie is in Action:  Started ... ')
         if not ObjectId.is_valid(payload.agent_id):
             raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-        agentlog: AgentLogsModel = {
+        agentlog = {
             "agent_id": ObjectId(payload.agent_id),
             "interaction_id": str(uuid4()),
             "interaction_date": datetime.now()
@@ -71,7 +72,9 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         agentlog['duration'] = datetime.now() - agentlog['interaction_date']
         agentlog['question'] = question
         agentlog['answer'] = return_value
-        await createAgentLogs(agentlog)
+        agentlog['model'] = model
+        agentlog['flow'] = flow
+        await logs_service.createAgentLogs(agentlog)
         return return_value
     except Exception as e:
         raise Exception(e)

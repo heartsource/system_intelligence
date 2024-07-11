@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config.mongodb_config import MONGO_DB, mongo_client
 from modules.agents.agents_controller import router as agents_router
 from modules.knowledge_upload.knowledge_upload_controller import router as knowledge_upload_router
 from modules.hearty.hearty_controller import router as ask_hearty_router
@@ -31,15 +30,7 @@ tags_metadata = [
     },
 ]
 
-# @asynccontextmanager
-# async def app_lifespan(app: FastAPI):
-#     async with mongo_client() as client:
-#         if client is None:
-#             raise HTTPException(status_code=500, detail="MongoDB client is None")
-#         app.mongodb_client = client
-#         app.mongodb = client.get_database(name=MONGO_DB)
-#         yield
-        
+
 app = FastAPI(openapi_tags=tags_metadata)
 
 origins = ["*"]

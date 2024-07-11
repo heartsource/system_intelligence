@@ -21,13 +21,17 @@ def chromadb_writer(txt_file_content):
 
     embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)
     collection_name = get_collection_name()
-    collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
-    collection.add(
-        documents=txt_split,
-        ids=ids,
-        metadatas=metadata
-    )
-    print("Writting to CrhomaDB: Ended")
+    try:
+        collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
+        collection.add(
+            documents=txt_split,
+            ids=ids,
+            metadatas=metadata
+        )
+        print("Writing to ChromaDB: Ended")
+    except Exception as e:
+        print(f"Error writing to ChromaDB: {str(e)}")
+        raise Exception(e)
 
 def chromadb_reader(question: str):
     client = get_client()
@@ -56,7 +60,7 @@ def get_client():
         client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
         return client
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        raise Exception(e)
 
 def get_collection_name():
     collection_name = config.get("CHROMA_DB_COLLECTION_NAME")
