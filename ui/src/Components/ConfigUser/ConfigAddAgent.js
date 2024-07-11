@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../Styles/configAddAgent.css";
 
-const ConfigAddAgent = () => {
+const ConfigAddAgent = ({ setCurrentComponent }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [models, setModels] = useState([]);
@@ -19,6 +19,7 @@ const ConfigAddAgent = () => {
     flow: "",
     template: "",
   });
+  const [nameExistsError, setNameExistsError] = useState(false);
 
   const CHATGPT4_FLOW = ["RAG"];
 
@@ -63,15 +64,18 @@ const ConfigAddAgent = () => {
 
         if (response.status >= 200 && response.status <= 299) {
           setIsSaved(true);
+
+          setCurrentComponent("agents");
           setShowSuccess(true);
           setTimeout(() => {
             setShowSuccess(false);
           }, 3000);
-          //Reset the form
+          // Reset the form
           setName("");
           setDescription("");
           setModel("");
           setFlow("");
+          setTemplate("");
           setFormErrors({
             name: "",
             model: "",
@@ -82,11 +86,29 @@ const ConfigAddAgent = () => {
           setError(
             "There was an error saving the configuration. Please try again later."
           );
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
         }
       } catch (error) {
-        setError(
-          "There was an error saving the configuration. Please try again later."
-        );
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.data &&
+          error.response.data.data.includes("agent is already available")
+        ) {
+          setNameExistsError(true);
+          setTimeout(() => {
+            setNameExistsError(false);
+          }, 3000);
+        } else {
+          setError(
+            "There was an error saving the configuration. Please try again later."
+          );
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
+        }
       }
     } else {
       setFormErrors(errors);
@@ -114,6 +136,9 @@ const ConfigAddAgent = () => {
     if (formErrors[field]) {
       setFormErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
     }
+    if (nameExistsError && field === "name") {
+      setNameExistsError(false);
+    }
     const { value } = e.target;
     if (field === "model") {
       setModel(value);
@@ -140,7 +165,7 @@ const ConfigAddAgent = () => {
       )}
       {showSuccess && (
         <div className="alert alert-success" role="alert">
-          Configuration saved successfully!
+          Agent created successfully!
         </div>
       )}
       <div className="addAgent-fieldset-container">
@@ -162,9 +187,10 @@ const ConfigAddAgent = () => {
                 value={name}
                 style={{
                   marginLeft: "-0.6em",
-                  border: formErrors.name
-                    ? "2px solid #bb2124"
-                    : "1px solid #ccc",
+                  border:
+                    nameExistsError || formErrors.name
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
                   marginBottom: formErrors.name ? "0" : "initial",
                 }}
                 placeholder="Enter Agent Name"
@@ -178,6 +204,14 @@ const ConfigAddAgent = () => {
                 >
                   {formErrors.name}
                 </span>
+              )}
+              {nameExistsError && (
+                <div
+                  className="error"
+                  style={{ marginTop: "5em", color: "red" }}
+                >
+                  * Name already exists. Please try a different name.
+                </div>
               )}
             </div>
             <div className="agent-input-row">
@@ -279,7 +313,7 @@ const ConfigAddAgent = () => {
           )}
           <div className="button-container">
             <button className="btn-grad" onClick={handleSave}>
-              Save
+              Create Agent
             </button>
           </div>
         </div>

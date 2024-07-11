@@ -187,7 +187,9 @@ a {
 .gradient-text {
   font-family: "Orbitron";
   color: #fff;
-  padding-left: 150px;
+  display: flex;
+  justify-content: center;
+  padding-left: 165px;
   font-size: 38px;
   font-weight: bold;
   text-align: center;

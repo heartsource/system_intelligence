@@ -3,6 +3,7 @@ import axios from "axios";
 import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
+import { capitalizeFirstLetter } from "../../utils/camelCase";
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -43,7 +44,7 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 const ConfigAgents = () => {
   const [agents, setAgents] = useState([]);
   const [sortConfig, setSortConfig] = useState({
-    key: "updated_dt",
+    key: "created_dt",
     direction: "desc",
   });
   const [modalInfo, setModalInfo] = useState({
@@ -56,6 +57,7 @@ const ConfigAgents = () => {
     const fetchData = async () => {
       try {
         const payload = {};
+
         const response = await axios.post(
           "http://4.255.69.143/heartie-be/agents/",
           payload
@@ -63,7 +65,7 @@ const ConfigAgents = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        const sortedAgents = sortItems(data, "updated_dt", "desc");
+        const sortedAgents = sortItems(data, "created_dt", "desc");
 
         setAgents(sortedAgents);
       } catch (error) {
@@ -87,16 +89,34 @@ const ConfigAgents = () => {
     setSortConfig({ key, direction });
   };
 
+  const updateAgentStatus = async (index, newStatus) => {
+    try {
+      const agentToUpdate = agents[index];
+      const response = await axios.put(
+        `http://4.255.69.143/heartie-be/agents/${agentToUpdate.id}`,
+        { ...agentToUpdate, status: newStatus }
+      );
+
+      if (response.status === 200) {
+        const updatedAgents = agents.map((agent, idx) => {
+          if (idx === index) {
+            return { ...agent, status: newStatus };
+          }
+          return agent;
+        });
+        setAgents(updatedAgents);
+        setModalInfo({ show: false, index: null, newStatus: "" });
+      } else {
+        console.error("Error updating status:", response);
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   const confirmToggleStatus = () => {
     const { index, newStatus } = modalInfo;
-    const updatedAgents = agents.map((agent, idx) => {
-      if (idx === index) {
-        return { ...agent, status: newStatus };
-      }
-      return agent;
-    });
-    setAgents(updatedAgents);
-    setModalInfo({ show: false, index: null, newStatus: "" });
+    updateAgentStatus(index, newStatus);
   };
 
   const customRenderers = {
@@ -179,7 +199,10 @@ const ConfigAgents = () => {
                 <p>
                   Are you sure you want to change the status of &quot;
                   {agents[modalInfo.index].name}&quot; to &quot;
-                  {modalInfo.newStatus}&quot;?
+                  {modalInfo.newStatus
+                    ? capitalizeFirstLetter(modalInfo.newStatus)
+                    : ""}
+                  &quot;?
                 </p>
               </div>
               <div className="modal-footer">

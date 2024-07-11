@@ -21,6 +21,9 @@ const ConfigFileUpload = () => {
   const handleUpload = async () => {
     if (!files || files.length === 0) {
       setErrorMessage("Please select at least one file for upload.");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
       return;
     }
 

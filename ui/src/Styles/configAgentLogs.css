@@ -1,37 +1,69 @@
-#fieldset-container-logs {
-  position: fixed;
-  top: 50%;
-  left: 52%;
-  width: 90%;
-  height: 70vh;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  z-index: 10;
+.agentLogs-fieldset-container {
+  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
 }
 
 #agentLogsFieldset {
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 20px;
-  min-width: 70%;
-  width: 70%;
-  height: 70vh;
-  text-align: center;
-  overflow-y: auto;
-  box-sizing: border-box;
+  background-color: transparent;
+  height: 75vh;
 }
 
 #agentLogs {
-  width: 100%;
-  height: 80em;
-  overflow-y: auto;
-}
-#agentLogs div {
-  margin-top: -36em;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  color: rgb(45, 182, 212);
+  background-color: transparent;
+  margin-bottom: 10px;
+  padding: 1px;
+  margin-bottom: 0;
 }
 
-#agentLogs tbody tr:first-child td {
-  padding-top: 1em;
+.agentlogs-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.agentlogs-row-container {
+  height: 50vh;
+  overflow-y: auto;
+  width: 100%;
+}
+.logs-grid-header,
+.logs-grid-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  color: #fff;
+}
+
+.grid-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logs-grid-header .grid-cell {
+  font-weight: bolder;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.logs-grid-header .sortable:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+}
+
+#pagination {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #fff;
+  text-align: center;
 }

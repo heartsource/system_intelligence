@@ -4,6 +4,7 @@ import Home from "./Home";
 import ConfigAskHearty from "../Components/ConfigUser/ConfigAskHearty";
 import ConfigNavbar from "../Components/ConfigUser/ConfigNavbar";
 import ConfigAgents from "./ConfigUser/ConfigAgents";
+import ConfigAgentDetails from "./ConfigUser/ConfigAgentDetails";
 import ConfigAgentLogs from "./ConfigUser/ConfigAgentLogs";
 import ConfigKnowledgeEnhancement from "./ConfigUser/ConfigKnowledgeEnhancement";
 import Footer from "./Footer";
@@ -35,9 +36,11 @@ const App = () => {
   const renderComponent = () => {
     switch (currentComponent) {
       case "home":
-        return <Home />;
+        return <Home setCurrentComponent={setCurrentComponent} />;
       case "agents":
         return <ConfigAgents />;
+      case "agentDetails":
+        return <ConfigAgentDetails />;
       case "agentLogs":
         return <ConfigAgentLogs />;
       case "upload":
@@ -47,7 +50,7 @@ const App = () => {
       case "config-knowledge-enhancement":
         return <ConfigKnowledgeEnhancement />;
       default:
-        return <Home />;
+        return <Home setCurrentComponent={setCurrentComponent} />;
     }
   };
 

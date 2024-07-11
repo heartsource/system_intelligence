@@ -62,6 +62,12 @@ const Navbar = ({ setCurrentComponent }) => {
                 <i class="fas fa-users"></i> Agents
               </div>
               <div
+                onClick={() => setCurrentComponent("agentDetails")}
+                className="nav_link"
+              >
+                <i class="fas fa-users"></i> Agent Details
+              </div>
+              <div
                 onClick={() => setCurrentComponent("agentLogs")}
                 className="nav_link"
               >

@@ -223,7 +223,8 @@ label {
   height: 50%;
 }
 .fieldset-container-fileUpload {
-  margin-top: 1em;
+  margin-top: -7em;
+  margin-left: 0;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */

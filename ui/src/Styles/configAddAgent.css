@@ -61,7 +61,8 @@ hr {
   color: #d7d5d5;
   padding: 0;
 }
-.alert-danger {
+.alert-danger,
+.alert-success {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -173,17 +174,3 @@ hr {
     width: 100%;
   }
 }
-
-/* hr.configuration_form {
-  overflow: visible;
-  padding: 0;
-  border: none;
-  border-top: medium double #a8a6a6;
-  color: #d7d5d5;
-  text-align: center;
-  margin: -1em;
-  content: "§";
-  top: -0.9em;
-  font-size: 1em;
-  padding: 0 0.25em;
-} */
