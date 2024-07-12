@@ -1,0 +1,3 @@
+AGENTS_COLLECTION = "agents"
+CONFIG_COLLECTION = "config"
+LOGS_COLLECTION = "logs"

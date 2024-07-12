@@ -21,13 +21,17 @@ def chromadb_writer(txt_file_content):
 
     embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)
     collection_name = get_collection_name()
-    collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
-    collection.add(
-        documents=txt_split,
-        ids=ids,
-        metadatas=metadata
-    )
-    print("Writting to CrhomaDB: Ended")
+    try:
+        collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
+        collection.add(
+            documents=txt_split,
+            ids=ids,
+            metadatas=metadata
+        )
+        print("Writing to ChromaDB: Ended")
+    except Exception as e:
+        print(f"Error writing to ChromaDB: {str(e)}")
+        raise Exception(e)
 
 def chromadb_reader(question: str):
     client = get_client()
@@ -41,19 +45,22 @@ def chromadb_reader(question: str):
     return query_results["documents"][0]
 
 def get_client():
-    import chromadb
-    #client = chromadb.PersistentClient(path=config.get("CHROMA_DB_PATH"))
-    chromaHost = ""
-    chromaPort = ""
     try:
-        chromaHost = os.environ['CHROMA_HOST']
-        chromaPort = os.environ['CHROMA_PORT']
-    except Exception:
-        if chromaHost == "" or chromaPort == "":
-            chromaHost = config.get("CHROMA_HOST")
-            chromaPort = config.get("CHROMA_PORT")
-    client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
-    return client
+        import chromadb
+        #client = chromadb.PersistentClient(path=config.get("CHROMA_DB_PATH"))
+        chromaHost = ""
+        chromaPort = ""
+        try:
+            chromaHost = os.environ['CHROMA_HOST']
+            chromaPort = os.environ['CHROMA_PORT']
+        except Exception:
+            if chromaHost == "" or chromaPort == "":
+                chromaHost = config.get("CHROMA_HOST")
+                chromaPort = config.get("CHROMA_PORT")
+        client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
+        return client
+    except Exception as e:
+        raise Exception(e)
 
 def get_collection_name():
     collection_name = config.get("CHROMA_DB_COLLECTION_NAME")
