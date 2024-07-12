@@ -17,6 +17,13 @@ const ConfigAgentDetails = () => {
   const [status, setStatus] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [formErrors, setFormErrors] = useState({
+    name: "",
+    model: "",
+    flow: "",
+    template: "",
+  });
+
   const [modalInfo, setModalInfo] = useState({
     show: false,
     index: -1,
@@ -25,7 +32,6 @@ const ConfigAgentDetails = () => {
 
   useEffect(() => {
     if (selectedAgent) {
-      console.log(selectedAgent);
       setName(selectedAgent.name || "");
       setDescription(selectedAgent.description || "");
       setModel(selectedAgent.model || "");
@@ -66,7 +72,61 @@ const ConfigAgentDetails = () => {
     }
   }, [modalInfo]);
 
+  const validateField = (name, value) => {
+    let error = "";
+    if (!value.trim()) {
+      error = `* ${name} is required.`;
+    }
+    return error;
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setName(value);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      name: validateField("Agent name", value),
+    }));
+  };
+
+  const handleModelChange = (e) => {
+    const value = e.target.value;
+    setModel(value);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      model: validateField("Model selection", value),
+    }));
+  };
+
+  const handleFlowChange = (e) => {
+    const value = e.target.value;
+    setFlow(value);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      flow: validateField("Flow selection", value),
+    }));
+  };
+
+  const handleTemplateChange = (e) => {
+    const value = e.target.value;
+    setTemplate(value);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      template: validateField("Template", value),
+    }));
+  };
+
   const handleSave = async () => {
+    if (!name || !model || !flow || !template) {
+      setFormErrors({
+        name: validateField("Agent name", name),
+        model: validateField("Model selection", model),
+        flow: validateField("Flow selection", flow),
+        template: validateField("Template", template),
+      });
+      return;
+    }
+
     try {
       const response = await axios.put(
         `http://4.255.69.143/heartie-be/agents/${selectedAgent._id}`,
@@ -93,7 +153,19 @@ const ConfigAgentDetails = () => {
         }, 3000);
       }
     } catch (error) {
-      console.log("Error:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.data &&
+        error.response.data.data.includes("Agent with name already exists")
+      ) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          name: "Agent with name already exists.",
+        }));
+      } else {
+        console.log("Error:", error);
+      }
     }
   };
 
@@ -150,8 +222,22 @@ const ConfigAgentDetails = () => {
                   id="agentName"
                   placeholder="Enter Agent Name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={handleNameChange}
+                  style={{
+                    border: formErrors.name
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
+                    marginBottom: formErrors.name ? "0" : "initial",
+                  }}
                 />
+                {formErrors.name && (
+                  <span
+                    className="error"
+                    style={{ marginTop: "5em", padding: "0px" }}
+                  >
+                    {formErrors.name}
+                  </span>
+                )}
               </div>
               <div className="agentdetails-input-row">
                 <label htmlFor="description">Agent Description</label>
@@ -172,9 +258,12 @@ const ConfigAgentDetails = () => {
                 <select
                   id="model"
                   value={model}
-                  onChange={(e) => setModel(e.target.value)}
+                  onChange={handleModelChange}
                   style={{
-                    marginLeft: "-0.2em",
+                    border: formErrors.model
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
+                    marginBottom: formErrors.model ? "0" : "initial",
                   }}
                 >
                   <option value="">Select</option>
@@ -184,6 +273,14 @@ const ConfigAgentDetails = () => {
                     </option>
                   ))}
                 </select>
+                {formErrors.model && (
+                  <span
+                    className="error"
+                    style={{ marginTop: "5em", padding: "0px" }}
+                  >
+                    {formErrors.model}
+                  </span>
+                )}
               </div>
               <div className="agentdetails-input-row">
                 <label htmlFor="flow">
@@ -192,9 +289,12 @@ const ConfigAgentDetails = () => {
                 <select
                   id="flow"
                   value={flow}
-                  onChange={(e) => setFlow(e.target.value)}
+                  onChange={handleFlowChange}
                   style={{
-                    marginLeft: "-0.2em",
+                    border: formErrors.flow
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
+                    marginBottom: formErrors.flow ? "0" : "initial",
                   }}
                 >
                   <option value="">Select</option>
@@ -204,6 +304,14 @@ const ConfigAgentDetails = () => {
                     </option>
                   ))}
                 </select>
+                {formErrors.flow && (
+                  <span
+                    className="error"
+                    style={{ marginTop: "5em", padding: "0px" }}
+                  >
+                    {formErrors.flow}
+                  </span>
+                )}
               </div>
               <div className="agentdetails-input-row">
                 <label htmlFor="template">
@@ -212,8 +320,26 @@ const ConfigAgentDetails = () => {
                 <textarea
                   id="template"
                   value={template}
-                  onChange={(e) => setTemplate(e.target.value)}
+                  onChange={handleTemplateChange}
+                  style={{
+                    border: formErrors.template
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
+                    marginBottom: formErrors.template ? "0" : "initial",
+                  }}
                 ></textarea>
+                {formErrors.template && (
+                  <span
+                    className="error"
+                    style={{
+                      marginTop: "18em",
+                      padding: "0px",
+                      marginLeft: "-64em",
+                    }}
+                  >
+                    {formErrors.template}
+                  </span>
+                )}
               </div>
               <div className="agentDetails-button-container">
                 <button className="btn-grad" onClick={handleSave}>

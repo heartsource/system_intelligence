@@ -15,7 +15,7 @@
   max-height: 82vh;
   height: auto;
   text-align: left;
-
+  overflow-y: auto;
   background-color: transparent;
   box-sizing: border-box;
   position: relative;
