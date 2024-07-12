@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ConfigFileUpload from "../Components/ConfigUser/ConfigFileUpload";
 import Home from "./Home";
 import ConfigAskHearty from "../Components/ConfigUser/ConfigAskHearty";
@@ -9,8 +9,11 @@ import ConfigAgentLogs from "./ConfigUser/ConfigAgentLogs";
 import ConfigKnowledgeEnhancement from "./ConfigUser/ConfigKnowledgeEnhancement";
 import Footer from "./Footer";
 
+import { AppProvider, AppContext } from "../context/AppContext";
+
 const App = () => {
-  const [currentComponent, setCurrentComponent] = useState("home");
+  const { currentComponent } = useContext(AppContext);
+  //const [currentComponent, setCurrentComponent] = useState("home");
 
   useEffect(() => {
     const body = document.getElementById("body-pd");
@@ -36,7 +39,8 @@ const App = () => {
   const renderComponent = () => {
     switch (currentComponent) {
       case "home":
-        return <Home setCurrentComponent={setCurrentComponent} />;
+        return <Home />;
+      // return <Home setCurrentComponent={setCurrentComponent} />;
       case "agents":
         return <ConfigAgents />;
       case "agentDetails":
@@ -50,17 +54,25 @@ const App = () => {
       case "config-knowledge-enhancement":
         return <ConfigKnowledgeEnhancement />;
       default:
-        return <Home setCurrentComponent={setCurrentComponent} />;
+        return <Home />;
+      // return <Home setCurrentComponent={setCurrentComponent} />;
     }
   };
 
   return (
     <div id="body-pd">
-      <ConfigNavbar setCurrentComponent={setCurrentComponent} />
+      {/* <ConfigNavbar setCurrentComponent={setCurrentComponent} /> */}
+      <ConfigNavbar />
       <div className="container">{renderComponent()}</div>
       <Footer />
     </div>
   );
+};
+
+const AppWrapper = () => {
+  <AppProvider>
+    <App />
+  </AppProvider>;
 };
 
 export default App;

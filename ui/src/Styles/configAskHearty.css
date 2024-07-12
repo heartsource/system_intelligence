@@ -160,3 +160,13 @@ h5 b {
 .spinner-border {
   color: #000;
 }
+
+.ask-hearty-agent-input-row select {
+  width: 190px;
+  box-sizing: border-box;
+  transition: 0.5s ease-in;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: white;
+}

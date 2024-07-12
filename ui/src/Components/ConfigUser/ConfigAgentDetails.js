@@ -1,29 +1,83 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../Styles/configAgentDetails.css";
+import { AppContext } from "../../context/AppContext";
+import { requestToggleStatus } from "../../utils/modal";
 
 const ConfigAgentDetails = () => {
+  const { selectedAgent } = useContext(AppContext);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [model, setModel] = useState("");
   const [flow, setFlow] = useState("");
-  const [template, setTemplate] = useState("");
   const [models, setModels] = useState([]);
   const [flows, setFlows] = useState([]);
+  const [template, setTemplate] = useState("");
+  const [status, setStatus] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [modalInfo, setModalInfo] = useState({
+    show: false,
+    index: -1,
+    newStatus: "",
+  });
 
-  const CHATGPT4_FLOW = ["RAG"];
+  useEffect(() => {
+    if (selectedAgent) {
+      setName(selectedAgent.name || "");
+      setDescription(selectedAgent.description || "");
+      setModel(selectedAgent.model || "");
+      setFlow(selectedAgent.flow || "");
+      setTemplate(selectedAgent.template || "");
+      setStatus(selectedAgent.status || "");
+    }
+  }, [selectedAgent]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://4.255.69.143/heartie-be/get_ai_prompts/"
+      );
+
+      const { models, flows } = response.data;
+      setModels(models || []);
+      setFlows(flows || []);
+    } catch (error) {
+      setError("Server is down. Please try again later.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+  };
+
+  const handleStatusToggle = () => {
+    requestToggleStatus([{ status }], setModalInfo, 0);
+  };
+
+  useEffect(() => {
+    if (modalInfo.show) {
+      setStatus(modalInfo.newStatus);
+    }
+  }, [modalInfo]);
 
   const handleSave = async () => {
     try {
-      const response = await axios.post("", {
-        name,
-        description,
-        model,
-        flow,
-        template,
-      });
+      const response = await axios.put(
+        `http://4.255.69.143/heartie-be/agents/${selectedAgent.id}`,
+        {
+          name,
+          description,
+          model,
+          flow,
+          template,
+          status,
+        }
+      );
       if (response.status >= 200 && response.status <= 299) {
         setShowSuccess(true);
         setTimeout(() => {
@@ -31,19 +85,32 @@ const ConfigAgentDetails = () => {
         }, 3000);
       } else {
         setError(
-          "There was an error updating the agent details.Please try again later."
+          "There was an error updating the agent details. Please try again later."
         );
         setTimeout(() => {
-          setError(false);
+          setError(null);
         }, 3000);
       }
     } catch (error) {
-      console.log("error:" + error);
+      console.log("Error:", error);
     }
   };
 
+  const CHATGPT4_FLOW = ["RAG"];
+  const filteredFlows = model === "ChatGPT4" ? CHATGPT4_FLOW : flows;
+
   return (
     <>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+      {showSuccess && (
+        <div className="alert alert-success" role="alert">
+          Agent "{selectedAgent.name}" updated successfully!
+        </div>
+      )}
       <div className="agentDetails-fieldset-container">
         <fieldset id="agentDetailsFieldset">
           <legend id="agentDetailsLegend">
@@ -63,6 +130,11 @@ const ConfigAgentDetails = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    checked={status === "active"}
+                    onChange={handleStatusToggle}
+                    title={status === "active" ? "Disable" : "Enable"}
                   />
                 </div>
               </div>
@@ -76,13 +148,16 @@ const ConfigAgentDetails = () => {
                   type="text"
                   id="agentName"
                   placeholder="Enter Agent Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
-
               <div className="agentdetails-input-row">
                 <label htmlFor="description">Agent Description</label>
                 <textarea
                   id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   placeholder="You can add a few lines here to describe what this Agent will do."
                   style={{
                     marginLeft: ".6em",
@@ -95,14 +170,18 @@ const ConfigAgentDetails = () => {
                 </label>
                 <select
                   id="model"
-                  value=""
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
                   style={{
                     marginLeft: "-0.2em",
                   }}
                 >
                   <option value="">Select</option>
-                  <option value="">ChatGpt4</option>
-                  <option value="">RAG</option>
+                  {models.map((modelOption, index) => (
+                    <option key={index} value={modelOption}>
+                      {modelOption}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="agentdetails-input-row">
@@ -111,27 +190,34 @@ const ConfigAgentDetails = () => {
                 </label>
                 <select
                   id="flow"
-                  value=""
+                  value={flow}
+                  onChange={(e) => setFlow(e.target.value)}
                   style={{
                     marginLeft: "-0.2em",
                   }}
                 >
                   <option value="">Select</option>
-                  <option value="">ChatGpt4</option>
-                  <option value="">RAG</option>
+                  {filteredFlows.map((flowOption, index) => (
+                    <option key={index} value={flowOption}>
+                      {flowOption}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="agentdetails-input-row">
                 <label htmlFor="template">
                   Template <sup>*</sup>
                 </label>
-                <textarea id="template" value=""></textarea>
-              </div>
-              <div>
-                <label htmlFor="button"></label>
+                <textarea
+                  id="template"
+                  value={template}
+                  onChange={(e) => setTemplate(e.target.value)}
+                ></textarea>
               </div>
               <div className="agentDetails-button-container">
-                <button className="btn-grad">Save</button>
+                <button className="btn-grad" onClick={handleSave}>
+                  Save
+                </button>
               </div>
             </div>
           </div>

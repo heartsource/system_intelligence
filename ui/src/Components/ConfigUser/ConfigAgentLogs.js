@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../Styles/configAgentLogs.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
+import axios from "axios";
 
 const columns = [
-  { key: "agentInteractionId", label: "Agent Interaction Id", sortable: true },
+  { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
   {
-    key: "agentName",
+    key: "agent_name",
     label: (
       <>
         Agent Name<i className="fa fa-filter" aria-hidden="true"></i>
@@ -13,7 +14,7 @@ const columns = [
     ),
     sortable: true,
   },
-  { key: "interactionDate", label: "Interaction Date", sortable: true },
+  { key: "interaction_date", label: "Interaction Date", sortable: true },
   { key: "duration", label: "Duration", sortable: true },
 ];
 
@@ -43,39 +44,32 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
   </div>
 );
 
-const initialLogs = [
-  {
-    agentInteractionId: "id0980326454wifg",
-    agentName: "Default System Agent",
-    interactionDate: "June 12, 2024 11:35",
-    duration: "29 seconds",
-  },
-  {
-    agentInteractionId: "id0985544444wifg",
-    agentName: "Telecom Support Agent",
-    interactionDate: "June 9, 2024 09:44",
-    duration: "902 seconds",
-  },
-  {
-    agentInteractionId: "id0980326454wifg",
-    agentName: "Default System Agent",
-    interactionDate: "June 12, 2024 11:35",
-    duration: "29 seconds",
-  },
-  {
-    agentInteractionId: "id0985544444wifg",
-    agentName: "Telecom Support Agent",
-    interactionDate: "June 9, 2024 09:44",
-    duration: "902 seconds",
-  },
-];
-
 const ConfigAgentLogs = () => {
-  const [logs, setLogs] = useState(initialLogs);
+  const [logs, setLogs] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     key: "updated",
     direction: "desc",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const payload = {};
+        const response = await axios.post(
+          "http://4.255.69.143/heartie-be/logs/",
+          payload
+        );
+        const data = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        const sortedLogs = sortItems(data, "created_dt", "desc");
+        setLogs(sortedLogs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -108,10 +102,10 @@ const ConfigAgentLogs = () => {
               onSort={sortLogs}
             />
             <div className="agentlogs-row-container">
-              {logs.map((agent, index) => (
+              {logs.map((log, index) => (
                 <TableRow
                   key={index}
-                  agent={agent}
+                  agent={log}
                   index={index}
                   columns={columns}
                 />

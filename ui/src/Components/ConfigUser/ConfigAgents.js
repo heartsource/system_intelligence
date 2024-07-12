@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
+import { AppContext } from "../../context/AppContext"; // Import your context
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -29,10 +30,20 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
   </div>
 );
 
-const TableRow = ({ agent, index, columns, customRenderers }) => (
+const TableRow = ({
+  agent,
+  index,
+  columns,
+  customRenderers,
+  onAgentNameClick,
+}) => (
   <div className="grid-row">
     {columns.map((column) => (
-      <div key={column.key} className="grid-cell">
+      <div
+        key={column.key}
+        className="grid-cell"
+        onClick={() => column.key === "name" && onAgentNameClick(agent)}
+      >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -42,6 +53,7 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgents = () => {
+  const { setCurrentComponent, setSelectedAgent } = useContext(AppContext);
   const [agents, setAgents] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     key: "created_dt",
@@ -149,6 +161,11 @@ const ConfigAgents = () => {
       ),
   };
 
+  const handleAgentNameClick = (agent) => {
+    setSelectedAgent(agent);
+    setCurrentComponent("agentDetails");
+  };
+
   return (
     <>
       <div className="agent-fieldset-container" id="configAgentContainer">
@@ -171,6 +188,7 @@ const ConfigAgents = () => {
                   index={index}
                   columns={columns}
                   customRenderers={customRenderers}
+                  onAgentNameClick={handleAgentNameClick}
                 />
               ))}
             </div>

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../Styles/configAddAgent.css";
+import { AppContext } from "../../context/AppContext";
 
-const ConfigAddAgent = ({ setCurrentComponent }) => {
+const ConfigAddAgent = () => {
+  const { setCurrentComponent } = useContext(AppContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [models, setModels] = useState([]);
