@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 import Logo from "../Components/../Images/HEART SOURCE ICON.png";
 import "../../Styles/sidenavbar.css";
 
-const Navbar = ({ setCurrentComponent }) => {
+const Navbar = () => {
+  const { setCurrentComponent } = useContext(AppContext);
   useEffect(() => {
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
       const toggle = document.getElementById(toggleId),
@@ -61,6 +63,7 @@ const Navbar = ({ setCurrentComponent }) => {
               >
                 <i class="fas fa-users"></i> Agents
               </div>
+
               <div
                 onClick={() => setCurrentComponent("agentLogs")}
                 className="nav_link"
@@ -96,7 +99,6 @@ const Navbar = ({ setCurrentComponent }) => {
           </div>
         </nav>
       </div>
-      <hr className="vertical-hr" />
     </div>
   );
 };

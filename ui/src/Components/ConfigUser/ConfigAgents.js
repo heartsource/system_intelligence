@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
-import Table from "../../utils/table"; // Adjust the import path
+import { capitalizeFirstLetter } from "../../utils/camelCase";
+import { AppContext } from "../../context/AppContext"; // Import your context
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -12,13 +13,52 @@ const columns = [
   { key: "flow", label: "Flow", sortable: true },
   { key: "updated_dt", label: "Updated", sortable: true },
   { key: "created_dt", label: "Created", sortable: true },
-  { key: "action", label: "Action", sortable: false }, // Disable sorting for the action column
+  { key: "action", label: "Action", sortable: false },
 ];
 
+const TableHeader = ({ columns, sortConfig, onSort }) => (
+  <div className="grid-header">
+    {columns.map((column) => (
+      <div
+        key={column.key}
+        className={`grid-cell ${column.sortable ? "sortable" : ""}`}
+        onClick={() => column.sortable && onSort(column.key)}
+      >
+        {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
+      </div>
+    ))}
+  </div>
+);
+
+const TableRow = ({
+  agent,
+  index,
+  columns,
+  customRenderers,
+  onAgentNameClick,
+}) => (
+  <div className="grid-row">
+    {columns.map((column) => (
+      <div
+        key={column.key}
+        className="grid-cell"
+        onClick={() => column.key === "name" && onAgentNameClick(agent)}
+      >
+        {customRenderers && customRenderers[column.key]
+          ? customRenderers[column.key](agent, index)
+          : agent[column.key]}
+      </div>
+    ))}
+  </div>
+);
+
 const ConfigAgents = () => {
+  const { setCurrentComponent, setSelectedAgent } = useContext(AppContext);
+
   const [agents, setAgents] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [sortConfig, setSortConfig] = useState({
-    key: "updated_dt",
+    key: "created_dt",
     direction: "desc",
   });
   const [modalInfo, setModalInfo] = useState({
@@ -31,6 +71,7 @@ const ConfigAgents = () => {
     const fetchData = async () => {
       try {
         const payload = {};
+
         const response = await axios.post(
           "http://4.255.69.143/heartie-be/agents/",
           payload
@@ -38,7 +79,7 @@ const ConfigAgents = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        const sortedAgents = sortItems(data, "updated_dt", "desc");
+        const sortedAgents = sortItems(data, "created_dt", "desc");
 
         setAgents(sortedAgents);
       } catch (error) {
@@ -62,16 +103,39 @@ const ConfigAgents = () => {
     setSortConfig({ key, direction });
   };
 
+  const updateAgentStatus = async (index, newStatus) => {
+    try {
+      const agentToUpdate = agents[index];
+
+      const response = await axios.put(
+        `http://4.255.69.143/heartie-be/agents/${agentToUpdate._id}`,
+        { ...agentToUpdate, status: newStatus }
+      );
+
+      if (response.status === 200) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
+        const updatedAgents = agents.map((agent, idx) => {
+          if (idx === index) {
+            return { ...agent, status: newStatus };
+          }
+          return agent;
+        });
+        setAgents(updatedAgents);
+        setModalInfo({ show: false, index: null, newStatus: "" });
+      } else {
+        console.error("Error updating status:", response);
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   const confirmToggleStatus = () => {
     const { index, newStatus } = modalInfo;
-    const updatedAgents = agents.map((agent, idx) => {
-      if (idx === index) {
-        return { ...agent, status: newStatus };
-      }
-      return agent;
-    });
-    setAgents(updatedAgents);
-    setModalInfo({ show: false, index: null, newStatus: "" });
+    updateAgentStatus(index, newStatus);
   };
 
   const customRenderers = {
@@ -104,23 +168,46 @@ const ConfigAgents = () => {
       ),
   };
 
+  const handleAgentNameClick = (agent) => {
+    setSelectedAgent(agent);
+    setCurrentComponent("agentDetails");
+  };
+
   return (
     <>
-      <div className="fieldset-container" id="configAgentContainer">
+      {showSuccess && (
+        <div className="alert alert-success" role="alert">
+          Agent status updated successfully!
+        </div>
+      )}
+      <div className="agent-fieldset-container" id="configAgentContainer">
         <fieldset id="configAgents">
-          <legend>Agents</legend>
-          <hr className="configuration_form" />
-
-          <Table
-            data={agents}
-            columns={columns}
-            sortConfig={sortConfig}
-            onSort={sortAgents}
-            customRenderers={customRenderers}
-          />
-          <label id="pagination">
-            Showing {agents.length} of {agents.length} Agents
-          </label>
+          <legend id="agentListLengend">
+            Agents <i class="fas fa-users"></i>
+          </legend>
+          <hr />
+          <div className="agent-table-container">
+            <TableHeader
+              columns={columns}
+              sortConfig={sortConfig}
+              onSort={sortAgents}
+            />
+            <div className="row-container">
+              {agents.map((agent, index) => (
+                <TableRow
+                  key={index}
+                  agent={agent}
+                  index={index}
+                  columns={columns}
+                  customRenderers={customRenderers}
+                  onAgentNameClick={handleAgentNameClick}
+                />
+              ))}
+            </div>
+            <div id="pagination">
+              Showing {agents.length} of {agents.length} Agents
+            </div>
+          </div>
         </fieldset>
       </div>
 
@@ -142,12 +229,16 @@ const ConfigAgents = () => {
                 <p>
                   Are you sure you want to change the status of &quot;
                   {agents[modalInfo.index].name}&quot; to &quot;
-                  {modalInfo.newStatus}&quot;?
+                  {modalInfo.newStatus
+                    ? capitalizeFirstLetter(modalInfo.newStatus)
+                    : ""}
+                  &quot;?
                 </p>
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
+                  id="configNo"
                   className="btn btn-secondary"
                   onClick={() => closeModal(setModalInfo)}
                 >

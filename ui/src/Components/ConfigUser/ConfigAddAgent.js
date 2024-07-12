@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../Styles/configAddAgent.css";
+import { AppContext } from "../../context/AppContext";
 
 const ConfigAddAgent = () => {
+  const { setCurrentComponent } = useContext(AppContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [models, setModels] = useState([]);
@@ -10,7 +12,7 @@ const ConfigAddAgent = () => {
   const [template, setTemplate] = useState("");
   const [model, setModel] = useState("");
   const [flow, setFlow] = useState("");
-  const [isSaved, setIsSaved] = useState(false);
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [formErrors, setFormErrors] = useState({
@@ -19,6 +21,7 @@ const ConfigAddAgent = () => {
     flow: "",
     template: "",
   });
+  const [nameExistsError, setNameExistsError] = useState(false);
 
   const CHATGPT4_FLOW = ["RAG"];
 
@@ -39,7 +42,10 @@ const ConfigAddAgent = () => {
       setTemplate(template);
       setError(null);
     } catch (error) {
-      setError("There was an error fetching data. Please try again later.");
+      setError("Server is down. Please try again later.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
@@ -59,16 +65,19 @@ const ConfigAddAgent = () => {
         );
 
         if (response.status >= 200 && response.status <= 299) {
-          setIsSaved(true);
+          // setIsSaved(true);
+
+          setCurrentComponent("agents");
           setShowSuccess(true);
           setTimeout(() => {
             setShowSuccess(false);
           }, 3000);
-          //Reset the form
+          // Reset the form
           setName("");
           setDescription("");
           setModel("");
           setFlow("");
+          setTemplate("");
           setFormErrors({
             name: "",
             model: "",
@@ -79,11 +88,29 @@ const ConfigAddAgent = () => {
           setError(
             "There was an error saving the configuration. Please try again later."
           );
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
         }
       } catch (error) {
-        setError(
-          "There was an error saving the configuration. Please try again later."
-        );
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.data &&
+          error.response.data.data.includes("Agent with name already exists")
+        ) {
+          setNameExistsError(true);
+          setTimeout(() => {
+            setNameExistsError(false);
+          }, 3000);
+        } else {
+          setError(
+            "There was an error saving the configuration. Please try again later."
+          );
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
+        }
       }
     } else {
       setFormErrors(errors);
@@ -111,6 +138,9 @@ const ConfigAddAgent = () => {
     if (formErrors[field]) {
       setFormErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
     }
+    if (nameExistsError && field === "name") {
+      setNameExistsError(false);
+    }
     const { value } = e.target;
     if (field === "model") {
       setModel(value);
@@ -137,137 +167,153 @@ const ConfigAddAgent = () => {
       )}
       {showSuccess && (
         <div className="alert alert-success" role="alert">
-          Configuration saved successfully!
+          Agent created successfully!
         </div>
       )}
-      <div className="fieldset-container">
-        <fieldset id="fieldsetAddAgent">
-          <legend>
+      <div className="addAgent-fieldset-container">
+        <div id="fieldsetAddAgent">
+          <legend id="agentLegend">
             Agent Configuration
             <i className="fa-solid fa-gears"></i>
           </legend>
-          <hr className="configuration_form" />
+          <hr style={{ border: "1px solid white" }} />
 
-          <div>
-            <label htmlFor="name">
-              Agent Name <sup>*</sup>
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              style={{
-                border: formErrors.name
-                  ? "2px solid #bb2124"
-                  : "1px solid #ccc",
-                marginBottom: formErrors.name ? "0" : "initial",
-              }}
-              placeholder="Enter Agent Name"
-              onChange={(e) => handleInputChange(e, "name")}
-              disabled={isSaved}
-            />
-            {formErrors.name && (
-              <span className="error" style={{ marginTop: "5em" }}>
-                {formErrors.name}
-              </span>
-            )}
-          </div>
-          <div>
-            <label htmlFor="description">Agent Description</label>
-            <textarea
-              id="description"
-              placeholder="You can add a few lines here to describe what this Agent will do."
-              disabled={isSaved}
-              onChange={(e) => handleInputChange(e, "description")}
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="model">
-              Select Model <sup>*</sup>
-            </label>
-            <select
-              id="model"
-              value={model}
-              style={{
-                border: formErrors.model
-                  ? "2px solid #bb2124"
-                  : "1px solid #ccc",
-                marginBottom: formErrors.model ? "0" : "initial",
-              }}
-              onChange={(e) => handleInputChange(e, "model")}
-              disabled={isSaved}
-            >
-              <option value="Select">Select</option>
-              {models.map((model, index) => (
-                <option key={index} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
-            {formErrors.model && (
-              <span className="error" style={{ marginTop: "5em" }}>
-                {formErrors.model}
-              </span>
-            )}
-          </div>
+          <div className="agent-details-new">
+            <div className="agent-input-row">
+              <label htmlFor="name">
+                Agent Name <sup>*</sup>
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                style={{
+                  marginLeft: "-0.6em",
+                  border:
+                    nameExistsError || formErrors.name
+                      ? "2px solid #bb2124"
+                      : "1px solid #ccc",
+                  marginBottom: formErrors.name ? "0" : "initial",
+                }}
+                placeholder="Enter Agent Name"
+                onChange={(e) => handleInputChange(e, "name")}
+              />
+              {formErrors.name && (
+                <span
+                  className="error"
+                  style={{ marginTop: "5em", padding: "0px" }}
+                >
+                  {formErrors.name}
+                </span>
+              )}
+              {nameExistsError && (
+                <div
+                  className="error"
+                  style={{ marginTop: "5em", color: "red" }}
+                >
+                  * Name already exists. Please try a different name.
+                </div>
+              )}
+            </div>
+            <div className="agent-input-row">
+              <label htmlFor="description">Agent Description</label>
+              <textarea
+                id="description"
+                placeholder="You can add a few lines here to describe what this Agent will do."
+                onChange={(e) => handleInputChange(e, "description")}
+              ></textarea>
+            </div>
+            <div className="agent-input-row">
+              <label htmlFor="model">
+                Select Model <sup>*</sup>
+              </label>
+              <select
+                id="model"
+                value={model}
+                style={{
+                  marginLeft: "-0.6em",
+                  border: formErrors.model
+                    ? "2px solid #bb2124"
+                    : "1px solid #ccc",
+                  marginBottom: formErrors.model ? "0" : "initial",
+                }}
+                onChange={(e) => handleInputChange(e, "model")}
+              >
+                <option value="Select">Select</option>
+                {models.map((model, index) => (
+                  <option key={index} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
+              {formErrors.model && (
+                <span className="error" style={{ marginTop: "5em" }}>
+                  {formErrors.model}
+                </span>
+              )}
+            </div>
 
-          <div>
-            <label htmlFor="flow">
-              Select Flow <sup>*</sup>
-            </label>
-            <select
-              id="flow"
-              value={flow}
-              style={{
-                border: formErrors.flow
-                  ? "2px solid #bb2124"
-                  : "1px solid #ccc",
-                marginBottom: formErrors.flow ? "0" : "initial",
-              }}
-              onChange={(e) => handleInputChange(e, "flow")}
-              disabled={isSaved}
-            >
-              <option value="Select">Select</option>
-              {filteredFlows.map((flow, index) => (
-                <option key={index} value={flow}>
-                  {flow}
-                </option>
-              ))}
-            </select>
-            {formErrors.flow && (
-              <span className="error" style={{ marginTop: "5em" }}>
-                {formErrors.flow}
-              </span>
-            )}
-          </div>
-          <div>
-            <label htmlFor="template">
-              Template <sup>*</sup>
-            </label>
-            <textarea
-              id="template"
-              value={template}
-              style={{
-                border: formErrors.template
-                  ? "2px solid #bb2124"
-                  : "1px solid #ccc",
-                marginBottom: formErrors.template ? "0" : "initial",
-              }}
-              onChange={(e) => handleInputChange(e, "template")}
-              disabled={isSaved}
-            ></textarea>
+            <div className="agent-input-row">
+              <label htmlFor="flow">
+                Select Flow <sup>*</sup>
+              </label>
+              <select
+                id="flow"
+                value={flow}
+                style={{
+                  marginLeft: "-0.6em",
+                  border: formErrors.flow
+                    ? "2px solid #bb2124"
+                    : "1px solid #ccc",
+                  marginBottom: formErrors.flow ? "0" : "initial",
+                }}
+                onChange={(e) => handleInputChange(e, "flow")}
+              >
+                <option value="Select">Select</option>
+                {filteredFlows.map((flow, index) => (
+                  <option key={index} value={flow}>
+                    {flow}
+                  </option>
+                ))}
+              </select>
+              {formErrors.flow && (
+                <span className="error" style={{ marginTop: "5em" }}>
+                  {formErrors.flow}
+                </span>
+              )}
+            </div>
+            <div className="agent-input-row">
+              <label htmlFor="template">
+                Template <sup>*</sup>
+              </label>
+              <textarea
+                id="template"
+                value={template}
+                style={{
+                  marginLeft: "-0.3em",
+                  border: formErrors.template
+                    ? "2px solid #bb2124"
+                    : "1px solid #ccc",
+                  marginBottom: formErrors.template ? "0" : "initial",
+                }}
+                onChange={(e) => handleInputChange(e, "template")}
+              ></textarea>
+            </div>
           </div>
           {formErrors.template && (
-            <span className="error" style={{ marginTop: "5em" }}>
+            <span
+              className="error"
+              style={{ marginTop: "10em", marginLeft: "10em" }}
+            >
               {formErrors.template}
             </span>
           )}
-          <div>
+          <div className="button-container">
             <button className="btn-grad" onClick={handleSave}>
               Create Agent
             </button>
           </div>
-        </fieldset>
+        </div>
       </div>
     </>
   );

@@ -1,9 +1,9 @@
-import ConfigAddAgent from './ConfigUser/ConfigAddAgent';
+import ConfigAddAgent from "./ConfigUser/ConfigAddAgent";
 
-const Home = () => {
+const Home = ({ setCurrentComponent }) => {
   return (
     <>
-      <ConfigAddAgent />
+      <ConfigAddAgent setCurrentComponent={setCurrentComponent} />
     </>
   );
 };

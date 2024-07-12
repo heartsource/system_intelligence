@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../../Styles/configKnowledgeEnhancement.css";
 import { sortItems } from "../../utils/sort";
 import Table from "../../utils/table";
-
 const initialKnowledge = [
   {
     enhancementId: 990,
@@ -66,6 +65,25 @@ const columns = [
   },
 ];
 const ConfigKnowledgeEnhancement = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    topic: "",
+    description: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log("Form submitted:", formData);
+  };
   const [knowledge, setKnowledge] = useState(initialKnowledge);
   const [sortConfig, setSortConfig] = useState({
     key: "updated",
@@ -85,23 +103,8 @@ const ConfigKnowledgeEnhancement = () => {
   };
   return (
     <>
-      <div className="fieldset-container" id="fieldset-container-knowledge">
-        <fieldset id="knowledgeFieldset">
-          <legend>Knowledge Enhancement Requests</legend>
-          <hr className="configuration_form" />
-          <div
-            className="logs-table-container table-responsive"
-            id="knowledgeEnhancement"
-          >
-            <Table
-              data={knowledge}
-              columns={columns}
-              sortConfig={sortConfig}
-              onSort={sortedKnowledge}
-            />
-          </div>
-          <label id="pagination">Showing 3 of 3 Records</label>
-        </fieldset>
+      <div style={{ color: "white", marginTop: "2em" }}>
+        knowledge Enhancement
       </div>
     </>
   );

@@ -1,0 +1,81 @@
+.agentDetails-fieldset-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+#agentDetailsFieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
+  text-align: left;
+  overflow-y: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#agentDetailsLegend {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  color: rgb(45, 182, 212);
+  background-color: transparent;
+  padding: 1px;
+  margin-bottom: 0;
+}
+.view-agent-logs {
+  display: flex;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 20px;
+}
+.status-switch {
+  display: flex;
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  gap: 20px;
+}
+
+.flex-container {
+  display: flex;
+  /* overflow-y: auto; */
+  flex-direction: column;
+}
+
+.agentdetails-input-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  color: white;
+}
+.agentdetails-input-row label {
+  color: #fff;
+  width: 140px;
+  margin-right: 10px;
+  text-align: left;
+}
+.agentdetails-input-row input[type="text"],
+.agentdetails-input-row textarea,
+.agentdetails-input-row select {
+  width: 250px;
+  box-sizing: border-box;
+  transition: 0.5s ease-in;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: white;
+}
+
+.agentDetails-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.2em;
+}

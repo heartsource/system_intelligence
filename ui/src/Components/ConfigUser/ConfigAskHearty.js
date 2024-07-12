@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import hearty from "../Images/NewHeartyIcon-without-background.png";
 import ConversationDisplay from "../ConfigUser/ConversationDisplay";
@@ -9,6 +9,9 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [conversation, setConversation] = useState({});
   const [error, setError] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  const [agentNames, setAgentNames] = useState([]); // List of agent names
+  const [selectedAgent, setSelectedAgent] = useState({}); // Selected agent
+  const [defaultAgent, setDefaultAgent] = useState({}); // Default agent
 
   const [template, setTemplate] = useState(
     () => sessionStorage.getItem("template") || ""
@@ -26,6 +29,29 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
     setInputValue(event.target.value); // Update input value state
   };
 
+  useEffect(() => {
+    const fetchAgentNames = async () => {
+      try {
+        const payload = {};
+        const response = await axios.post(
+          "http://4.255.69.143/heartie-be/agents/",
+          payload
+        );
+        const data = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        setAgentNames(data);
+        const defaultAgentData = data.find(
+          (agent) => agent.name === "Default System Agent"
+        );
+        setDefaultAgent(defaultAgentData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAgentNames();
+  }, []);
+
   const handleKeyPressOrClick = async (event) => {
     if (
       event.type === "click" || // Check if it's a button click
@@ -36,13 +62,18 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
       if (!question) return; // If question is empty, do nothing
 
+      const agentToUse = selectedAgent.name ? selectedAgent : defaultAgent;
+
       setIsLoading(true);
       try {
-        const body = {};
-        body.question = question;
-        body.model = selectedModel;
-        body.flow = selectedFlow;
-        body.prompt = template;
+        const body = {
+          question,
+          model: agentToUse.model,
+          flow: agentToUse.flow,
+          prompt: agentToUse.template,
+          agent_name: agentToUse.name,
+          agent_id: agentToUse._id,
+        };
         const response = await axios.post(
           "http://4.255.69.143/heartie-be/talk_to_heartie/",
           body
@@ -51,16 +82,19 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         await onTextSubmit(question);
         setInputValue(""); // Clear input value
         setIsLoading(false);
-        let conversation = {};
-        conversation.question = question;
-        conversation.answer = response.data;
-        setConversation(conversation);
+        setConversation({
+          question,
+          answer: response.data,
+        });
 
         // Reset textarea size after submission
         const textarea = document.querySelector(".chatbox-textbox textarea");
         textarea.style.height = "auto";
       } catch (error) {
         setError("There was an error fetching data. Please try again later.");
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
         await onTextSubmit(question);
         setInputValue(""); // Clear input value
         setIsLoading(false);
@@ -107,6 +141,28 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 <b>&#x2B06;</b>
               </button>
             </div>
+          </div>
+          <div
+            className="ask-hearty-agent-input-row"
+            style={{ marginLeft: "55em", marginTop: "-6em" }}
+          >
+            <select
+              value={selectedAgent.name}
+              onChange={(e) =>
+                setSelectedAgent(
+                  agentNames.find((a) => a.name === e.target.value) || {}
+                )
+              }
+            >
+              <option value="">Select</option>
+              {agentNames
+                .filter((agent) => agent.name !== "Default System Agent")
+                .map((agent, index) => (
+                  <option key={index} value={agent.name}>
+                    {agent.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div
             className="conversation-container"

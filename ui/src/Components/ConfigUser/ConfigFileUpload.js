@@ -21,6 +21,9 @@ const ConfigFileUpload = () => {
   const handleUpload = async () => {
     if (!files || files.length === 0) {
       setErrorMessage("Please select at least one file for upload.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
       return;
     }
 
@@ -46,8 +49,15 @@ const ConfigFileUpload = () => {
           },
         }
       );
-      setSuccessMessage("Files uploaded successfully.");
-      setShowModal(false);
+      setSuccessMessage(
+        files.length > 1
+          ? "Files uploaded successfully."
+          : "File uploaded successfully."
+      );
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+      //setShowModal(false);
     } catch (error) {
       if (error.response) {
         setErrorMessage(
@@ -58,9 +68,9 @@ const ConfigFileUpload = () => {
       } else {
         setErrorMessage(`Error: ${error.message}`);
       }
-      setShowModal(false);
+      //setShowModal(false);
     }
-
+    setShowModal(false);
     setUploadProgress(100);
     setFileCount(0);
     setFiles(null);
