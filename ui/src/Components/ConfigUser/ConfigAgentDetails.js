@@ -25,6 +25,7 @@ const ConfigAgentDetails = () => {
 
   useEffect(() => {
     if (selectedAgent) {
+      console.log(selectedAgent);
       setName(selectedAgent.name || "");
       setDescription(selectedAgent.description || "");
       setModel(selectedAgent.model || "");
@@ -68,7 +69,7 @@ const ConfigAgentDetails = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://4.255.69.143/heartie-be/agents/${selectedAgent.id}`,
+        `http://4.255.69.143/heartie-be/agents/${selectedAgent._id}`,
         {
           name,
           description,

@@ -11,6 +11,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [inputValue, setInputValue] = useState("");
   const [agentNames, setAgentNames] = useState([]); // List of agent names
   const [selectedAgent, setSelectedAgent] = useState({}); // Selected agent
+  const [defaultAgent, setDefaultAgent] = useState({}); // Default agent
 
   const [template, setTemplate] = useState(
     () => sessionStorage.getItem("template") || ""
@@ -40,6 +41,10 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           ? response.data.data
           : [];
         setAgentNames(data);
+        const defaultAgentData = data.find(
+          (agent) => agent.name === "Default System Agent"
+        );
+        setDefaultAgent(defaultAgentData);
       } catch (error) {
         console.error(error);
       }
@@ -57,16 +62,17 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
 
       if (!question) return; // If question is empty, do nothing
 
-      console.log(selectedAgent);
+      const agentToUse = selectedAgent.name ? selectedAgent : defaultAgent;
+
       setIsLoading(true);
       try {
         const body = {
           question,
-          model: selectedAgent.model,
-          flow: selectedAgent.flow,
-          prompt: selectedAgent.template,
-          agent_name: selectedAgent.name,
-          agent_id: selectedAgent._id,
+          model: agentToUse.model,
+          flow: agentToUse.flow,
+          prompt: agentToUse.template,
+          agent_name: agentToUse.name,
+          agent_id: agentToUse._id,
         };
         const response = await axios.post(
           "http://4.255.69.143/heartie-be/talk_to_heartie/",
@@ -144,7 +150,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               value={selectedAgent.name}
               onChange={(e) =>
                 setSelectedAgent(
-                  agentNames.find((a) => a.name === e.target.value)
+                  agentNames.find((a) => a.name === e.target.value) || {}
                 )
               }
             >

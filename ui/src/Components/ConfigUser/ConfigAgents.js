@@ -54,7 +54,9 @@ const TableRow = ({
 
 const ConfigAgents = () => {
   const { setCurrentComponent, setSelectedAgent } = useContext(AppContext);
+
   const [agents, setAgents] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     key: "created_dt",
     direction: "desc",
@@ -104,12 +106,17 @@ const ConfigAgents = () => {
   const updateAgentStatus = async (index, newStatus) => {
     try {
       const agentToUpdate = agents[index];
+
       const response = await axios.put(
-        `http://4.255.69.143/heartie-be/agents/${agentToUpdate.id}`,
+        `http://4.255.69.143/heartie-be/agents/${agentToUpdate._id}`,
         { ...agentToUpdate, status: newStatus }
       );
 
       if (response.status === 200) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
         const updatedAgents = agents.map((agent, idx) => {
           if (idx === index) {
             return { ...agent, status: newStatus };
@@ -168,6 +175,11 @@ const ConfigAgents = () => {
 
   return (
     <>
+      {showSuccess && (
+        <div className="alert alert-success" role="alert">
+          Agent status updated successfully!
+        </div>
+      )}
       <div className="agent-fieldset-container" id="configAgentContainer">
         <fieldset id="configAgents">
           <legend id="agentListLengend">

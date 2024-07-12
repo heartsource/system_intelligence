@@ -12,7 +12,7 @@ const ConfigAddAgent = () => {
   const [template, setTemplate] = useState("");
   const [model, setModel] = useState("");
   const [flow, setFlow] = useState("");
-  const [isSaved, setIsSaved] = useState(false);
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [formErrors, setFormErrors] = useState({
@@ -65,7 +65,7 @@ const ConfigAddAgent = () => {
         );
 
         if (response.status >= 200 && response.status <= 299) {
-          setIsSaved(true);
+          // setIsSaved(true);
 
           setCurrentComponent("agents");
           setShowSuccess(true);
@@ -97,7 +97,7 @@ const ConfigAddAgent = () => {
           error.response &&
           error.response.data &&
           error.response.data.data &&
-          error.response.data.data.includes("agent is already available")
+          error.response.data.data.includes("Agent with name already exists")
         ) {
           setNameExistsError(true);
           setTimeout(() => {
@@ -197,7 +197,6 @@ const ConfigAddAgent = () => {
                 }}
                 placeholder="Enter Agent Name"
                 onChange={(e) => handleInputChange(e, "name")}
-                disabled={isSaved}
               />
               {formErrors.name && (
                 <span
@@ -221,7 +220,6 @@ const ConfigAddAgent = () => {
               <textarea
                 id="description"
                 placeholder="You can add a few lines here to describe what this Agent will do."
-                disabled={isSaved}
                 onChange={(e) => handleInputChange(e, "description")}
               ></textarea>
             </div>
@@ -240,7 +238,6 @@ const ConfigAddAgent = () => {
                   marginBottom: formErrors.model ? "0" : "initial",
                 }}
                 onChange={(e) => handleInputChange(e, "model")}
-                disabled={isSaved}
               >
                 <option value="Select">Select</option>
                 {models.map((model, index) => (
@@ -271,7 +268,6 @@ const ConfigAddAgent = () => {
                   marginBottom: formErrors.flow ? "0" : "initial",
                 }}
                 onChange={(e) => handleInputChange(e, "flow")}
-                disabled={isSaved}
               >
                 <option value="Select">Select</option>
                 {filteredFlows.map((flow, index) => (
@@ -301,7 +297,6 @@ const ConfigAddAgent = () => {
                   marginBottom: formErrors.template ? "0" : "initial",
                 }}
                 onChange={(e) => handleInputChange(e, "template")}
-                disabled={isSaved}
               ></textarea>
             </div>
           </div>

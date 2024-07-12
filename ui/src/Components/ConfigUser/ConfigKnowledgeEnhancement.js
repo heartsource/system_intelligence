@@ -102,38 +102,11 @@ const ConfigKnowledgeEnhancement = () => {
     setSortConfig({ key, direction });
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <fieldset className="styled-fieldset">
-        <legend className="styled-legend">Personal Information</legend>
-        <div>
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          <label htmlFor="lastName">Last Name:</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-      </fieldset>
-      <button type="submit">Submit</button>
-    </form>
+    <>
+      <div style={{ color: "white", marginTop: "2em" }}>
+        knowledge Enhancement
+      </div>
+    </>
   );
 };
 

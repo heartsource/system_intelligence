@@ -49,7 +49,17 @@ const ConfigFileUpload = () => {
           },
         }
       );
-      setSuccessMessage("Files uploaded successfully.");
+      if (files.length > 1) {
+        setSuccessMessage("Files uploaded successfully.");
+        setTimeout(() => {
+          setSuccessMessage(false);
+        }, 3000);
+      } else {
+        setSuccessMessage("File uploaded successfully.");
+        setTimeout(() => {
+          setSuccessMessage(false);
+        }, 3000);
+      }
       setShowModal(false);
     } catch (error) {
       if (error.response) {

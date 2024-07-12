@@ -61,9 +61,10 @@
 
 #pagination {
   margin-top: 5px;
+  margin-left: -2em;
   font-size: 0.9em;
   color: #fff;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .modal {
