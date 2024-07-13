@@ -40,6 +40,7 @@ class AgentListModel(BaseModel):
     sort_order: Optional[SortOrder] = SortOrder.DESC
     sort_by: Optional[str] = 'created_dt'
     limit: Optional[int] = 10
+    offset: Optional[int] = 0
 
 
 class AgentUpdateModel(BaseModel):

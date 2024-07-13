@@ -14,7 +14,7 @@ import utils.constants.db_constants as DB_CONSTANTS
 class LogService:
     def __init__(self) -> None:
         self.db = mongo_config.get_db()
-        self.collection = self.db['logs']
+        self.collection = self.db[DB_CONSTANTS.LOGS_COLLECTION]
         
     async def fetchLogs(self, payload: AgentLogsListModel):
         try:
@@ -40,7 +40,9 @@ class LogService:
                 ]
             if sort_dict:
                 pipeline.append({ "$sort": sort_dict })
-            
+
+            # Setting skip and limit values
+            pipeline.append({ "$skip": payload.offset })
             pipeline.append({ "$limit": payload.limit })
 
             if payload.agent_ids:

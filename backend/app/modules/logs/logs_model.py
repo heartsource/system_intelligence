@@ -23,6 +23,7 @@ class AgentLogsListModel(BaseModel):
     duration: Optional[int] = None
     model: Optional[Model] = None
     flow: Optional[Flow] = None
-    sort_order: Optional[SortOrder] = SortOrder.ASC
+    sort_order: Optional[SortOrder] = SortOrder.DESC
     sort_by: Optional[str] = 'interaction_date'
     limit: Optional[int] = 10
+    offset: Optional[int] = 0
