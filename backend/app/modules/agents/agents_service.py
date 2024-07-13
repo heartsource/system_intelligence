@@ -23,7 +23,7 @@ from config.mongodb_config import mongo_config
 class AgentService:
     def __init__(self):
         self.db = mongo_config.get_db()
-        self.collection = self.db['agents']
+        self.collection = self.db[DB_CONSTANTS.AGENTS_COLLECTION]
 
     def sortBy(agent, sort_key):
         value = agent.get(sort_key)
@@ -37,7 +37,7 @@ class AgentService:
             query = {}
 
             if agent_model.name:
-                query['name'] = agent_model.name
+                query['name'] = agent_model.name.strip()
 
             if agent_model.model:
                 query['model'] = agent_model.model.value
@@ -48,29 +48,27 @@ class AgentService:
             if agent_model.status:
                 query['status'] = agent_model.status.value
 
-            # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
+             # Exclude agents with 'deleted_dt' field set or not None
             query['$or'] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
 
+            sort_dict = None
             if agent_model.sort_by:
-                sort_field = agent_model.sort_by
                 sort_order = -1 if agent_model.sort_order.value.lower() == 'desc' else 1
-                sort_dict = {sort_field: sort_order}
-            else:
-                sort_dict = None
+                sort_dict = {agent_model.sort_by: sort_order}
 
             # Ensure sort_dict is converted to a list of tuples
             if isinstance(sort_dict, dict):
                 sort_criteria = list(sort_dict.items())
             else:
-                sort_criteria = sort_dict  # assuming it's already in the correct format
+                sort_criteria = sort_dict
 
+            # Setting skip and limit values
+            skip = agent_model.offset if agent_model.offset else 0
             limit = agent_model.limit if agent_model.limit else None
 
             # Perform the MongoDB find operation with the constructed query
-            filtered_agents_data = self.collection.find(query).sort(sort_criteria).limit(limit)
-            list_data = list(filtered_agents_data)
-            # return loads(dumps(list_data, default=custom_serializer))
-            return json.loads(json.dumps(list_data, default=str))
+            filtered_agents_data = self.collection.find(query).sort(sort_criteria).skip(skip).limit(limit)
+            return json.loads(json.dumps(list(filtered_agents_data), default=custom_serializer))
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
@@ -133,11 +131,10 @@ class AgentService:
             if existing_agent:
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
             
-            agent.created_dt = datetime.now()
             # agent_dict = agent.model_dump()  # Convert AgentModel to dictionary
             # Convert agent_dict to a plain Python dictionary
             document = json.loads(json.dumps(agent, default=pydantic_encoder))
-
+            document['created_dt'] = datetime.now()
             # async with mongo_client("agents") as agents_collection:
             return  self.collection.insert_one(document)
             
@@ -167,11 +164,10 @@ class AgentService:
                 agent['flow'] = updatedAgentData.flow
             if updatedAgentData.template is not None:
                 agent['template'] = updatedAgentData.template
-            agent['updated_dt'] = datetime.now()
-            del agent['_id']
+            del agent['_id'], agent['created_dt']
             # Convert updated agent to a dictionary
-            agent_dict = json.loads(json.dumps(agent, default=str))
-            
+            agent_dict = json.loads(json.dumps(agent, default=custom_serializer))
+            agent_dict['updated_dt'] = datetime.now()
             # async with mongo_client("agents") as agents_collection:
             return  self.collection.update_one({"_id": ObjectId(agent_id)}, { "$set": agent_dict})
         except Exception as e:

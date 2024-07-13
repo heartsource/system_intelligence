@@ -19,7 +19,7 @@ config = get_configs()
 class KnowledgeUploadService:
     def __init__(self):
         self.db = mongo_config.get_db()
-        self.collection = self.db['config']
+        self.collection = self.db[DB_CONSTANTS.CONFIG_COLLECTION]
 
     async def getAiPrompts(self):
         try:
