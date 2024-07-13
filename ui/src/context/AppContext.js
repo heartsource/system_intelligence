@@ -5,6 +5,8 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [currentComponent, setCurrentComponent] = useState("home");
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [selectedAgentId, setSelectedAgentId] = useState(null);
 
   return (
     <AppContext.Provider
@@ -13,6 +15,10 @@ export const AppProvider = ({ children }) => {
         setCurrentComponent,
         selectedAgent,
         setSelectedAgent,
+        logs,
+        setLogs,
+        selectedAgentId,
+        setSelectedAgentId,
       }}
     >
       {children}

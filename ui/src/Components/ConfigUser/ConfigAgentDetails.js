@@ -5,7 +5,8 @@ import { AppContext } from "../../context/AppContext";
 import { requestToggleStatus } from "../../utils/modal";
 
 const ConfigAgentDetails = () => {
-  const { selectedAgent } = useContext(AppContext);
+  const { selectedAgent, setCurrentComponent, setLogs, setSelectedAgentId } =
+    useContext(AppContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -169,6 +170,21 @@ const ConfigAgentDetails = () => {
     }
   };
 
+  const viewAgentLogsClick = async () => {
+    try {
+      const payload = { agent_ids: [selectedAgent._id] };
+      const response = await axios.post(
+        "http://4.255.69.143/heartie-be/logs/",
+        payload
+      );
+      setLogs(response.data.data);
+      setSelectedAgentId(selectedAgent._id);
+      setCurrentComponent("agentLogs");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const CHATGPT4_FLOW = ["RAG"];
   const filteredFlows = model === "ChatGPT4" ? CHATGPT4_FLOW : flows;
 
@@ -194,7 +210,12 @@ const ConfigAgentDetails = () => {
           <div>
             <div className="top-right-container">
               <div className="view-agent-logs">
-                <label>View Agent Logs</label>
+                <label
+                  style={{ cursor: "pointer" }}
+                  onClick={viewAgentLogsClick}
+                >
+                  View Agent Logs
+                </label>
               </div>
               <div className="status-switch">
                 <label>Status</label>

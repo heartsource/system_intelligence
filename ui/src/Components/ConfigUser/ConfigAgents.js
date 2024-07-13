@@ -4,7 +4,7 @@ import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
-import { AppContext } from "../../context/AppContext"; // Import your context
+import { AppContext } from "../../context/AppContext";
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
