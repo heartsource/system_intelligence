@@ -1,29 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../../Styles/configFileUpload.css";
+import { handleError } from "../../utils/handleError";
 
 const ConfigFileUpload = () => {
   const [files, setFiles] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
   const [fileCount, setFileCount] = useState(0);
 
   const handleFileChange = (event) => {
     const selectedFiles = event.target.files;
     setFiles(selectedFiles);
-    setErrorMessage("");
+    setError("");
     setSuccessMessage("");
     setFileCount(selectedFiles.length);
   };
 
   const handleUpload = async () => {
     if (!files || files.length === 0) {
-      setErrorMessage("Please select at least one file for upload.");
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
+      handleError(setError, "Please select at least one file for upload.");
       return;
     }
 
@@ -60,13 +58,17 @@ const ConfigFileUpload = () => {
       //setShowModal(false);
     } catch (error) {
       if (error.response) {
-        setErrorMessage(
-          `Error: ${error.response.data.message || "Unknown error occurred."}`
+        handleError(
+          setError,
+          error.response.data.message || "Unknown error occurred."
         );
+        // setErrorMessage(
+        //   `Error: ${error.response.data.message || "Unknown error occurred."}`
+        // );
       } else if (error.request) {
-        setErrorMessage("No response received from the server.");
+        setError("No response received from the server.");
       } else {
-        setErrorMessage(`Error: ${error.message}`);
+        setError(`Error: ${error.message}`);
       }
       //setShowModal(false);
     }
@@ -110,7 +112,7 @@ const ConfigFileUpload = () => {
 
   return (
     <>
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>
       )}

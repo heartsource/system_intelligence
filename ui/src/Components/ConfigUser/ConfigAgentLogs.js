@@ -1,10 +1,9 @@
-// ConfigAgentLogs.js
-
 import React, { useEffect, useState, useContext } from "react";
 import "../../Styles/configAgentLogs.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import { handleError } from "../../utils/handleError";
 
 const columns = [
   { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -53,6 +52,7 @@ const ConfigAgentLogs = () => {
     key: "updated",
     direction: "desc",
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +68,7 @@ const ConfigAgentLogs = () => {
         const sortedLogs = sortItems(data, "created_dt", "desc");
         setLogs(sortedLogs);
       } catch (error) {
-        console.log(error);
+        handleError(setError, "error");
       }
     };
     fetchData();

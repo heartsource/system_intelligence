@@ -4,6 +4,7 @@ import "../../Styles/configAgents.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import { closeModal, requestToggleStatus } from "../../utils/modal";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
+import { handleError } from "../../utils/handleError";
 import { AppContext } from "../../context/AppContext";
 
 const columns = [
@@ -66,6 +67,7 @@ const ConfigAgents = () => {
     index: null,
     newStatus: "",
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +85,7 @@ const ConfigAgents = () => {
 
         setAgents(sortedAgents);
       } catch (error) {
+        handleError(setError, "Error fetching data:");
         console.error("Error fetching data:", error);
       }
     };
@@ -129,7 +132,8 @@ const ConfigAgents = () => {
         console.error("Error updating status:", response);
       }
     } catch (error) {
-      console.error("Error updating status:", error);
+      handleError(setError, "Error updating status:");
+      //console.error("Error updating status:", error);
     }
   };
 

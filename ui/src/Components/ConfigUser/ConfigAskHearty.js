@@ -3,6 +3,7 @@ import axios from "axios";
 import hearty from "../Images/NewHeartyIcon-without-background.png";
 import ConversationDisplay from "../ConfigUser/ConversationDisplay";
 import "../../Styles/configAskHearty.css";
+import { handleError } from "../../utils/handleError";
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,15 +14,15 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [selectedAgent, setSelectedAgent] = useState({}); // Selected agent
   const [defaultAgent, setDefaultAgent] = useState({}); // Default agent
 
-  const [template, setTemplate] = useState(
-    () => sessionStorage.getItem("template") || ""
-  );
-  const [selectedModel, setSelectedModel] = useState(
-    () => sessionStorage.getItem("model") || ""
-  );
-  const [selectedFlow, setSelectedFlow] = useState(
-    () => sessionStorage.getItem("flow") || ""
-  );
+  // const [template, setTemplate] = useState(
+  //   () => sessionStorage.getItem("template") || ""
+  // );
+  // const [selectedModel, setSelectedModel] = useState(
+  //   () => sessionStorage.getItem("model") || ""
+  // );
+  // const [selectedFlow, setSelectedFlow] = useState(
+  //   () => sessionStorage.getItem("flow") || ""
+  // );
 
   const handleTextareaInput = (event) => {
     event.target.style.height = "auto"; // Reset height to auto to recalculate scroll height
@@ -91,10 +92,10 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         const textarea = document.querySelector(".chatbox-textbox textarea");
         textarea.style.height = "auto";
       } catch (error) {
-        setError("There was an error fetching data. Please try again later.");
-        setTimeout(() => {
-          setError(false);
-        }, 3000);
+        handleError(
+          setError,
+          "There was an error fetching data. Please try again later."
+        );
         await onTextSubmit(question);
         setInputValue(""); // Clear input value
         setIsLoading(false);
