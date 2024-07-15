@@ -4,7 +4,8 @@ import Logo from "../Components/../Images/HEART SOURCE ICON.png";
 import "../../Styles/sidenavbar.css";
 
 const Navbar = () => {
-  const { setCurrentComponent } = useContext(AppContext);
+  const { currentComponent, setCurrentComponent } = useContext(AppContext);
+
   useEffect(() => {
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
       const toggle = document.getElementById(toggleId),
@@ -30,6 +31,10 @@ const Navbar = () => {
     showNavbar("header-toggle", "nav-bar", "body-pd", "header");
   }, []);
 
+  const handleNavigation = (component) => {
+    setCurrentComponent(component);
+  };
+
   return (
     <div id="body-pd">
       <header className="header" id="header">
@@ -52,48 +57,60 @@ const Navbar = () => {
             <div className="nav_list">
               <i className="fa-solid fa-bars nav_link" id="header-toggle"></i>
               <div
-                onClick={() => setCurrentComponent("home")}
-                className="nav_link active"
+                onClick={() => handleNavigation("home")}
+                className={`nav_link ${
+                  currentComponent === "home" ? "active" : ""
+                }`}
               >
                 <i className="fa-solid fa-gears"></i> Agent Configuration
               </div>
               <div
-                onClick={() => setCurrentComponent("agents")}
-                className="nav_link"
+                onClick={() => handleNavigation("agents")}
+                className={`nav_link ${
+                  currentComponent === "agents" ? "active" : ""
+                }`}
               >
-                <i class="fas fa-users"></i> Agents
+                <i className="fas fa-users"></i> Agents
               </div>
 
               <div
-                onClick={() => setCurrentComponent("agentLogs")}
-                className="nav_link"
+                onClick={() => handleNavigation("agentLogs")}
+                className={`nav_link ${
+                  currentComponent === "agentLogs" ? "active" : ""
+                }`}
               >
-                <i class="fa-solid fa-headset"></i> Agent Logs
+                <i className="fa-solid fa-headset"></i> Agent Logs
               </div>
               <div
-                onClick={() => setCurrentComponent("upload")}
-                className="nav_link"
+                onClick={() => handleNavigation("upload")}
+                className={`nav_link ${
+                  currentComponent === "upload" ? "active" : ""
+                }`}
               >
                 <i className="fa-solid fa-upload"></i> Knowledge Upload
               </div>
               <div
-                onClick={() => setCurrentComponent("config-ask-hearty")}
-                className="nav_link"
+                onClick={() => handleNavigation("config-ask-hearty")}
+                className={`nav_link ${
+                  currentComponent === "config-ask-hearty" ? "active" : ""
+                }`}
               >
                 <i className="fa-solid fa-heart"></i> Ask Hearty
               </div>
               <div
-                onClick={() =>
-                  setCurrentComponent("config-knowledge-enhancement")
-                }
-                className="nav_link"
+                onClick={() => handleNavigation("config-knowledge-enhancement")}
+                className={`nav_link ${
+                  currentComponent === "config-knowledge-enhancement"
+                    ? "active"
+                    : ""
+                }`}
               >
-                <i class="fa-solid fa-chart-line"></i> Knowledge <br />
+                <i className="fa-solid fa-chart-line"></i> Knowledge <br />
                 Enhancement
               </div>
             </div>
           </div>
-          <div onClick={() => setCurrentComponent("home")} className="nav_link">
+          <div onClick={() => handleNavigation("home")} className="nav_link">
             <i className="fa-solid fa-right-from-bracket nav_icon"></i>
             <span className="nav_name">SignOut</span>
           </div>
