@@ -65,7 +65,12 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             template_with_context_and_question = template.format(prompt, context, question)
         #print(f"Template with substitutions :{template_with_context_and_question}")
         openAPITimeStart = datetime.now()
-        response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=250)
+        response = client.completions.create(
+            model=azure_deployment_name, 
+            prompt=template_with_context_and_question, 
+            max_tokens=250,
+            temperature=0.5
+            )
         # Clean the response to remove newline characters
         openAPITime = datetime.now() - openAPITimeStart
         print(f"Template time: {openAPITime.total_seconds()}")

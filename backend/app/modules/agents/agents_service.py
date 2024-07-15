@@ -143,7 +143,11 @@ class AgentService:
 
             # Update agent attributes
             if updatedAgentData.name is not None:
-                agent['name'] = updatedAgentData.name.strip()
+                updatedName = updatedAgentData.name.strip()
+                duplicateAgent =  await self.collection.find_one({"_id": {"$ne": ObjectId(agent_id)}, "name": updatedName})
+                if duplicateAgent:
+                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
+                agent['name'] = updatedName
             if updatedAgentData.description is not None:
                 agent['description'] = updatedAgentData.description
             if updatedAgentData.model is not None:
@@ -154,7 +158,7 @@ class AgentService:
                 agent['flow'] = updatedAgentData.flow
             if updatedAgentData.template is not None:
                 agent['template'] = updatedAgentData.template
-            del agent['_id'], agent['created_dt'], agent['deleted_dt']
+            del agent['_id'], agent['created_dt']
             
             # Convert updated agent to a dictionary
             agent_dict = json.loads(json.dumps(agent, default=custom_serializer))
