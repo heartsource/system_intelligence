@@ -8,4 +8,3 @@ class HeartieQueryPayload(BaseModel):
     prompt: Optional[str] = None
     model: Optional[Model] = None
     flow: Optional[Flow] = None
-

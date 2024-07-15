@@ -1,36 +1,24 @@
-from contextlib import asynccontextmanager
-from datetime import date, datetime
-from enum import Enum
+from datetime import datetime
 from typing import Optional, List, Dict, Any
 import json
 import traceback
 from bson import ObjectId
-from bson.json_util import dumps, loads
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException
 import pymongo
+from modules.logs.logs_service import LogService
 from utils.enums.shared_enum import AgentType, Status
 from utils.common_utilities import custom_serializer
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
-import uuid
-import aiofiles
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.db_constants as DB_CONSTANTS
 from pydantic.json import pydantic_encoder
 from config.mongodb_config import mongo_config
 
-   
-#agents_collection = mongodb.db[DB_CONSTANTS.AGENTS_COLLECTION]
+logs_service = LogService()
 class AgentService:
     def __init__(self):
         self.db = mongo_config.get_db()
         self.collection = self.db[DB_CONSTANTS.AGENTS_COLLECTION]
-
-    def sortBy(agent, sort_key):
-        value = agent.get(sort_key)
-        if value is None:
-            # Ensure None values are placed at the end during sorting
-            return (1, None)
-        return (0, value)
 
     async def fetchAgentsList(self, agent_model: AgentListModel) -> List[Dict[str, Any]]:
         try:
@@ -66,39 +54,36 @@ class AgentService:
             skip = agent_model.offset if agent_model.offset else 0
             limit = agent_model.limit if agent_model.limit else None
 
-            # Perform the MongoDB find operation with the constructed query
-            filtered_agents_data = self.collection.find(query).sort(sort_criteria).skip(skip).limit(limit)
-            return json.loads(json.dumps(list(filtered_agents_data), default=custom_serializer))
+            # Perform the MongoDB find operation with the constructed query     
+            filtered_agents_data = await self.collection.find(query).sort(sort_criteria).skip(skip).limit(limit).to_list(length=None)
+            return json.loads(json.dumps(filtered_agents_data, default=custom_serializer))
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
 
     async def fetchAgentsNames(self, agent_type: Optional[AgentType] = None):
         try:
-            # async with mongo_client("agents") as agents_collection:
-                query = {}
-                if agent_type and (agent_type.value == "custom" or agent_type.value == "default"):
-                    query = {
-                        "type": agent_type.value
-                    }
-                # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
-                query["$or"] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
+            query = {}
+            if agent_type and (agent_type.value == "custom" or agent_type.value == "default"):
+                query = {
+                    "type": agent_type.value
+                }
+            # Filter out agents with 'deleted_dt' field or where 'deleted_dt' is not None
+            query["$or"] = [{'deleted_dt': {'$exists': False}}, {'deleted_dt': None}]
 
-                # Perform the MongoDB find operation with the constructed query
-                filtered_agents_data = self.collection.find(query, {"name": 1}).sort([("name", pymongo.ASCENDING)])
+            # Perform the MongoDB find operation with the constructed query
+            filtered_agents_data = await self.collection.find(query, {"name": 1}).sort([("name", pymongo.ASCENDING)]).to_list(length=None)
 
-                return json.loads(json.dumps(list(filtered_agents_data), default=str))
+            return json.loads(json.dumps(list(filtered_agents_data), default=str))
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
 
     async def fetchAgentDetails(self, id: str) -> Dict[str, Any]:
         try:
-            # Validate the ObjectId
             if not ObjectId.is_valid(id):
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-            # async with mongo_client("agents") as agents_collection:
-            # Construct the query
+
             query = {
                 "_id": ObjectId(id),
                 "$or": [
@@ -107,8 +92,7 @@ class AgentService:
                 ]
             }
 
-            # Execute the query
-            agent =  self.collection.find_one(query) 
+            agent =  await self.collection.find_one(query) 
 
             if agent is not None:
                 # Convert ObjectId to string for JSON serialization
@@ -123,20 +107,18 @@ class AgentService:
     async def createAgent(self, agent: AgentModel):
         try:
             agent.name = agent.name.strip()
-
+            
             # Check if agent with the same name already exists
-            # async with mongo_client("agents") as agents_collection:
-            existing_agent =  self.collection.find_one({"name": agent.name})
+            existing_agent = await self.collection.find_one({"name": agent.name})
 
             if existing_agent:
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
             
-            # agent_dict = agent.model_dump()  # Convert AgentModel to dictionary
             # Convert agent_dict to a plain Python dictionary
             document = json.loads(json.dumps(agent, default=pydantic_encoder))
             document['created_dt'] = datetime.now()
-            # async with mongo_client("agents") as agents_collection:
-            return  self.collection.insert_one(document)
+
+            return  await self.collection.insert_one(document)
             
         except Exception as e:
             traceback.print_exc()
@@ -146,8 +128,16 @@ class AgentService:
         try:
             if not ObjectId.is_valid(agent_id):
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-            # async with mongo_client("agents") as agents_collection:
-            agent =  self.collection.find_one({"_id": ObjectId(agent_id)})
+
+            query = {
+                "_id": ObjectId(agent_id),
+                "$or": [
+                    {"deleted_dt": {"$exists": False}},
+                    {"deleted_dt": None}
+                ]
+            }
+
+            agent =  await self.collection.find_one(query)
             if not agent:
                 raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)
 
@@ -164,12 +154,13 @@ class AgentService:
                 agent['flow'] = updatedAgentData.flow
             if updatedAgentData.template is not None:
                 agent['template'] = updatedAgentData.template
-            del agent['_id'], agent['created_dt']
+            del agent['_id'], agent['created_dt'], agent['deleted_dt']
+            
             # Convert updated agent to a dictionary
             agent_dict = json.loads(json.dumps(agent, default=custom_serializer))
             agent_dict['updated_dt'] = datetime.now()
-            # async with mongo_client("agents") as agents_collection:
-            return  self.collection.update_one({"_id": ObjectId(agent_id)}, { "$set": agent_dict})
+
+            return  await self.collection.update_one({"_id": ObjectId(agent_id)}, { "$set": agent_dict})
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
@@ -178,8 +169,8 @@ class AgentService:
             try:
                 if not ObjectId.is_valid(agent_id):
                     raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-                # async with mongo_client("agents") as agents_collection:
-                agent =  self.collection.find_one({"_id": ObjectId(agent_id)})
+
+                agent =  await self.collection.find_one({"_id": ObjectId(agent_id)})
                 if not agent:
                     raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)   
 
@@ -187,21 +178,10 @@ class AgentService:
                 if agent.get('deleted_dt') is not None:
                     raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_UPDATE_ERROR)
 
-                # async with mongo_client("agents") as agents_collection:
-                return  self.collection.update_one(
+                await logs_service.deleteAgentLogs(agent_id)
+                return await self.collection.update_one(
                     {"_id": ObjectId(agent_id)},
                     {"$set": {'deleted_dt': datetime.now(), 'status': Status.INACTIVE }}
                     )
             except Exception as e:
                 raise Exception(e)
-
-    async def add_data_to_json_file(newAgentData: dict, existingAgentData: List[dict]):
-        existingAgentData.append(newAgentData)
-        # Write the updated data back to the JSON file
-        async with aiofiles.open("../config/agentsData.json", "w") as json_file:
-             json_file.write(json.dumps(existingAgentData, default=str))  # Use default=str to handle UUID and date serialization
-
-    async def update_json_file(existingAgentData):
-        # Write the updated data back to the JSON file
-        async with aiofiles.open("../config/agentsData.json", "w") as json_file:
-             json_file.write(json.dumps(existingAgentData, default=str))  # Use default=str to handle UUID and date serialization

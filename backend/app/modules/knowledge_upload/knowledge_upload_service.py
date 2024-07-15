@@ -1,21 +1,17 @@
 import json
-from fastapi import HTTPException, Response
-from config.mongodb_config import mongo_client
 from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
 import traceback
 import os
 import json
 from config_Loader import get_configs
-from chromadb.utils import embedding_functions
-from key_vault_secret_loader import get_value_from_key_vault
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
 
 config = get_configs()
-# mongo_config
+
 class KnowledgeUploadService:
     def __init__(self):
         self.db = mongo_config.get_db()
@@ -23,8 +19,7 @@ class KnowledgeUploadService:
 
     async def getAiPrompts(self):
         try:
-            # async with mongo_client("config") as config_collection:
-            agent_config = self.collection.find_one({"name": "agent_config"})
+            agent_config = await self.collection.find_one({"name": "agent_config"})
             if agent_config is None:
                 raise Exception(ERROR_CONSTANTS.NOT_FOUND_ERROR)
             return json.loads(json.dumps(agent_config, default=str))
@@ -84,7 +79,6 @@ class KnowledgeUploadService:
                 os.remove(save_to)
 
             txt_content = " ".join(pdf_text)
-            # print(txt_content)
 
             response = await KnowledgeUploadService.loadToChromadb(txt_content)
 
