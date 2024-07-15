@@ -147,3 +147,7 @@
   background-color: rgb(45, 182, 212);
   border-color: rgb(45, 182, 212);
 }
+
+.grid-row .grid-cell:nth-child(1) {
+  cursor: pointer;
+}
