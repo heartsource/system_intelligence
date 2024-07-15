@@ -1,11 +1,8 @@
-from typing import Optional
 from fastapi import APIRouter, Response, status
-
 from utils.common_utilities import internalServerError
 from modules.logs.logs_model import AgentLogsListModel
 from modules.logs.logs_service import LogService
 import utils.constants.error_constants as ERROR_CONSTANTS
-import utils.constants.app_constants as APP_CONSTANTS
 
 router = APIRouter()
 logs_service = LogService()

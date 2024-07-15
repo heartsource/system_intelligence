@@ -1,12 +1,11 @@
 from typing import Optional
-from fastapi import APIRouter, Response, status, HTTPException
+from fastapi import APIRouter, Response, status
 from utils.enums.shared_enum import AgentType
 from utils.common_utilities import internalServerError
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
 from modules.agents.agents_service import AgentService
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
-import json
 
 router = APIRouter()
 agent_service = AgentService()

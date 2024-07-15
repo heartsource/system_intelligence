@@ -1,13 +1,16 @@
 from datetime import datetime
+from utils.enums.shared_enum import Model
 from modules.agents.agents_service import AgentService
 from modules.logs.logs_service import LogService
-from modules.logs.logs_model import AgentLogsModel
 from config_Loader import get_configs
 from uuid import uuid4
 import re
 from bson import ObjectId
 from fastapi import HTTPException
 import utils.constants.error_constants as ERROR_CONSTANTS
+from chromadb_reader_writer import chromadb_reader
+from openai import AzureOpenAI
+from key_vault_secret_loader import get_value_from_key_vault
 
 config = get_configs()
 agent_service = AgentService()
@@ -21,41 +24,40 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             model = payload.model
             flow = payload.flow
 
-        await agent_service.fetchAgentDetails(payload.agent_id)
-        #Context creation
-        from chromadb_reader_writer import chromadb_reader
+        
+        agent_data = await agent_service.fetchAgentDetails(payload.agent_id)
+        if agent_data is None or agent_data['model'] != payload.model or agent_data['flow'] != payload.flow:
+            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_MISMATCH_ERROR)
+        
         print('Heartie is in Action:  Started ... ')
-        if not ObjectId.is_valid(payload.agent_id):
-            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+
         agentlog = {
             "agent_id": ObjectId(payload.agent_id),
             "interaction_id": str(uuid4()),
             "interaction_date": datetime.now()
         }
-        #print(f"Using [Model] {model} [Flow] {flow} [Question] {question} \n [Prompt] {prompt}")
+
         chromaTimeStart = datetime.now()
-        context = chromadb_reader(question)
+        context = chromadb_reader(question) #Context creation
         chromaTime = datetime.now() - chromaTimeStart
-        print("chromadb reader")
+        print("chromadb reader ended")
         print(chromaTime.total_seconds())
+        
         # Set your Azure Cognitive Services endpoint and API key
         azure_openai_endpoint = config.get("AZURE_OPENAI_ENDPOINT")
+        # This will correspond to the custom name you chose for your deployment when you deployed a model.
+        # Use a gpt-35-turbo-instruct deployment.
         azure_deployment_name = config.get("AZURE_DEPLOYMENT_NAME")
-        from key_vault_secret_loader import get_value_from_key_vault
+
         azure_openai_api_key = get_value_from_key_vault(config.get("AZURE_OPENAI_API_KEY"))
 
-        from openai import AzureOpenAI
         client = AzureOpenAI(
             api_key=azure_openai_api_key,
             api_version="2024-02-01",
             azure_endpoint=azure_openai_endpoint
         )
-        # This will correspond to the custom name you chose for your deployment when you deployed a model.
-        # Use a gpt-35-turbo-instruct deployment.
-        deployment_name = 'system-intelligence-gpt-35-turbo-instruct'
 
         # Define your template with context and prompt
-
         template = config.get("TEMPLATE_AI")
         template_with_context_and_question = template.format(context, question)
         if prompt is not None:
@@ -63,7 +65,12 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             template_with_context_and_question = template.format(prompt, context, question)
         #print(f"Template with substitutions :{template_with_context_and_question}")
         openAPITimeStart = datetime.now()
-        response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=250)
+        response = client.completions.create(
+            model=azure_deployment_name, 
+            prompt=template_with_context_and_question, 
+            max_tokens=250,
+            temperature=0.5
+            )
         # Clean the response to remove newline characters
         openAPITime = datetime.now() - openAPITimeStart
         print(f"Template time: {openAPITime.total_seconds()}")

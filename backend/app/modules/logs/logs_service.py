@@ -1,12 +1,11 @@
+from datetime import datetime
 from typing import Any, Dict
 from fastapi import HTTPException
 from utils.common_utilities import custom_serializer, is_valid_uuid
-from config.mongodb_config import mongo_client
 from modules.logs.logs_model import AgentLogsListModel, AgentLogsModel
 from bson import ObjectId
 import utils.constants.error_constants as ERROR_CONSTANTS 
 import json
-from uuid import uuid4
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
 
@@ -21,23 +20,37 @@ class LogService:
             sort_dict = { payload.sort_by : -1 if payload.sort_order.value.lower() == "desc" else 1 } if payload.sort_by else None
             
             pipeline = [
-                    { "$lookup": {
-                        "from": "agents",
-                        "localField": "agent_id",
-                        "foreignField": "_id",
-                        "as": "agent_info"
-                    }},
-                    { "$unwind": "$agent_info" },
-                    { "$project": {
-                        "agent_id": 1,
-                        "agent_name": "$agent_info.name",
-                        "model": 1,
-                        "flow": 1,
-                        "interaction_id": 1,
-                        "interaction_date": 1,
-                        "duration": 1
-                    }}
-                ]
+                        {
+                            "$match": {
+                                "$or": [
+                                    {"deleted_dt": {"$exists": False}},
+                                    {"deleted_dt": None}
+                                ]
+                            }
+                        },
+                        { 
+                            "$lookup": {
+                            "from": "agents",
+                            "localField": "agent_id",
+                            "foreignField": "_id",
+                            "as": "agent_info"
+                            }
+                        },
+                        { 
+                            "$unwind": "$agent_info" 
+                        },
+                        { 
+                            "$project": {
+                            "agent_id": 1,
+                            "agent_name": "$agent_info.name",
+                            "model": 1,
+                            "flow": 1,
+                            "interaction_id": 1,
+                            "interaction_date": 1,
+                            "duration": 1
+                            }
+                        }
+                    ]
             if sort_dict:
                 pipeline.append({ "$sort": sort_dict })
 
@@ -51,9 +64,13 @@ class LogService:
                     if not ObjectId.is_valid(id):
                         raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
                     formattedAgentIds.append(ObjectId(id))
-                pipeline.insert(0, { "$match": { "agent_id": { "$in": formattedAgentIds } } })
-            # async with mongo_client("logs") as logs_collection:
-            results =  self.collection.aggregate(pipeline)
+                query = { "$match": 
+                            { 
+                                "agent_id": { "$in": formattedAgentIds }
+                            }
+                        }
+                pipeline.insert(0, query)
+            results = await self.collection.aggregate(pipeline).to_list(length=None)
             return json.loads(json.dumps(list(results), default=custom_serializer))
         except Exception as e:
             raise Exception(e)
@@ -62,16 +79,6 @@ class LogService:
         try:
             if not is_valid_uuid(id):
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_INTERACTION_ID_ERROR)
-            # pipeline = [
-            #     { "$match": {"interaction_id": id }},
-            #     { "$lookup": {
-            #         "from": "agents",
-            #         "localField": "agent_id",
-            #         "foreignField": "_id",
-            #         "as": "agent_info"
-            #     }},
-            #     { "$unwind": "$agent_info" }
-            # ]
             query = {
                 "interaction_id": id,
                 "$or": [
@@ -79,11 +86,10 @@ class LogService:
                     {"deleted_dt": None}
                 ]
             }
-            agent_log =  self.collection.find_one(query) 
+            agent_log =  await self.collection.find_one(query) 
 
             if agent_log is not None:
                 # Convert ObjectId to string for JSON serialization
-                # agent_log["_id"] = str(agent_log["_id"])
                 return json.loads(json.dumps(agent_log, default=custom_serializer))
             return None
         except Exception as e:
@@ -92,34 +98,14 @@ class LogService:
     async def createAgentLogs(self, payload: AgentLogsModel):
         try:
             payload['duration'] = int(payload['duration'].total_seconds())
-            # async with mongo_client("logs") as logs_collection:
-            return  self.collection.insert_one(payload)
+            return await self.collection.insert_one(payload)
         except Exception as e:
             raise Exception(e)
         
-    # async def fetchAgentLogs(agent_id: AgentLogsModel):
-    #     try:
-    #         if not ObjectId.is_valid(agent_id):
-    #             raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-    #         pipeline = [
-    #             { "$match": {"_id": ObjectId(agent_id) }},
-    #             { "$lookup": {
-    #                 "from": "logs",
-    #                 "localField": "_id",
-    #                 "foreignField": "agent_id",
-    #                 "as": "agentLogs"
-    #             }}
-    #         ]
-    #         async with mongo_client("agents") as agents_collection:
-    #             result = await agents_collection.aggregate(pipeline).to_list(None)
-    #             return json.loads(json.dumps(result, default=custom_serializer))
-    #     except Exception as e:
-    #         raise Exception(e)
-        
-    # async def createAgentLogs(payload: AgentLogsModel):
-    #     try:
-    #         payload['duration'] = int(payload['duration'].total_seconds())
-    #         async with mongo_client("logs") as logs_collection:
-    #             return await logs_collection.insert_one(payload)
-    #     except Exception as e:
-    #         raise Exception(e)
+    async def deleteAgentLogs(self, agent_id: str):
+        try:
+            if not ObjectId.is_valid(agent_id):
+                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+            return await self.collection.update_many({"agent_id": ObjectId(agent_id)}, {"$set": {"deleted_dt": datetime.now()}})
+        except Exception as e:
+            raise Exception(e)
