@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../Styles/configAddAgent.css";
 import { AppContext } from "../../context/AppContext";
+import { handleError } from "../../utils/handleError";
 
 const ConfigAddAgent = () => {
   const { setCurrentComponent } = useContext(AppContext);
@@ -42,10 +43,7 @@ const ConfigAddAgent = () => {
       setTemplate(template);
       setError(null);
     } catch (error) {
-      setError("Server is down. Please try again later.");
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      handleError(setError, "Server is down. Please try again later.");
     }
   };
 
@@ -65,9 +63,8 @@ const ConfigAddAgent = () => {
         );
 
         if (response.status >= 200 && response.status <= 299) {
-          // setIsSaved(true);
-
           setCurrentComponent("agents");
+
           setShowSuccess(true);
           setTimeout(() => {
             setShowSuccess(false);
@@ -85,12 +82,10 @@ const ConfigAddAgent = () => {
             template: "",
           });
         } else {
-          setError(
+          handleError(
+            setError,
             "There was an error saving the configuration. Please try again later."
           );
-          setTimeout(() => {
-            setError(false);
-          }, 3000);
         }
       } catch (error) {
         if (
@@ -104,12 +99,10 @@ const ConfigAddAgent = () => {
             setNameExistsError(false);
           }, 3000);
         } else {
-          setError(
+          handleError(
+            setError,
             "There was an error saving the configuration. Please try again later."
           );
-          setTimeout(() => {
-            setError(false);
-          }, 3000);
         }
       }
     } else {

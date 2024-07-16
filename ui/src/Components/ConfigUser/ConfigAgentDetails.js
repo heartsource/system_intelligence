@@ -3,9 +3,11 @@ import axios from "axios";
 import "../../Styles/configAgentDetails.css";
 import { AppContext } from "../../context/AppContext";
 import { requestToggleStatus } from "../../utils/modal";
+import { handleError } from "../../utils/handleError";
 
 const ConfigAgentDetails = () => {
-  const { selectedAgent } = useContext(AppContext);
+  const { selectedAgent, setCurrentComponent, setLogs, setSelectedAgentId } =
+    useContext(AppContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -55,10 +57,7 @@ const ConfigAgentDetails = () => {
       setModels(models || []);
       setFlows(flows || []);
     } catch (error) {
-      setError("Server is down. Please try again later.");
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      handleError(setError, "Server is down. Please try again later.");
     }
   };
 
@@ -145,12 +144,10 @@ const ConfigAgentDetails = () => {
           setShowSuccess(false);
         }, 3000);
       } else {
-        setError(
+        handleError(
+          setError,
           "There was an error updating the agent details. Please try again later."
         );
-        setTimeout(() => {
-          setError(null);
-        }, 3000);
       }
     } catch (error) {
       if (
@@ -166,6 +163,25 @@ const ConfigAgentDetails = () => {
       } else {
         console.log("Error:", error);
       }
+    }
+  };
+
+  const viewAgentLogsClick = async () => {
+    try {
+      const payload = { agent_ids: [selectedAgent._id] };
+      const response = await axios.post(
+        "http://4.255.69.143/heartie-be/logs/",
+        payload
+      );
+      if (response.data.status === "error") {
+        handleError(setError, response.data.data);
+      } else {
+        setLogs(response.data.data);
+        setSelectedAgentId(selectedAgent._id);
+        setCurrentComponent("agentLogs");
+      }
+    } catch (error) {
+      handleError(setError, "No Record Found.");
     }
   };
 
@@ -194,7 +210,12 @@ const ConfigAgentDetails = () => {
           <div>
             <div className="top-right-container">
               <div className="view-agent-logs">
-                <label>View Agent Logs</label>
+                <label
+                  style={{ cursor: "pointer" }}
+                  onClick={viewAgentLogsClick}
+                >
+                  View Agent Logs
+                </label>
               </div>
               <div className="status-switch">
                 <label>Status</label>

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../../Styles/configAgentLogs.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
+import { AppContext } from "../../context/AppContext";
+import { handleError } from "../../utils/handleError";
 
 const columns = [
   { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -45,16 +47,17 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgentLogs = () => {
-  const [logs, setLogs] = useState([]);
+  const { logs, setLogs, selectedAgentId } = useContext(AppContext);
   const [sortConfig, setSortConfig] = useState({
     key: "updated",
     direction: "desc",
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const payload = {};
+        const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(
           "http://4.255.69.143/heartie-be/logs/",
           payload
@@ -65,11 +68,11 @@ const ConfigAgentLogs = () => {
         const sortedLogs = sortItems(data, "created_dt", "desc");
         setLogs(sortedLogs);
       } catch (error) {
-        console.log(error);
+        handleError(setError, "error");
       }
     };
     fetchData();
-  }, []);
+  }, [selectedAgentId, setLogs]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -92,7 +95,7 @@ const ConfigAgentLogs = () => {
       >
         <fieldset id="agentLogsFieldset">
           <legend id="agentLogs">
-            Agent Logs <i class="fa-solid fa-headset"></i>
+            Agent Logs <i className="fa-solid fa-headset"></i>
           </legend>
           <hr />
           <div className="agentlogs-table-container">

@@ -67,3 +67,7 @@
   color: #fff;
   text-align: center;
 }
+
+.grid-cell:nth-child(1) {
+  cursor: pointer;
+}
