@@ -5,21 +5,6 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 
-const columns = [
-  { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
-  {
-    key: "agent_name",
-    label: (
-      <>
-        Agent Name<i className="fa fa-filter" aria-hidden="true"></i>
-      </>
-    ),
-    sortable: true,
-  },
-  { key: "interaction_date", label: "Interaction Date", sortable: true },
-  { key: "duration", label: "Duration", sortable: true },
-];
-
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
     {columns.map((column) => (
@@ -53,6 +38,24 @@ const ConfigAgentLogs = () => {
     direction: "desc",
   });
   const [error, setError] = useState(null);
+
+  const columns = [
+    { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
+    {
+      key: "agent_name",
+      label: (
+        <>
+          Agent Name &nbsp;
+          {!selectedAgentId && (
+            <i className="fa fa-filter" aria-hidden="true"></i>
+          )}
+        </>
+      ),
+      sortable: true,
+    },
+    { key: "interaction_date", label: "Interaction Date", sortable: true },
+    { key: "duration", label: "Duration", sortable: true },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
