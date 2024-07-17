@@ -4,6 +4,7 @@ import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
+import FilterButtonWithPopover from "./FilterButtonWithPopover";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -32,9 +33,10 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgentLogs = () => {
-  const { logs, setLogs, selectedAgentId } = useContext(AppContext);
+  const { logs, setLogs, selectedAgentId, filteredLogs } =
+    useContext(AppContext);
   const [sortConfig, setSortConfig] = useState({
-    key: "updated",
+    key: "interaction_id",
     direction: "desc",
   });
   const [error, setError] = useState(null);
@@ -46,13 +48,14 @@ const ConfigAgentLogs = () => {
       label: (
         <>
           Agent Name &nbsp;
-          {!selectedAgentId && (
-            <i className="fa fa-filter" aria-hidden="true"></i>
-          )}
+          {!selectedAgentId && <FilterButtonWithPopover />}
         </>
       ),
+
       sortable: true,
     },
+    { key: "model", label: "Model", sortable: true },
+    { key: "flow", label: "Flow", sortable: true },
     { key: "interaction_date", label: "Interaction Date", sortable: true },
     { key: "duration", label: "Duration", sortable: true },
   ];
@@ -68,14 +71,18 @@ const ConfigAgentLogs = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        const sortedLogs = sortItems(data, "created_dt", "desc");
+        const sortedLogs = sortItems(
+          data,
+          sortConfig.key,
+          sortConfig.direction
+        );
         setLogs(sortedLogs);
       } catch (error) {
         handleError(setError, "error");
       }
     };
     fetchData();
-  }, [selectedAgentId, setLogs]);
+  }, [selectedAgentId, setLogs, sortConfig]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -108,17 +115,21 @@ const ConfigAgentLogs = () => {
               onSort={sortLogs}
             />
             <div className="agentlogs-row-container">
-              {logs.map((log, index) => (
-                <TableRow
-                  key={index}
-                  agent={log}
-                  index={index}
-                  columns={columns}
-                />
-              ))}
+              {(filteredLogs.length > 0 ? filteredLogs : logs).map(
+                (log, index) => (
+                  <TableRow
+                    key={index}
+                    agent={log}
+                    index={index}
+                    columns={columns}
+                  />
+                )
+              )}
             </div>
             <div id="pagination">
-              Showing {logs.length} of {logs.length} Agents
+              Showing{" "}
+              {filteredLogs.length > 0 ? filteredLogs.length : logs.length} of{" "}
+              {logs.length} Logs
             </div>
           </div>
         </fieldset>

@@ -14,16 +14,6 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [selectedAgent, setSelectedAgent] = useState({}); // Selected agent
   const [defaultAgent, setDefaultAgent] = useState({}); // Default agent
 
-  // const [template, setTemplate] = useState(
-  //   () => sessionStorage.getItem("template") || ""
-  // );
-  // const [selectedModel, setSelectedModel] = useState(
-  //   () => sessionStorage.getItem("model") || ""
-  // );
-  // const [selectedFlow, setSelectedFlow] = useState(
-  //   () => sessionStorage.getItem("flow") || ""
-  // );
-
   const handleTextareaInput = (event) => {
     event.target.style.height = "auto"; // Reset height to auto to recalculate scroll height
     event.target.style.height = event.target.scrollHeight + "px"; // Set height to scroll height
