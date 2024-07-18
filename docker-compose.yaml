@@ -26,12 +26,12 @@ services:
     ports:
       - 8000:8000
 
-  frontend:
-    build: ./frontend/
-    container_name: system-intelligence-frontend
-    image: ${docker_user}/${frontend_image_name}:${frontend_image_tag}
-    ports:
-      - 8501:8501
+  # frontend:
+  #   build: ./frontend/
+  #   container_name: system-intelligence-frontend
+  #   image: ${docker_user}/${frontend_image_name}:${frontend_image_tag}
+  #   ports:
+  #     - 8501:8501
 #    networks:
 #      - net
 #networks:
