@@ -1,5 +1,6 @@
 AGENT_EXISTS_ERROR = "Agent with name already exists"
 AGENT_UPDATE_ERROR = "Agent details cannot be updated as agent is already deleted"
+AGENT_DELETE_ERROR = "Default agent can't be deleted"
 AGENT_MISMATCH_ERROR = "Please provide valid agent details"
 NOT_FOUND_ERROR = "No Record Found"
 
@@ -11,3 +12,4 @@ INVALID_ID_ERROR="Invalid id, id should be valid ObjectID"
 INVALID_INTERACTION_ID_ERROR="Interaction Id should be valid UUID"
 
 MONGODB_CONN_ERROR="Error connecting to MongoDB"
+INVALID_MODEL_ERROR="Inavlid Model"

@@ -10,8 +10,6 @@ import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
 
-config = get_configs()
-
 class KnowledgeUploadService:
     def __init__(self):
         self.db = mongo_config.get_db()

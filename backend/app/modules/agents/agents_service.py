@@ -174,10 +174,21 @@ class AgentService:
                 if not ObjectId.is_valid(agent_id):
                     raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
 
-                agent =  await self.collection.find_one({"_id": ObjectId(agent_id)})
+                query = {
+                    "_id": ObjectId(agent_id),
+                    "$or": [
+                        {"deleted_dt": {"$exists": False}},
+                        {"deleted_dt": None}
+                    ]
+                }
+
+                agent =  await self.collection.find_one(query)
                 if not agent:
                     raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)   
 
+                if agent.get('type') == AgentType.DEFAULT.value:
+                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_DELETE_ERROR)
+                
                 # Check if the agent is already marked as deleted
                 if agent.get('deleted_dt') is not None:
                     raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_UPDATE_ERROR)
