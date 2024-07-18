@@ -57,7 +57,7 @@ def get_client():
             if chromaHost == "" or chromaPort == "":
                 chromaHost = appConfig.chroma_host
                 chromaPort = appConfig.chroma_port
-        client = (chromadb.HttpClient(host='localhost', port=8000))
+        client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
         return client
     except Exception as e:
         raise Exception(e)
