@@ -34,6 +34,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
 
   const handleCheckboxChange = (event) => {
     event.stopPropagation();
+    event.preventDefault();
     setCheckedItems({
       ...checkedItems,
       [event.target.name]: event.target.checked,
@@ -42,17 +43,21 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
 
   const handleSelectAllChange = (event) => {
     event.stopPropagation();
+    event.preventDefault();
     const newCheckedItems = {};
     agents.forEach((agent) => {
       newCheckedItems[agent.name] = event.target.checked;
     });
     setCheckedItems(newCheckedItems);
   };
+  const handlePopoverClick = (event) => {
+    event.stopPropagation();
+  };
 
   if (!isOpen) return null;
 
   return (
-    <div className="popover-container">
+    <div className="popover-container" onClick={handlePopoverClick}>
       <div className="popover-content">
         <div>
           <input

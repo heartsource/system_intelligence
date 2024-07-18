@@ -14,7 +14,7 @@ export const sortItems = (items, key, direction = "asc") => {
   }
 
   return [...items].sort((a, b) => {
-    if (key === "updated" || key === "created") {
+    if (key === "updated_dt" || key === "created_dt") {
       return direction === "asc"
         ? new Date(a[key]) - new Date(b[key])
         : new Date(b[key]) - new Date(a[key]);

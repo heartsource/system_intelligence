@@ -40,6 +40,7 @@ const ConfigAgentLogs = () => {
     direction: "desc",
   });
   const [error, setError] = useState(null);
+  const [fetchedLogs, setFetchedLogs] = useState([]);
 
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -51,7 +52,6 @@ const ConfigAgentLogs = () => {
           {!selectedAgentId && <FilterButtonWithPopover />}
         </>
       ),
-
       sortable: true,
     },
     { key: "model", label: "Model", sortable: true },
@@ -71,18 +71,14 @@ const ConfigAgentLogs = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        const sortedLogs = sortItems(
-          data,
-          sortConfig.key,
-          sortConfig.direction
-        );
-        setLogs(sortedLogs);
+        setFetchedLogs(data);
+        setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "error");
       }
     };
     fetchData();
-  }, [selectedAgentId, setLogs, sortConfig]);
+  }, [selectedAgentId, setLogs]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -92,7 +88,7 @@ const ConfigAgentLogs = () => {
       direction = "desc";
     }
 
-    const sortedLogs = sortItems(logs, key, direction);
+    const sortedLogs = sortItems(fetchedLogs, key, direction);
     setLogs(sortedLogs);
     setSortConfig({ key, direction });
   };
