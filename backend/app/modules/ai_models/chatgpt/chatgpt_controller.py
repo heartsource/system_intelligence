@@ -1,7 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Response
 from modules.ai_models.prompt_model import PromptModel
-from config_Loader import get_configs
 from modules.ai_models.chatgpt.chatgpt_service import ChatGPTService
 from utils.common_utilities import internalServerError
 

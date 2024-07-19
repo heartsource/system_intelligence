@@ -1,8 +1,7 @@
 import os
 import uuid
 from config.app_config import appConfig
-from config_Loader import get_configs
-from key_vault_secret_loader import get_value_from_key_vault
+from modules.shared.key_vault_secret_loader import get_value_from_key_vault
 
 def chromadb_writer(txt_file_content):
     print("Writting to Chroma: Started...")
@@ -57,7 +56,7 @@ def get_client():
             if chromaHost == "" or chromaPort == "":
                 chromaHost = appConfig.chroma_host
                 chromaPort = appConfig.chroma_port
-        client = (chromadb.HttpClient(host=chromaHost, port=chromaPort))
+        client = (chromadb.HttpClient(host='localhost', port=8000))
         return client
     except Exception as e:
         raise Exception(e)

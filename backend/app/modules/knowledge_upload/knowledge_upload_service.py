@@ -4,11 +4,11 @@ from PyPDF2.errors import PdfReadError
 import traceback
 import os
 import json
-from config_Loader import get_configs
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
+from modules.shared.chromadb_reader_writer import chromadb_writer
 
 class KnowledgeUploadService:
     def __init__(self):
@@ -26,7 +26,6 @@ class KnowledgeUploadService:
     
     async def loadToChromadb(file_content):
         return_value = {"status": "success", "message": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
-        from chromadb_reader_writer import chromadb_writer
         chromadb_writer(file_content)
         return return_value
 

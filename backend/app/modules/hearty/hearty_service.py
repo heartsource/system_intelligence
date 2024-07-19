@@ -5,14 +5,13 @@ from modules.ai_models.llama.llama_service import LlamaService
 from utils.enums.shared_enum import Model
 from modules.agents.agents_service import AgentService
 from modules.logs.logs_service import LogService
-from config_Loader import get_configs
 from uuid import uuid4
 from bson import ObjectId
 from fastapi import HTTPException
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
-from chromadb_reader_writer import chromadb_reader
-from key_vault_secret_loader import get_value_from_key_vault
+from modules.shared.chromadb_reader_writer import chromadb_reader
+from modules.shared.key_vault_secret_loader import get_value_from_key_vault
 
 agent_service = AgentService()
 logs_service = LogService()

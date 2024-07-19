@@ -1,6 +1,5 @@
 from azure.identity import ClientSecretCredential
 from azure.keyvault.secrets import SecretClient
-from config_Loader import get_configs
 from config.app_config import appConfig
 
 client_id = appConfig.azure_client_id

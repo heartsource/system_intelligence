@@ -1,7 +1,6 @@
 import re
 from openai import AzureOpenAI
-from key_vault_secret_loader import get_value_from_key_vault
-from config_Loader import get_configs
+from modules.shared.key_vault_secret_loader import get_value_from_key_vault
 from config.app_config import appConfig
 
 class ChatGPTService:
