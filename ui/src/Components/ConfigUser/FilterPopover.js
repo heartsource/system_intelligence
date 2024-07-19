@@ -50,6 +50,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
     });
     setCheckedItems(newCheckedItems);
   };
+
   const handlePopoverClick = (event) => {
     event.stopPropagation();
   };

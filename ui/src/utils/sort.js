@@ -13,7 +13,7 @@ export const sortItems = (items, key, direction = "asc") => {
     return [];
   }
 
-  return [...items].sort((a, b) => {
+  items = items.sort((a, b) => {
     if (key === "updated_dt" || key === "created_dt") {
       return direction === "asc"
         ? new Date(a[key]) - new Date(b[key])
@@ -28,6 +28,8 @@ export const sortItems = (items, key, direction = "asc") => {
       return 0;
     }
   });
+
+  return items;
 };
 
 /**

@@ -158,7 +158,7 @@ const ConfigAgentDetails = () => {
       ) {
         setFormErrors((prevErrors) => ({
           ...prevErrors,
-          name: "Agent with name already exists.",
+          name: "* Name already exists. Please try a different name.",
         }));
       } else {
         console.log("Error:", error);

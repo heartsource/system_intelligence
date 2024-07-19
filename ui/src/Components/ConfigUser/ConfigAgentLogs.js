@@ -33,12 +33,16 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgentLogs = () => {
-  const { logs, setLogs, selectedAgentId, filteredLogs } =
-    useContext(AppContext);
-  const [sortConfig, setSortConfig] = useState({
-    key: "interaction_id",
-    direction: "desc",
-  });
+  const {
+    logs,
+    setLogs,
+    selectedAgentId,
+    //setSelectedAgentId,
+    filteredLogs,
+    setFilteredLogs,
+    sortConfig,
+    setSortConfig,
+  } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [fetchedLogs, setFetchedLogs] = useState([]);
 
@@ -59,6 +63,10 @@ const ConfigAgentLogs = () => {
     { key: "interaction_date", label: "Interaction Date", sortable: true },
     { key: "duration", label: "Duration", sortable: true },
   ];
+
+  // useEffect(() => {
+  //   setSelectedAgentId(null);
+  // }, [setSelectedAgentId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +96,11 @@ const ConfigAgentLogs = () => {
       direction = "desc";
     }
 
-    const sortedLogs = sortItems(fetchedLogs, key, direction);
+    const sortedLogs = sortItems(
+      filteredLogs.length > 0 ? filteredLogs : fetchedLogs,
+      key,
+      direction
+    );
     setLogs(sortedLogs);
     setSortConfig({ key, direction });
   };
