@@ -1,7 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Response
 from modules.ai_models.prompt_model import PromptModel
-from config_Loader import get_configs
 from modules.ai_models.llama.llama_service import LlamaService
 from utils.common_utilities import internalServerError
 
