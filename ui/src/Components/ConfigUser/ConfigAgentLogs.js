@@ -37,7 +37,6 @@ const ConfigAgentLogs = () => {
     logs,
     setLogs,
     selectedAgentId,
-    //setSelectedAgentId,
     filteredLogs,
     setFilteredLogs,
     sortConfig,
@@ -64,10 +63,6 @@ const ConfigAgentLogs = () => {
     { key: "duration", label: "Duration", sortable: true },
   ];
 
-  // useEffect(() => {
-  //   setSelectedAgentId(null);
-  // }, [setSelectedAgentId]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,7 +74,7 @@ const ConfigAgentLogs = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        setFetchedLogs(data);
+        setFilteredLogs(data);
         setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "error");
