@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -15,15 +16,23 @@ export const AppProvider = ({ children }) => {
     direction: "desc",
   });
 
+  // This will create a unique key that changes even if the component value stays the same
+  const [componentKey, setComponentKey] = useState(0);
+
   useEffect(() => {
     localStorage.setItem("currentComponent", currentComponent);
   }, [currentComponent]);
+
+  const updateCurrentComponent = (component) => {
+    setCurrentComponent(component);
+    setComponentKey((prevKey) => prevKey + 1); // Update the key to force re-render
+  };
 
   return (
     <AppContext.Provider
       value={{
         currentComponent,
-        setCurrentComponent,
+        setCurrentComponent: updateCurrentComponent, // Use the new update function
         selectedAgent,
         setSelectedAgent,
         logs,
@@ -34,6 +43,7 @@ export const AppProvider = ({ children }) => {
         setFilteredLogs,
         sortConfig,
         setSortConfig,
+        componentKey, // Provide the componentKey
       }}
     >
       {children}

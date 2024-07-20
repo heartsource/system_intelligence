@@ -41,6 +41,7 @@ const ConfigAgentLogs = () => {
     setFilteredLogs,
     sortConfig,
     setSortConfig,
+    componentKey, // Access the componentKey from context
   } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [fetchedLogs, setFetchedLogs] = useState([]);
@@ -81,7 +82,7 @@ const ConfigAgentLogs = () => {
       }
     };
     fetchData();
-  }, [selectedAgentId, setLogs]);
+  }, [selectedAgentId, setLogs, componentKey]); // Add componentKey to dependencies
 
   const sortLogs = (key) => {
     let direction = "asc";
