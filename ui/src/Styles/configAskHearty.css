@@ -170,3 +170,8 @@ h5 b {
   border-radius: 5px;
   color: white;
 }
+
+.conversation-container {
+  margin: 0;
+  padding: 0;
+}

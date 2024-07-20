@@ -4,21 +4,7 @@ import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
-
-const columns = [
-  { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
-  {
-    key: "agent_name",
-    label: (
-      <>
-        Agent Name<i className="fa fa-filter" aria-hidden="true"></i>
-      </>
-    ),
-    sortable: true,
-  },
-  { key: "interaction_date", label: "Interaction Date", sortable: true },
-  { key: "duration", label: "Duration", sortable: true },
-];
+import FilterButtonWithPopover from "./FilterButtonWithPopover";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -47,12 +33,35 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgentLogs = () => {
-  const { logs, setLogs, selectedAgentId } = useContext(AppContext);
-  const [sortConfig, setSortConfig] = useState({
-    key: "updated",
-    direction: "desc",
-  });
+  const {
+    logs,
+    setLogs,
+    selectedAgentId,
+    filteredLogs,
+    setFilteredLogs,
+    sortConfig,
+    setSortConfig,
+  } = useContext(AppContext);
   const [error, setError] = useState(null);
+  const [fetchedLogs, setFetchedLogs] = useState([]);
+
+  const columns = [
+    { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
+    {
+      key: "agent_name",
+      label: (
+        <>
+          Agent Name &nbsp;
+          {!selectedAgentId && <FilterButtonWithPopover />}
+        </>
+      ),
+      sortable: true,
+    },
+    { key: "model", label: "Model", sortable: true },
+    { key: "flow", label: "Flow", sortable: true },
+    { key: "interaction_date", label: "Interaction Date", sortable: true },
+    { key: "duration", label: "Duration", sortable: true },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,8 +74,8 @@ const ConfigAgentLogs = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        const sortedLogs = sortItems(data, "created_dt", "desc");
-        setLogs(sortedLogs);
+        setFilteredLogs(data);
+        setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "error");
       }
@@ -82,7 +91,11 @@ const ConfigAgentLogs = () => {
       direction = "desc";
     }
 
-    const sortedLogs = sortItems(logs, key, direction);
+    const sortedLogs = sortItems(
+      filteredLogs.length > 0 ? filteredLogs : fetchedLogs,
+      key,
+      direction
+    );
     setLogs(sortedLogs);
     setSortConfig({ key, direction });
   };
@@ -105,17 +118,21 @@ const ConfigAgentLogs = () => {
               onSort={sortLogs}
             />
             <div className="agentlogs-row-container">
-              {logs.map((log, index) => (
-                <TableRow
-                  key={index}
-                  agent={log}
-                  index={index}
-                  columns={columns}
-                />
-              ))}
+              {(filteredLogs.length > 0 ? filteredLogs : logs).map(
+                (log, index) => (
+                  <TableRow
+                    key={index}
+                    agent={log}
+                    index={index}
+                    columns={columns}
+                  />
+                )
+              )}
             </div>
             <div id="pagination">
-              Showing {logs.length} of {logs.length} Agents
+              Showing{" "}
+              {filteredLogs.length > 0 ? filteredLogs.length : logs.length} of{" "}
+              {logs.length} Logs
             </div>
           </div>
         </fieldset>

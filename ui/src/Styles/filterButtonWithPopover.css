@@ -1,0 +1,63 @@
+.popover-container {
+  border: 1px solid #ccc;
+  background-color: rgb(45, 182, 212);
+  color: black;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  width: 20em;
+  z-index: 10;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.popover-content {
+  display: flex;
+  flex-direction: column;
+}
+.popover-content label {
+  color: black !important;
+}
+
+.popover-content div {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.popover-content input {
+  margin-right: 10px;
+}
+
+input[type="checkbox"] {
+  width: 1.2em;
+  height: 1.2em;
+  border: 3px solid lightgray;
+  border-radius: 5px;
+}
+
+.popover-content button {
+  margin-top: 10px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid rgb(45, 182, 212);
+  background-color: black;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.popover-content button:hover {
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+}
+
+.popover-content button:last-of-type {
+  background-color: #6c757d;
+}
+
+.popover-content button:last-of-type:hover {
+  background-color: transparent;
+  color: black;
+}

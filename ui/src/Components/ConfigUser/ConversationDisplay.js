@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { writeText } from "clipboard-polyfill";
 import "../../Styles/conversationDisplay.css";
 import hearty from "../Images/NewHeartyIcon-without-background.png";
@@ -7,6 +7,7 @@ const ConversationDisplay = ({ conversation }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [conversationHistory, setConversationHistory] = useState([]);
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const containerRef = useRef(null); // Ref for the container element
 
   // Function to update current time
   const updateCurrentTime = () => {
@@ -42,6 +43,7 @@ const ConversationDisplay = ({ conversation }) => {
     if (conversation && conversation.answer) {
       conversation.currentTime = currentTime;
       addConversationItem(conversation);
+      containerRef.current.scrollTo(0, 0); // Scroll to the top
     }
   }, [conversation]);
 
@@ -57,9 +59,14 @@ const ConversationDisplay = ({ conversation }) => {
   };
 
   return (
-    conversationHistory.length > 0 && (
-      <div className="container-md answerContainer">
-        {conversationHistory.map((item, index) => (
+    <div
+      ref={containerRef}
+      className={`container-md ${
+        conversationHistory.length > 0 ? "answerContainer" : ""
+      }`}
+    >
+      {conversationHistory.length > 0 &&
+        conversationHistory.map((item, index) => (
           <div key={index}>
             <div className="row justify-content-md">
               <div className="userInitial col-md-auto">
@@ -118,8 +125,7 @@ const ConversationDisplay = ({ conversation }) => {
             )}
           </div>
         ))}
-      </div>
-    )
+    </div>
   );
 };
 

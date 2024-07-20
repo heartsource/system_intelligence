@@ -4,7 +4,8 @@ import Logo from "../Components/../Images/HEART SOURCE ICON.png";
 import "../../Styles/sidenavbar.css";
 
 const Navbar = () => {
-  const { currentComponent, setCurrentComponent } = useContext(AppContext);
+  const { currentComponent, setCurrentComponent, setSelectedAgentId } =
+    useContext(AppContext);
 
   useEffect(() => {
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
@@ -74,13 +75,17 @@ const Navbar = () => {
               </div>
 
               <div
-                onClick={() => handleNavigation("agentLogs")}
+                onClick={() => {
+                  setSelectedAgentId(null);
+                  handleNavigation("agentLogs");
+                }}
                 className={`nav_link ${
                   currentComponent === "agentLogs" ? "active" : ""
                 }`}
               >
                 <i className="fa-solid fa-headset"></i> Agent Logs
               </div>
+
               <div
                 onClick={() => handleNavigation("upload")}
                 className={`nav_link ${
