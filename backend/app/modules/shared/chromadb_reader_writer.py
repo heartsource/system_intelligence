@@ -1,11 +1,9 @@
-import os
 import uuid
-from config.app_config import appConfig
-from modules.shared.key_vault_secret_loader import get_value_from_key_vault
+from chromadb.utils import embedding_functions
+from config.chromadb_config import chromadb_config
 
 def chromadb_writer(txt_file_content):
     print("Writting to Chroma: Started...")
-    from chromadb.utils import embedding_functions
     chunk_size = 200
     # Split the data into chunks
 
@@ -13,19 +11,16 @@ def chromadb_writer(txt_file_content):
     ids = [str(uuid.uuid4()) for arr in txt_split]
     metadata = [{"hnsw:space": f"cosine{i}"} for i in range(len(txt_split))]
 
-    from langchain_community.vectorstores import Chroma
+    client = chromadb_config.get_client()
 
-    EMBED_MODEL = "all-MiniLM-L6-v2"
-    client = get_client()
-
-    embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)
-    collection_name = get_collection_name()
+    embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=chromadb_config.chromaDb_writer_embed_model)
+    collection_name = chromadb_config.get_collection_name()
     try:
         collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
         collection.add(
             documents=txt_split,
             ids=ids,
-            metadatas=metadata
+            metadatas=metadata,
         )
         print("Writing to ChromaDB: Ended")
     except Exception as e:
@@ -33,8 +28,8 @@ def chromadb_writer(txt_file_content):
         raise Exception(e)
 
 def chromadb_reader(question: str):
-    client = get_client()
-    collection_name = get_collection_name()
+    client = chromadb_config.get_client()
+    collection_name = chromadb_config.get_collection_name()
     collection = client.get_or_create_collection(collection_name)
     query_results = collection.query(
         query_texts=[question],
@@ -42,40 +37,6 @@ def chromadb_reader(question: str):
         include=["documents"]
     )
     return query_results["documents"][0]
-
-def get_client():
-    try:
-        import chromadb
-        #client = chromadb.PersistentClient(path=appConfig.get("CHROMA_DB_PATH"))
-        chromaHost = ""
-        chromaPort = ""
-        try:
-            chromaHost = os.environ['CHROMA_HOST']
-            chromaPort = os.environ['CHROMA_PORT']
-        except Exception:
-            if chromaHost == "" or chromaPort == "":
-                chromaHost = appConfig.chroma_host
-                chromaPort = appConfig.chroma_port
-        client = (chromadb.HttpClient(host='localhost', port=8000))
-        return client
-    except Exception as e:
-        raise Exception(e)
-
-def get_collection_name():
-    collection_name = appConfig.chroma_db_collection_name
-    #print("Collection name ", collection_name)
-    return collection_name
-
-def get_collection (collection_name):
-    import chromadb
-    EMBED_MODEL = "all-mpnet-base-v2"  # This is better trained
-    embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name=EMBED_MODEL
-    )
-    collection = client.get_collection(
-        name=collection_name, embedding_function=embedding_func
-    )
-    return collection
 
 #chromadb_pdf_writer(pdf_file_with_path=appConfig.get("KNOWLEDGE_PDF_LOCAL_PATH"))
 #chromadb_wiki_writer("NISSAN LEAF")

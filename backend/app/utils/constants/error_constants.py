@@ -13,3 +13,5 @@ INVALID_INTERACTION_ID_ERROR="Interaction Id should be valid UUID"
 
 MONGODB_CONN_ERROR="Error connecting to MongoDB"
 INVALID_MODEL_ERROR="Inavlid Model"
+
+CHORMADB_CONN_ERROR="Error connectiong to ChromaDB"

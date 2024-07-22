@@ -42,12 +42,14 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         # Define your template with context and prompt
 
         template_with_context_and_question = ""
+        template = ''
         if prompt is not None:
-            # template = config.template_ai_dyn_prompt
+            template = prompt
             # template_with_context_and_question = template.format(prompt, context, question)
             template_with_context_and_question = f"{prompt} Context: {context}. Prompt: {question}"
         else:
             agent_config = await knowledge_upload_service.getAiPrompts()
+            template = agent_config['template']
             template_with_context_and_question = f"{agent_config['template']} Context: {context}. Prompt: {question}"
 
         if model == Model.ChatGPT4:
@@ -63,6 +65,7 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         
         agentlog['duration'] = datetime.now() - agentlog['interaction_date']
         agentlog['question'] = question
+        agentlog['template'] = template
         agentlog['answer'] = ai_model_response
         agentlog['model'] = model
         agentlog['flow'] = flow
