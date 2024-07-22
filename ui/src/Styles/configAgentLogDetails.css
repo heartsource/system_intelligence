@@ -1,0 +1,87 @@
+.logDetails-fieldset-container {
+  width: 100%;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+#logDetailsFieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
+  text-align: left;
+  overflow-y: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#logDetailsLegend {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  color: rgb(45, 182, 212);
+  background-color: transparent;
+  padding: 1px;
+  margin-bottom: 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+.first-col,
+.sec-col,
+.third-col {
+  color: white;
+  height: 2em;
+}
+
+.mainRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+#interactionFieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
+  text-align: left;
+  overflow-y: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: 0.2em;
+}
+
+.logDetails-popover {
+  background-color: rgb(45, 182, 212);
+  color: black;
+  border: 1px solid #000;
+  border-radius: 5px;
+  overflow-y: true;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.logDetails-popover-content {
+  font-size: 14px;
+}

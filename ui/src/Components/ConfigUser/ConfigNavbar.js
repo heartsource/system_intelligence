@@ -61,16 +61,14 @@ const Navbar = () => {
                 onClick={() => handleNavigation("home")}
                 className={`nav_link ${
                   currentComponent === "home" ? "active" : ""
-                }`}
-              >
+                }`}>
                 <i className="fa-solid fa-gears"></i> Agent Configuration
               </div>
               <div
                 onClick={() => handleNavigation("agents")}
                 className={`nav_link ${
                   currentComponent === "agents" ? "active" : ""
-                }`}
-              >
+                }`}>
                 <i className="fas fa-users"></i> Agents
               </div>
 
@@ -81,8 +79,7 @@ const Navbar = () => {
                 }}
                 className={`nav_link ${
                   currentComponent === "agentLogs" ? "active" : ""
-                }`}
-              >
+                }`}>
                 <i className="fa-solid fa-headset"></i> Agent Logs
               </div>
 
@@ -90,16 +87,14 @@ const Navbar = () => {
                 onClick={() => handleNavigation("upload")}
                 className={`nav_link ${
                   currentComponent === "upload" ? "active" : ""
-                }`}
-              >
+                }`}>
                 <i className="fa-solid fa-upload"></i> Knowledge Upload
               </div>
               <div
                 onClick={() => handleNavigation("config-ask-hearty")}
                 className={`nav_link ${
                   currentComponent === "config-ask-hearty" ? "active" : ""
-                }`}
-              >
+                }`}>
                 <i className="fa-solid fa-heart"></i> Ask Hearty
               </div>
               <div
@@ -108,12 +103,17 @@ const Navbar = () => {
                   currentComponent === "config-knowledge-enhancement"
                     ? "active"
                     : ""
-                }`}
-              >
+                }`}>
                 <i className="fa-solid fa-chart-line"></i> Knowledge <br />
                 Enhancement
               </div>
             </div>
+          </div>
+          <div
+            onClick={() => handleNavigation("agent-log-details")}
+            className="nav_link">
+            <i className="fa-solid fa-right-from-bracket nav_icon"></i>
+            <span className="nav_name">Agent Log Details</span>
           </div>
           <div onClick={() => handleNavigation("home")} className="nav_link">
             <i className="fa-solid fa-right-from-bracket nav_icon"></i>
