@@ -4,7 +4,7 @@ from typing import Optional
 from utils.enums.shared_enum import Flow, Model
 from utils.common_utilities import internalServerError
 from modules.hearty.hearty_service import talkToHeartie
-from heartie_modals import HeartieQueryPayload
+from modules.hearty.hearty_model import HeartyModel
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ async def talk_to_heartie(
     prompt: Optional[str] = None, 
     model: Optional[Model] = None, 
     flow: Optional[Flow] = None, 
-    payload: Optional[HeartieQueryPayload] = None
+    payload: Optional[HeartyModel] = None
     ):
     try:
         return await talkToHeartie(question, prompt, model, flow, payload)

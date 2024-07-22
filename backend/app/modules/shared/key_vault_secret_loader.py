@@ -1,13 +1,11 @@
 from azure.identity import ClientSecretCredential
 from azure.keyvault.secrets import SecretClient
-from config_Loader import get_configs
+from config.app_config import appConfig
 
-config = get_configs()
-
-client_id = config.get("AZURE_CLIENT_ID")
-client_secret = config.get("AZURE_CLIENT_SECRET_VALUE")
-tenant_id = config.get("AZURE_TENANT_ID")
-vault_url = config.get("AZURE_VAULT_URL")
+client_id = appConfig.azure_client_id
+client_secret = appConfig.azure_client_secret_value
+tenant_id = appConfig.azure_tenant_id
+vault_url = appConfig.azure_vault_url
 
 
 def get_value_from_key_vault(keyvault_secret_key):
@@ -25,4 +23,4 @@ def get_value_from_key_vault(keyvault_secret_key):
     return keyvault_secret_value
 
 
-#print(get_value_from_key_vault(config.get("OPEN_AI_API_KEY")))
+#print(get_value_from_key_vault(appConfig.get("OPEN_AI_API_KEY")))

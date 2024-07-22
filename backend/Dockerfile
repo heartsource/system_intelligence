@@ -15,7 +15,6 @@ COPY --from=build /usr/local/bin/ /usr/local/bin/
 
 # Copy your application code
 COPY ./app/ /app/
-COPY ./config/ /config/
 COPY ./knowledge/ /knowledge/
 
 # Expose port

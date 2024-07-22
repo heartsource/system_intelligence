@@ -9,6 +9,7 @@ class AgentLogsModel(BaseModel):
     interaction_id: uuid.UUID
     model: Model
     flow: Flow
+    template: str
     question: str
     answer: str
     interaction_date: datetime

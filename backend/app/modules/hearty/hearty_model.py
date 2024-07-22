@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from utils.enums.shared_enum import Flow, Model
 
-class HeartieQueryPayload(BaseModel):
+class HeartyModel(BaseModel):
     agent_id: str
     question: str
     prompt: Optional[str] = None
