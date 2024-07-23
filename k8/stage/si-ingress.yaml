@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: si-ingress
+  name: si-ingress-stage
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -11,14 +11,14 @@ spec:
   rules:
   - http:
       paths:
-      - path: /heartie-be(/|$)(.*)
+      - path: /heartie-be-stage(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: systemintelligencebackendapp
             port:
               number: 80
-      - path: /ui(/|$)(.*)
+      - path: /ui-stage(/|$)(.*)
         pathType: Prefix
         backend:
           service:
