@@ -12,18 +12,28 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}
-      >
+        onClick={() => column.sortable && onSort(column.key)}>
         {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
       </div>
     ))}
   </div>
 );
 
-const TableRow = ({ agent, index, columns, customRenderers }) => (
+const TableRow = ({
+  agent,
+  index,
+  columns,
+  customRenderers,
+  onInteractionIdClick,
+}) => (
   <div className="logs-grid-row">
     {columns.map((column) => (
-      <div key={column.key} className="grid-cell">
+      <div
+        key={column.key}
+        className="grid-cell"
+        onClick={() =>
+          column.key === "interaction_id" && onInteractionIdClick(agent)
+        }>
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -42,6 +52,8 @@ const ConfigAgentLogs = () => {
     sortConfig,
     setSortConfig,
     componentKey, // Access the componentKey from context
+    setCurrentComponent,
+    setSelectedAgent,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [fetchedLogs, setFetchedLogs] = useState([]);
@@ -101,12 +113,24 @@ const ConfigAgentLogs = () => {
     setSortConfig({ key, direction });
   };
 
+  const handleInteractionIdClick = async (agent) => {
+    try {
+      const response = await axios.get(
+        `http://4.255.69.143/heartie-be/logs/${agent.interaction_id}`
+      );
+      const data = response.data.data;
+      setSelectedAgent(data);
+      setCurrentComponent("agent-log-details");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div
         className="agentLogs-fieldset-container"
-        id="fieldset-container-logs"
-      >
+        id="fieldset-container-logs">
         <fieldset id="agentLogsFieldset">
           <legend id="agentLogs">
             Agent Logs <i className="fa-solid fa-headset"></i>
@@ -126,6 +150,7 @@ const ConfigAgentLogs = () => {
                     agent={log}
                     index={index}
                     columns={columns}
+                    onInteractionIdClick={handleInteractionIdClick}
                   />
                 )
               )}

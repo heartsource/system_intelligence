@@ -109,12 +109,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => handleNavigation("agent-log-details")}
-            className="nav_link">
-            <i className="fa-solid fa-right-from-bracket nav_icon"></i>
-            <span className="nav_name">Agent Log Details</span>
-          </div>
+
           <div onClick={() => handleNavigation("home")} className="nav_link">
             <i className="fa-solid fa-right-from-bracket nav_icon"></i>
             <span className="nav_name">SignOut</span>
