@@ -17,10 +17,10 @@ spec:
         image: chromadb/chroma:latest
         resources:
           requests:
-            memory: "3Gi"
+            memory: "2Gi"
             cpu: "500m"
           limits:
-            memory: "3Gi" 
+            memory: "2Gi" 
             cpu: "500m"
         ports:
         - containerPort: 8000
