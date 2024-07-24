@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: systemintelligencebackendapp
-        image: issappacr.azurecr.io/si/system-intelligence-backend:2.0.15
+        image: issappacr.azurecr.io/si/system-intelligence-backend:2.0.16
         resources:
           requests:
             memory: "3Gi"
@@ -24,11 +24,9 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 80
-        env:
-        - name: CHROMA_HOST
-          value: "productsupportchromadb.si-app.svc.cluster.local"
-        - name: CHROMA_PORT
-          value: "8000"
+        envFrom:
+        - configMapRef:
+            name: si-backend-configmap
 ---
 apiVersion: v1
 kind: Service

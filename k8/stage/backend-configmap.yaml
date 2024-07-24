@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: si-backend-configmap-stage
+  name: si-backend-configmap
 data:
   MONGO_URI: "mongodb+srv://si-admin:SI-admin12345@system-intelligence.xgu1two.mongodb.net/?retryWrites=true&w=majority&appName=system-intelligence"
   MONGO_DB_NAME: "system_intelligence_db"
