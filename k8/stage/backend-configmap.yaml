@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: si-backend-configmap-stage
 data:
-  MONGO_URI: "mongodb+srv://si-admin:SI-admin1234@si-cluster.abw4huo.mongodb.net/?retryWrites=true&w=majority&appName=si-cluster"
+  MONGO_URI: "mongodb+srv://si-admin:SI-admin12345@system-intelligence.xgu1two.mongodb.net/?retryWrites=true&w=majority&appName=system-intelligence"
   MONGO_DB_NAME: "system_intelligence_db"
   MONGO_PORT: "27017"
   DEBUG: "true"
