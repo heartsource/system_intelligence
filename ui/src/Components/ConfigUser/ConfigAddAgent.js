@@ -33,7 +33,7 @@ const ConfigAddAgent = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://4.255.69.143/heartie-be/get_ai_prompts/"
+        process.env.HEARTIE_BE + "/get_ai_prompts/"
       );
 
       const { models, flows, template } = response.data;
@@ -52,7 +52,7 @@ const ConfigAddAgent = () => {
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post(
-          "http://4.255.69.143/heartie-be/agents/create-agent",
+            process.env.HEARTIE_BE + "/agents/create-agent",
           {
             name,
             description,

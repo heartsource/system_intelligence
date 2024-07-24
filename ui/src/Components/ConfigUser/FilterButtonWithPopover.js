@@ -40,7 +40,7 @@ const FilterButtonWithPopover = () => {
 
     try {
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/logs/",
+        process.env.HEARTIE_BE + "/logs/",
         { agent_ids: selectedAgentIds }
       );
       const data = Array.isArray(response.data.data) ? response.data.data : [];

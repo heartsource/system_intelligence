@@ -50,7 +50,7 @@ const ConfigAgentDetails = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://4.255.69.143/heartie-be/get_ai_prompts/"
+         process.env.HEARTIE_BE + "/get_ai_prompts/"
       );
 
       const { models, flows } = response.data;
@@ -128,7 +128,7 @@ const ConfigAgentDetails = () => {
 
     try {
       const response = await axios.put(
-        `http://4.255.69.143/heartie-be/agents/${selectedAgent._id}`,
+        `${process.env.HEARTIE_BE}/agents/${selectedAgent._id}`,
         {
           name,
           description,
@@ -170,7 +170,7 @@ const ConfigAgentDetails = () => {
     try {
       const payload = { agent_ids: [selectedAgent._id] };
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/logs/",
+        process.env.HEARTIE_BE + "/logs/",
         payload
       );
       if (response.data.status === "error") {

@@ -75,7 +75,7 @@ const ConfigAgents = () => {
         const payload = {};
 
         const response = await axios.post(
-          "http://4.255.69.143/heartie-be/agents/",
+          process.env.HEARTIE_BE + "/agents/",
           payload
         );
         const data = Array.isArray(response.data.data)
@@ -111,7 +111,7 @@ const ConfigAgents = () => {
       const agentToUpdate = agents[index];
 
       const response = await axios.put(
-        `http://4.255.69.143/heartie-be/agents/${agentToUpdate._id}`,
+        `${process.env.HEARTIE_BE}/agents/${agentToUpdate._id}`,
         { ...agentToUpdate, status: newStatus }
       );
 

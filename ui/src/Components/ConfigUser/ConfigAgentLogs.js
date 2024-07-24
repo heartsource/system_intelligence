@@ -69,7 +69,7 @@ const ConfigAgentLogs = () => {
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(
-          "http://4.255.69.143/heartie-be/logs/",
+          process.env.HEARTIE_BE + "/logs/",
           payload
         );
         const data = Array.isArray(response.data.data)
