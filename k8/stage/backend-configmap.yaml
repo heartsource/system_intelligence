@@ -27,7 +27,7 @@ data:
   LLAMA_API_KEY: "eL2PIQPfUFUcVUAXt5OSJjDS8RRQ0CsR"
   LLAMA_MODEL_LOCAL_PATH: "../model/llama-2-7b-chat.Q5_0.gguf"
   LLAMA_MODEL_PATH: "/model/llama-2-7b-chat.Q5_0.gguf"
-  CHROMA_HOST: "chroma-server"
+  CHROMA_HOST: "productsupportchromadb.si-app.svc.cluster.local"
   CHROMA_PORT: "8000"
   CHROMA_DB_PATH: "../chromadb"
   CHROMA_DB_NAME: "system_intelligence_chromadb"
