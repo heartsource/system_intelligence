@@ -32,6 +32,8 @@ const ConfigAddAgent = () => {
 
   const fetchData = async () => {
     try {
+      console.log("REACT_APP_HEARTIE_BE" + process.env.REACT_APP_HEARTIE_BE)
+      console.log("HEARTIE_BE" + process.env.HEARTIE_BE)
       const response = await axios.get(
         process.env.REACT_APP_HEARTIE_BE + "/get_ai_prompts/"
       );
