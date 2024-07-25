@@ -6,6 +6,7 @@ import { closeModal, requestToggleStatus } from "../../utils/modal";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
 import { handleError } from "../../utils/handleError";
 import { AppContext } from "../../context/AppContext";
+import config from "../../config";
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -75,7 +76,7 @@ const ConfigAgents = () => {
         const payload = {};
 
         const response = await axios.post(
-          process.env.REACT_APP_HEARTIE_BE + "/agents/",
+          `${config.heartieBE}/agents/`,
           payload
         );
         const data = Array.isArray(response.data.data)
@@ -111,7 +112,7 @@ const ConfigAgents = () => {
       const agentToUpdate = agents[index];
 
       const response = await axios.put(
-        `${process.env.REACT_APP_HEARTIE_BE}/agents/${agentToUpdate._id}`,
+        `${config.heartieBE}/agents/${agentToUpdate._id}`,
         { ...agentToUpdate, status: newStatus }
       );
 

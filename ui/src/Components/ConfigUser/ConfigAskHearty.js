@@ -4,6 +4,7 @@ import hearty from "../Images/NewHeartyIcon-without-background.png";
 import ConversationDisplay from "../ConfigUser/ConversationDisplay";
 import "../../Styles/configAskHearty.css";
 import { handleError } from "../../utils/handleError";
+import config from "../../config";
 
 const ConfigAskHearty = ({ onTextSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +26,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
       try {
         const payload = {};
         const response = await axios.post(
-          process.env.REACT_APP_HEARTIE_BE + "/agents/",
+          `${config.heartieBE}/agents/`,
           payload
         );
         const data = Array.isArray(response.data.data)
@@ -66,7 +67,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           agent_id: agentToUse._id,
         };
         const response = await axios.post(
-          process.env.REACT_APP_HEARTIE_BE + "/talk_to_heartie/",
+          `${config.heartieBE}/talk_to_heartie/`,
           body
         );
 

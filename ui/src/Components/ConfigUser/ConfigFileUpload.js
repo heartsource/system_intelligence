@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../Styles/configFileUpload.css";
 import { handleError } from "../../utils/handleError";
+import config from "../../config";
 
 const ConfigFileUpload = () => {
   const [files, setFiles] = useState(null);
@@ -33,7 +34,7 @@ const ConfigFileUpload = () => {
     setShowModal(true);
     try {
       const response = await axios.post(
-        process.env.REACT_APP_HEARTIE_BE + "/load_file_to_chromadb/",
+        `${config.heartieBE}/load_file_to_chromadb/`,
         formData,
         {
           headers: {

@@ -1,12 +1,12 @@
-version: '3'
+version: '3.8'
 
 services:
   react-app:
     build:
       context: .
+      args:
+        ENV_FILE: .env.development
     container_name: system-intelligence-ui
     image: issappacr.azurecr.io/si/system-intelligence-ui:0.0.23
-    env_file:
-      - ./environments/.env.development
     ports:
       - '80:80'

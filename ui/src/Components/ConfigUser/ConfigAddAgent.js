@@ -3,6 +3,7 @@ import axios from "axios";
 import "../../Styles/configAddAgent.css";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
+import config from '../../config';
 
 const ConfigAddAgent = () => {
   const { setCurrentComponent } = useContext(AppContext);
@@ -32,12 +33,7 @@ const ConfigAddAgent = () => {
 
   const fetchData = async () => {
     try {
-      console.log("REACT_APP_HEARTIE_BE: " + process.env)
-      console.log("REACT_APP_HEARTIE_BE: " + process.env.REACT_APP_HEARTIE_BE)
-      console.log("HEARTIE_BE: " + process.env.HEARTIE_BE)
-      const response = await axios.get(
-        process.env.REACT_APP_HEARTIE_BE + "/get_ai_prompts/"
-      );
+      const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
 
       const { models, flows, template } = response.data;
 
@@ -55,7 +51,7 @@ const ConfigAddAgent = () => {
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post(
-            process.env.REACT_APP_HEARTIE_BE + "/agents/create-agent",
+            `${config.heartieBE}/agents/create-agent`,
           {
             name,
             description,

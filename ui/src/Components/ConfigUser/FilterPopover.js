@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../Styles/filterButtonWithPopover.css";
+import config from "../../config";
 
 const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   const [checkedItems, setCheckedItems] = useState({});
@@ -10,7 +11,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
     const fetchAgentNames = async () => {
       try {
         const response = await axios.post(
-          process.env.REACT_APP_HEARTIE_BE + "/agents/",
+          `${config.heartieBE}/agents/`,
           {}
         );
         const data = Array.isArray(response.data.data)

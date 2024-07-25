@@ -13,6 +13,11 @@ RUN npm install
 # Copy the entire application code to the container
 COPY . .
 
+# Set default environment file
+ARG ENV_FILE=.env.development
+# Copy the environment file into the build context
+COPY ./environments/${ENV_FILE} .env
+
 # Build the React app for production
 RUN npm run build
 
