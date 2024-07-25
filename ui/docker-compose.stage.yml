@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  react-app:
+    build:
+      context: .
+    env_file:
+      - .env.stage
+    ports:
+      - '80:80'
