@@ -4,7 +4,9 @@ services:
   react-app:
     build:
       context: .
+    container_name: system-intelligence-ui
+    image: issappacr.azurecr.io/si/system-intelligence-ui:0.0.23
     env_file:
-      - .env.stage
+      - ./environments/.env.stage
     ports:
       - '80:80'
