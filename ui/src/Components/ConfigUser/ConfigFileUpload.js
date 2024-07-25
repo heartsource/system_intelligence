@@ -4,7 +4,7 @@ import "../../Styles/configFileUpload.css";
 import { handleError } from "../../utils/handleError";
 
 const ConfigFileUpload = () => {
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [successMessage, setSuccessMessage] = useState("");
@@ -12,7 +12,7 @@ const ConfigFileUpload = () => {
   const [fileCount, setFileCount] = useState(0);
 
   const handleFileChange = (event) => {
-    const selectedFiles = event.target.files;
+    const selectedFiles = Array.from(event.target.files);
     setFiles(selectedFiles);
     setError("");
     setSuccessMessage("");
@@ -20,15 +20,13 @@ const ConfigFileUpload = () => {
   };
 
   const handleUpload = async () => {
-    if (!files || files.length === 0) {
+    if (files.length === 0) {
       handleError(setError, "Please select at least one file for upload.");
       return;
     }
 
     const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("file", files[i]);
-    }
+    files.forEach((file) => formData.append("file", file));
 
     setShowModal(true);
     try {
@@ -36,9 +34,7 @@ const ConfigFileUpload = () => {
         "http://4.255.69.143/heartie-be/load_file_to_chromadb/",
         formData,
         {
-          headers: {
-            accept: "application/json",
-          },
+          headers: { accept: "application/json" },
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
@@ -52,61 +48,41 @@ const ConfigFileUpload = () => {
           ? "Files uploaded successfully."
           : "File uploaded successfully."
       );
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
-      //setShowModal(false);
+      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
-      if (error.response) {
-        handleError(
-          setError,
-          error.response.data.message || "Unknown error occurred."
-        );
-        // setErrorMessage(
-        //   `Error: ${error.response.data.message || "Unknown error occurred."}`
-        // );
-      } else if (error.request) {
-        setError("No response received from the server.");
-      } else {
-        setError(`Error: ${error.message}`);
-      }
-      //setShowModal(false);
+      const errorMessage =
+        error.response?.data?.message || "Unknown error occurred.";
+      handleError(setError, errorMessage);
+    } finally {
+      setShowModal(false);
+      setUploadProgress(100);
+      setFiles([]);
+      setFileCount(0);
     }
-    setShowModal(false);
-    setUploadProgress(100);
-    setFileCount(0);
-    setFiles(null);
   };
 
   const getFileIcon = (extension) => {
+    const iconStyles = { color: "" };
     switch (extension.toLowerCase()) {
       case "pdf":
-        return (
-          <i className="fa-solid fa-file-pdf" style={{ color: "#db061b" }}></i>
-        );
+        iconStyles.color = "#db061b";
+        return <i className="fa-solid fa-file-pdf" style={iconStyles}></i>;
       case "doc":
       case "docx":
-        return (
-          <i className="fa-solid fa-file-word" style={{ color: "#2b56a1" }}></i>
-        );
+        iconStyles.color = "#2b56a1";
+        return <i className="fa-solid fa-file-word" style={iconStyles}></i>;
       case "txt":
-        return (
-          <i className="fa-solid fa-file-alt" style={{ color: "#7589ae" }}></i>
-        );
+        iconStyles.color = "#7589ae";
+        return <i className="fa-solid fa-file-alt" style={iconStyles}></i>;
       case "jpg":
       case "jpeg":
       case "png":
       case "gif":
-        return (
-          <i
-            className="fa-solid fa-file-image"
-            style={{ color: "#16a777" }}
-          ></i>
-        );
+        iconStyles.color = "#16a777";
+        return <i className="fa-solid fa-file-image" style={iconStyles}></i>;
       default:
-        return (
-          <i className="fa-solid fa-file" style={{ color: "#6bcad6" }}></i>
-        );
+        iconStyles.color = "#6bcad6";
+        return <i className="fa-solid fa-file" style={iconStyles}></i>;
     }
   };
 
@@ -121,7 +97,6 @@ const ConfigFileUpload = () => {
         <fieldset id="fileUploadFieldset">
           <legend>Upload Knowledge Documents</legend>
           <hr className="configuration_form" />
-
           <div className="drop_box_fileUpload">
             <header>
               <label htmlFor="fileID">
@@ -134,8 +109,7 @@ const ConfigFileUpload = () => {
             <p>
               <label htmlFor="fileID">Files Supported: PDF, TEXT</label>
             </p>
-
-            {files && fileCount > 0 && <h3>{fileCount} file(s) selected</h3>}
+            {files.length > 0 && <h3>{fileCount} file(s) selected</h3>}
             <input
               type="file"
               multiple
@@ -158,45 +132,39 @@ const ConfigFileUpload = () => {
             </span>
             <h3>
               {uploadProgress < 100 ? "Uploading..." : "Uploaded"}{" "}
-              {files ? files.length : 0} file(s)
+              {files.length} file(s)
             </h3>
-
             <ul style={{ listStyle: "none" }}>
-              {files instanceof FileList &&
-                Array.from(files).map((file, index) => (
-                  <li key={index} style={{ marginBottom: "10px" }}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div style={{ marginRight: "10px" }}>
-                        {" "}
-                        {getFileIcon(file.name.split(".").pop())}
-                      </div>
-                      <div
-                        style={{
-                          flex: "1",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                          marginRight: "10px",
-                        }}
-                      >
-                        {file.name}
-                      </div>
-                      <div>
-                        {uploadProgress < 100 ? (
-                          <i
-                            className="fa-solid fa-spinner"
-                            style={{ color: "black" }}
-                          ></i>
-                        ) : (
-                          <i
-                            className="fa-solid fa-circle-check"
-                            id="checkGreen"
-                          ></i>
-                        )}
-                      </div>
+              {files.map((file, index) => (
+                <li key={index} style={{ marginBottom: "10px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ marginRight: "10px" }}>
+                      {getFileIcon(file.name.split(".").pop())}
                     </div>
-                  </li>
-                ))}
+                    <div
+                      style={{
+                        flex: "1",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        marginRight: "10px",
+                      }}>
+                      {file.name}
+                    </div>
+                    <div>
+                      {uploadProgress < 100 ? (
+                        <i
+                          className="fa-solid fa-spinner"
+                          style={{ color: "black" }}></i>
+                      ) : (
+                        <i
+                          className="fa-solid fa-circle-check"
+                          id="checkGreen"></i>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

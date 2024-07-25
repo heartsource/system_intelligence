@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import "../../Styles/configAgentLogs.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
@@ -43,6 +43,7 @@ const TableRow = ({
 );
 
 const ConfigAgentLogs = () => {
+  const listInnerRef = useRef();
   const {
     logs,
     setLogs,
@@ -56,7 +57,9 @@ const ConfigAgentLogs = () => {
     setSelectedAgent,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
-  const [fetchedLogs, setFetchedLogs] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const [prevPage, setPrevPage] = useState(0);
+  const [wasLastList, setWasLastList] = useState(false);
 
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -81,20 +84,51 @@ const ConfigAgentLogs = () => {
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(
-          "http://4.255.69.143/heartie-be/logs/",
-          payload
+          `http://4.255.69.143/heartie-be/logs/`,
+          {
+            ...payload,
+            limit: 10,
+            offset: (currPage - 1) * 10,
+          }
         );
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        setFilteredLogs(data);
-        setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
+        if (!data.length) {
+          setWasLastList(true);
+          return;
+        }
+        setPrevPage(currPage);
+        setFilteredLogs((prevLogs) => [...prevLogs, ...data]);
+        setLogs((prevLogs) => [
+          ...prevLogs,
+          ...sortItems(data, sortConfig.key, sortConfig.direction),
+        ]);
       } catch (error) {
         handleError(setError, "error");
       }
     };
-    fetchData();
-  }, [selectedAgentId, setLogs, componentKey]); // Add componentKey to dependencies
+    if (!wasLastList && prevPage !== currPage) {
+      fetchData();
+    }
+  }, [
+    currPage,
+    selectedAgentId,
+    setLogs,
+    sortConfig.key,
+    sortConfig.direction,
+    wasLastList,
+    prevPage,
+  ]);
+
+  useEffect(() => {
+    // Reset the logs when the component mounts
+    setFilteredLogs([]);
+    setLogs([]);
+    setCurrPage(1);
+    setWasLastList(false);
+    setPrevPage(0);
+  }, [componentKey]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -105,7 +139,7 @@ const ConfigAgentLogs = () => {
     }
 
     const sortedLogs = sortItems(
-      filteredLogs.length > 0 ? filteredLogs : fetchedLogs,
+      filteredLogs.length > 0 ? filteredLogs : logs,
       key,
       direction
     );
@@ -126,6 +160,15 @@ const ConfigAgentLogs = () => {
     }
   };
 
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setCurrPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -142,7 +185,10 @@ const ConfigAgentLogs = () => {
               sortConfig={sortConfig}
               onSort={sortLogs}
             />
-            <div className="agentlogs-row-container">
+            <div
+              className="agentlogs-row-container"
+              onScroll={onScroll}
+              ref={listInnerRef}>
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
                   <TableRow
