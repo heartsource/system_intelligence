@@ -33,7 +33,7 @@ const ConfigAddAgent = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        process.env.HEARTIE_BE + "/get_ai_prompts/"
+        process.env.REACT_APP_HEARTIE_BE + "/get_ai_prompts/"
       );
 
       const { models, flows, template } = response.data;
@@ -52,7 +52,7 @@ const ConfigAddAgent = () => {
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post(
-            process.env.HEARTIE_BE + "/agents/create-agent",
+            process.env.REACT_APP_HEARTIE_BE + "/agents/create-agent",
           {
             name,
             description,

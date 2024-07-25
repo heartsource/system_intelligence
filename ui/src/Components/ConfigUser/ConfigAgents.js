@@ -75,7 +75,7 @@ const ConfigAgents = () => {
         const payload = {};
 
         const response = await axios.post(
-          process.env.HEARTIE_BE + "/agents/",
+          process.env.REACT_APP_HEARTIE_BE + "/agents/",
           payload
         );
         const data = Array.isArray(response.data.data)
@@ -111,7 +111,7 @@ const ConfigAgents = () => {
       const agentToUpdate = agents[index];
 
       const response = await axios.put(
-        `${process.env.HEARTIE_BE}/agents/${agentToUpdate._id}`,
+        `${process.env.REACT_APP_HEARTIE_BE}/agents/${agentToUpdate._id}`,
         { ...agentToUpdate, status: newStatus }
       );
 

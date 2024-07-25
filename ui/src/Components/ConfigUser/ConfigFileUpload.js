@@ -33,7 +33,7 @@ const ConfigFileUpload = () => {
     setShowModal(true);
     try {
       const response = await axios.post(
-        process.env.HEARTIE_BE + "/load_file_to_chromadb/",
+        process.env.REACT_APP_HEARTIE_BE + "/load_file_to_chromadb/",
         formData,
         {
           headers: {

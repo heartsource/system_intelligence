@@ -25,7 +25,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
       try {
         const payload = {};
         const response = await axios.post(
-          process.env.HEARTIE_BE + "/agents/",
+          process.env.REACT_APP_HEARTIE_BE + "/agents/",
           payload
         );
         const data = Array.isArray(response.data.data)
@@ -66,7 +66,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           agent_id: agentToUse._id,
         };
         const response = await axios.post(
-          process.env.HEARTIE_BE + "/talk_to_heartie/",
+          process.env.REACT_APP_HEARTIE_BE + "/talk_to_heartie/",
           body
         );
 

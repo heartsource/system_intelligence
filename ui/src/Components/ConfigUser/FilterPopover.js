@@ -10,7 +10,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
     const fetchAgentNames = async () => {
       try {
         const response = await axios.post(
-          process.env.HEARTIE_BE + "/agents/",
+          process.env.REACT_APP_HEARTIE_BE + "/agents/",
           {}
         );
         const data = Array.isArray(response.data.data)
