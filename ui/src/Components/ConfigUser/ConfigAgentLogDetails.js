@@ -15,8 +15,8 @@ const ConfigAgentLogDetails = () => {
     if (showPopover && popperElement) {
       const popperRect = popperElement.getBoundingClientRect();
       popperElement.style.position = "fixed";
-      popperElement.style.top = `calc(10% - ${popperRect.height / 2}px)`;
-      popperElement.style.left = `calc(10% - ${popperRect.width / 2}px)`;
+      popperElement.style.top = `calc(5% - ${popperRect.height / 2}px)`;
+      popperElement.style.left = `calc(5% - ${popperRect.width / 2}px)`;
     }
   }, [showPopover, popperElement]);
 
@@ -131,7 +131,7 @@ const ConfigAgentLogDetails = () => {
             <br />
             <div className="answer">
               <span style={{ color: "rgb(45, 182, 212)" }}>
-                Answer:: &nbsp;
+                Response:: &nbsp;
               </span>
               {selectedAgent.answer}
             </div>
