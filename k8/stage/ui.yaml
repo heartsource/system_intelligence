@@ -17,6 +17,9 @@ spec:
         image: issappacr.azurecr.io/si/system-intelligence-ui:0.0.9
         ports:
         - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: si-ui-configmap
 ---
 apiVersion: v1
 kind: Service

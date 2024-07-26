@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  react-app:
+    build:
+      context: .
+      args:
+        ENV_FILE: .env.stage
+    image: issappacr.azurecr.io/si/system-intelligence-ui:0.0.24
+    ports:
+      - '80:80'

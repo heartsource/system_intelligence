@@ -5,6 +5,7 @@ import FilterPopover from "./FilterPopover";
 import { AppContext } from "../../context/AppContext";
 import "../../Styles/filterButtonWithPopover.css";
 import { sortItems } from "../../utils/sort";
+import config from "../../config";
 
 const FilterButtonWithPopover = () => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
@@ -40,7 +41,7 @@ const FilterButtonWithPopover = () => {
 
     try {
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/logs/",
+        `${config.heartieBE}/logs/`,
         { agent_ids: selectedAgentIds }
       );
       const data = Array.isArray(response.data.data) ? response.data.data : [];

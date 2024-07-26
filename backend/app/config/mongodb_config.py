@@ -10,9 +10,9 @@ load_dotenv()
 class MongoConfig:
     def __init__(self):
         try:
-            self.host = os.getenv('MONGO_URI', 'mongodb+srv://si-admin:SI-admin1234@si-cluster.abw4huo.mongodb.net/?retryWrites=true&w=majority&appName=si-cluster')
-            self.port = int(os.getenv('MONGO_PORT', 27017))
-            self.db_name = os.getenv('MONGO_DB_NAME', 'system_intelligence_db')
+            self.host = os.getenv('MONGO_URI')
+            self.port = int(os.getenv('MONGO_PORT'))
+            self.db_name = os.getenv('MONGO_DB_NAME')
             self.client = AsyncIOMotorClient(self.host, server_api=ServerApi('1'))
             self.db = self.client[self.db_name]
         except Exception as e:

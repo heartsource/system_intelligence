@@ -4,6 +4,7 @@ import "../../Styles/configAgentDetails.css";
 import { AppContext } from "../../context/AppContext";
 import { requestToggleStatus } from "../../utils/modal";
 import { handleError } from "../../utils/handleError";
+import config from '../../config'
 
 const ConfigAgentDetails = () => {
   const { selectedAgent, setCurrentComponent, setLogs, setSelectedAgentId } =
@@ -49,9 +50,7 @@ const ConfigAgentDetails = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        "http://4.255.69.143/heartie-be/get_ai_prompts/"
-      );
+      const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
 
       const { models, flows } = response.data;
       setModels(models || []);
@@ -128,7 +127,7 @@ const ConfigAgentDetails = () => {
 
     try {
       const response = await axios.put(
-        `http://4.255.69.143/heartie-be/agents/${selectedAgent._id}`,
+        `${config.heartieBE}/agents/${selectedAgent._id}`,
         {
           name,
           description,
@@ -170,7 +169,7 @@ const ConfigAgentDetails = () => {
     try {
       const payload = { agent_ids: [selectedAgent._id] };
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/logs/",
+        `${config.heartieBE}/logs/`,
         payload
       );
       if (response.data.status === "error") {

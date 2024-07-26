@@ -21,3 +21,6 @@ coverage
 
 # Build output
 build
+
+# environment files
+.env
