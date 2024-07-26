@@ -40,3 +40,8 @@
 
 .DS_Store
 .DS_Store
+
+/backend/env
+/backend/.idea
+/backend/app/.idea
+*.pyc

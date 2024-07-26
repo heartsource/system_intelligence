@@ -15,7 +15,11 @@ COPY --from=build /usr/local/bin/ /usr/local/bin/
 
 # Copy your application code
 COPY ./app/ /app/
-COPY ./knowledge/ /knowledge/
+
+# Set default environment file
+ARG ENV_FILE=.env.development
+# Copy the environment file into the build context
+COPY ./environments/${ENV_FILE} .env
 
 # Expose port
 EXPOSE 80

@@ -1,0 +1,15 @@
+.idea
+env
+knowledge
+out_dated_files
+test
+.git
+.DS_Store
+.env
+node_modules
+build
+npm-debug.log
+__pycache__
+*__pycache__
+*.pyc
+*.pyo

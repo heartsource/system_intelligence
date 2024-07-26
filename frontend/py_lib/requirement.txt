@@ -1,4 +1,0 @@
-streamlit
-pdfplumber
-docx2txt
-wikipedia
