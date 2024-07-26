@@ -7,7 +7,7 @@ import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
-  <div className="logs-grid-header">
+  <div className="knowledge-grid-header">
     {columns.map((column) => (
       <div
         key={column.key}
@@ -26,7 +26,7 @@ const TableRow = ({
   customRenderers,
   onInteractionIdClick,
 }) => (
-  <div className="logs-grid-row">
+  <div className="knowledge-grid-row">
     {columns.map((column) => (
       <div
         key={column.key}
@@ -156,7 +156,7 @@ const ConfigKnowledgeEnhancement = () => {
             <div id="pagination">
               Showing{" "}
               {filteredLogs.length > 0 ? filteredLogs.length : logs.length} of{" "}
-              {logs.length} Logs
+              {logs.length} Records
             </div>
           </div>
         </fieldset>

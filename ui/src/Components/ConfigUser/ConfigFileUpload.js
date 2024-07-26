@@ -31,7 +31,7 @@ const ConfigFileUpload = () => {
     setShowModal(true);
     try {
       const response = await axios.post(
-        "http://4.255.69.143/heartie-be/load_file_to_chromadb/",
+        "http://4.255.69.143/heartie-be-dev/load_file_to_chromadb/",
         formData,
         {
           headers: { accept: "application/json" },
@@ -51,7 +51,8 @@ const ConfigFileUpload = () => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Unknown error occurred.";
+        error.response?.data?.message || "File Size is too large.";
+
       handleError(setError, errorMessage);
     } finally {
       setShowModal(false);
@@ -134,6 +135,13 @@ const ConfigFileUpload = () => {
               {uploadProgress < 100 ? "Uploading..." : "Uploaded"}{" "}
               {files.length} file(s)
             </h3>
+            <div className="progress-bar-container">
+              {/* <div
+                className="progress-bar"
+                style={{ width: `${uploadProgress}%` }}>
+                {uploadProgress}%
+              </div> */}
+            </div>
             <ul style={{ listStyle: "none" }}>
               {files.map((file, index) => (
                 <li key={index} style={{ marginBottom: "10px" }}>
@@ -152,6 +160,7 @@ const ConfigFileUpload = () => {
                       {file.name}
                     </div>
                     <div>
+                      {uploadProgress} %
                       {uploadProgress < 100 ? (
                         <i
                           className="fa-solid fa-spinner"
