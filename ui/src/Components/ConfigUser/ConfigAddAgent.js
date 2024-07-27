@@ -3,7 +3,7 @@ import axios from "axios";
 import "../../Styles/configAddAgent.css";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
-import config from '../../config';
+import config from "../../config";
 
 const ConfigAddAgent = () => {
   const { setCurrentComponent } = useContext(AppContext);
@@ -33,8 +33,10 @@ const ConfigAddAgent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
-
+      //const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
+      const response = await axios.get(
+        "http://4.255.69.143/heartie-be/get_ai_prompts/"
+      );
       const { models, flows, template } = response.data;
 
       setModels(models);
@@ -51,7 +53,7 @@ const ConfigAddAgent = () => {
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post(
-            `${config.heartieBE}/agents/create-agent`,
+          `${config.heartieBE}/agents/create-agent`,
           {
             name,
             description,
@@ -193,16 +195,14 @@ const ConfigAddAgent = () => {
               {formErrors.name && (
                 <span
                   className="error"
-                  style={{ marginTop: "5em", padding: "0px" }}
-                >
+                  style={{ marginTop: "5em", padding: "0px" }}>
                   {formErrors.name}
                 </span>
               )}
               {nameExistsError && (
                 <div
                   className="error"
-                  style={{ marginTop: "5em", color: "red" }}
-                >
+                  style={{ marginTop: "5em", color: "red" }}>
                   * Name already exists. Please try a different name.
                 </div>
               )}
@@ -212,8 +212,9 @@ const ConfigAddAgent = () => {
               <textarea
                 id="description"
                 placeholder="You can add a few lines here to describe what this Agent will do."
-                onChange={(e) => handleInputChange(e, "description")}
-              ></textarea>
+                onChange={(e) =>
+                  handleInputChange(e, "description")
+                }></textarea>
             </div>
             <div className="agent-input-row">
               <label htmlFor="model">
@@ -229,8 +230,7 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.model ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "model")}
-              >
+                onChange={(e) => handleInputChange(e, "model")}>
                 <option value="Select">Select</option>
                 {models.map((model, index) => (
                   <option key={index} value={model}>
@@ -259,8 +259,7 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.flow ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "flow")}
-              >
+                onChange={(e) => handleInputChange(e, "flow")}>
                 <option value="Select">Select</option>
                 {filteredFlows.map((flow, index) => (
                   <option key={index} value={flow}>
@@ -288,15 +287,13 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.template ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "template")}
-              ></textarea>
+                onChange={(e) => handleInputChange(e, "template")}></textarea>
             </div>
           </div>
           {formErrors.template && (
             <span
               className="error"
-              style={{ marginTop: "10em", marginLeft: "10em" }}
-            >
+              style={{ marginTop: "10em", marginLeft: "10em" }}>
               {formErrors.template}
             </span>
           )}
