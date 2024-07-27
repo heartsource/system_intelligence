@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
+import config from "../../config";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -83,14 +84,11 @@ const ConfigAgentLogs = () => {
     const fetchData = async () => {
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
-        const response = await axios.post(
-          `http://4.255.69.143/heartie-be/logs/`,
-          {
-            ...payload,
-            limit: 10,
-            offset: (currPage - 1) * 10,
-          }
-        );
+        const response = await axios.post(`${config.heartieBE}/logs/`, {
+          ...payload,
+          limit: 10,
+          offset: (currPage - 1) * 10,
+        });
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];

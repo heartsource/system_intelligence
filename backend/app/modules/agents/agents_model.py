@@ -1,5 +1,4 @@
 from datetime import datetime
-from uuid import UUID
 import uuid
 from pydantic import BaseModel
 from typing import Optional
@@ -17,17 +16,6 @@ class AgentModel(BaseModel):
     updated_dt: Optional[datetime] = None
     deleted_dt: Optional[datetime] = None
 
-    # class Config:
-    #     json_encoders = {
-    #         AgentType: lambda v: v.value,
-    #         Status: lambda v: v.value,
-    #         Model: lambda v: v.value,
-    #         Flow: lambda v: v.value,
-    #         datetime: lambda v: v.isoformat()
-    #     }
-    # Enum Configuration (Config class): Pydantic's Config class allows us to specify serialization behavior. 
-    # use_enum_values = True instructs Pydantic to serialize enums using their values (str representations), instead of their internal representations (typically Python objects).
-
 class AgentListModel(BaseModel):
     id: Optional[uuid.UUID] = None
     name: Optional[str] = None
@@ -40,6 +28,7 @@ class AgentListModel(BaseModel):
     sort_order: Optional[SortOrder] = SortOrder.DESC
     sort_by: Optional[str] = 'created_dt'
     limit: Optional[int] = 10
+    offset: Optional[int] = 0
 
 
 class AgentUpdateModel(BaseModel):

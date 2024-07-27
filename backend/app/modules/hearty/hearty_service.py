@@ -1,19 +1,27 @@
 from datetime import datetime
+from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
+from modules.ai_models.chatgpt.chatgpt_service import ChatGPTService
+from modules.ai_models.llama.llama_service import LlamaService
+from utils.enums.shared_enum import Model
 from modules.agents.agents_service import AgentService
 from modules.logs.logs_service import LogService
-from modules.logs.logs_model import AgentLogsModel
-from config_Loader import get_configs
 from uuid import uuid4
-import re
 from bson import ObjectId
 from fastapi import HTTPException
 import utils.constants.error_constants as ERROR_CONSTANTS
+import utils.constants.app_constants as APP_CONSTANTS
+from modules.shared.chromadb_reader_writer import chromadb_reader
+from modules.shared.key_vault_secret_loader import get_value_from_key_vault
 
-config = get_configs()
 agent_service = AgentService()
 logs_service = LogService()
+chatgpt_service = ChatGPTService()
+llama_service = LlamaService()
+knowledge_upload_service = KnowledgeUploadService()
+
 async def talkToHeartie(question = None, prompt= None, model = None, flow= None, payload= None):
     try:
+        print('Heartie is in Action:  Started ... ')
         #If payload is available use it
         if payload is not None:
             question = payload.question
@@ -21,61 +29,48 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             model = payload.model
             flow = payload.flow
 
-        await agent_service.fetchAgentDetails(payload.agent_id)
-        #Context creation
-        from chromadb_reader_writer import chromadb_reader
-        print('Heartie is in Action:  Started ... ')
-        if not ObjectId.is_valid(payload.agent_id):
-            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
         agentlog = {
             "agent_id": ObjectId(payload.agent_id),
             "interaction_id": str(uuid4()),
             "interaction_date": datetime.now()
         }
-        #print(f"Using [Model] {model} [Flow] {flow} [Question] {question} \n [Prompt] {prompt}")
-        chromaTimeStart = datetime.now()
-        context = chromadb_reader(question)
-        chromaTime = datetime.now() - chromaTimeStart
-        print("chromadb reader")
-        print(chromaTime.total_seconds())
-        # Set your Azure Cognitive Services endpoint and API key
-        azure_openai_endpoint = config.get("AZURE_OPENAI_ENDPOINT")
-        azure_deployment_name = config.get("AZURE_DEPLOYMENT_NAME")
-        from key_vault_secret_loader import get_value_from_key_vault
-        azure_openai_api_key = get_value_from_key_vault(config.get("AZURE_OPENAI_API_KEY"))
-
-        from openai import AzureOpenAI
-        client = AzureOpenAI(
-            api_key=azure_openai_api_key,
-            api_version="2024-02-01",
-            azure_endpoint=azure_openai_endpoint
-        )
-        # This will correspond to the custom name you chose for your deployment when you deployed a model.
-        # Use a gpt-35-turbo-instruct deployment.
-        deployment_name = 'system-intelligence-gpt-35-turbo-instruct'
-
+        agent_data = await agent_service.fetchAgentDetails(payload.agent_id)
+        if agent_data is None or agent_data['model'] != payload.model or agent_data['flow'] != payload.flow:
+            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_MISMATCH_ERROR)
+        
+        context = chromadb_reader(question) #Context creation
         # Define your template with context and prompt
 
-        template = config.get("TEMPLATE_AI")
-        template_with_context_and_question = template.format(context, question)
+        template_with_context_and_question = ""
+        template = ''
         if prompt is not None:
-            template = config.get("TEMPLATE_AI_DYN_PROMPT")
-            template_with_context_and_question = template.format(prompt, context, question)
-        #print(f"Template with substitutions :{template_with_context_and_question}")
-        openAPITimeStart = datetime.now()
-        response = client.completions.create(model=azure_deployment_name, prompt=template_with_context_and_question, max_tokens=250)
-        # Clean the response to remove newline characters
-        openAPITime = datetime.now() - openAPITimeStart
-        print(f"Template time: {openAPITime.total_seconds()}")
-        return_value = re.sub(r'\n+', ' ', response.choices[0].text).strip()
+            template = prompt
+            # template_with_context_and_question = template.format(prompt, context, question)
+            template_with_context_and_question = f"{prompt} Context: {context}. Prompt: {question}"
+        else:
+            agent_config = await knowledge_upload_service.getAiPrompts()
+            template = agent_config['template']
+            template_with_context_and_question = f"{agent_config['template']} Context: {context}. Prompt: {question}"
+
+        if model == Model.ChatGPT4:
+            ai_model_response = await chatgpt_service.chatGPTChatCompletions(template_with_context_and_question)
+        elif model == Model.Llama3:
+            ai_model_response = await llama_service.LlamaChatCompletions(template_with_context_and_question)
+        elif model == Model.Mistral:
+            raise HTTPException(status_code=400, detail=APP_CONSTANTS.MODEL_INPROGRESS)
+        else:
+            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_MODEL_ERROR)
+
         print('Heartie is in Action:  Ended')
+        
         agentlog['duration'] = datetime.now() - agentlog['interaction_date']
         agentlog['question'] = question
-        agentlog['answer'] = return_value
+        agentlog['template'] = template
+        agentlog['answer'] = ai_model_response
         agentlog['model'] = model
         agentlog['flow'] = flow
         await logs_service.createAgentLogs(agentlog)
-        return return_value
+        return ai_model_response
     except Exception as e:
         raise Exception(e)
 

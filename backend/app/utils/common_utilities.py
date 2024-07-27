@@ -2,7 +2,7 @@ from datetime import datetime
 from bson import ObjectId
 from fastapi import HTTPException
 from utils.enums.shared_enum import AgentType
-from fastapi import APIRouter, Response, status, HTTPException
+from fastapi import status, HTTPException
 import uuid
 
 def custom_serializer(obj):

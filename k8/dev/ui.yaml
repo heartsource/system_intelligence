@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: systemintelligenceui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: systemintelligenceui
+  template:
+    metadata:
+      labels:
+        app: systemintelligenceui
+    spec:
+      containers:
+      - name: systemintelligenceui
+        image: issappacr.azurecr.io/si/system-intelligence-ui:0.0.24
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: si-ui-configmap-dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: systemintelligenceui
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: systemintelligenceui
