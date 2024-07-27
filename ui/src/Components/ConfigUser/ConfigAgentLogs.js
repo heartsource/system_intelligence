@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import "../../Styles/configAgentLogs.css";
 import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
@@ -13,18 +13,28 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}
-      >
+        onClick={() => column.sortable && onSort(column.key)}>
         {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
       </div>
     ))}
   </div>
 );
 
-const TableRow = ({ agent, index, columns, customRenderers }) => (
+const TableRow = ({
+  agent,
+  index,
+  columns,
+  customRenderers,
+  onInteractionIdClick,
+}) => (
   <div className="logs-grid-row">
     {columns.map((column) => (
-      <div key={column.key} className="grid-cell">
+      <div
+        key={column.key}
+        className="grid-cell"
+        onClick={() =>
+          column.key === "interaction_id" && onInteractionIdClick(agent)
+        }>
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -34,6 +44,7 @@ const TableRow = ({ agent, index, columns, customRenderers }) => (
 );
 
 const ConfigAgentLogs = () => {
+  const listInnerRef = useRef();
   const {
     logs,
     setLogs,
@@ -43,9 +54,13 @@ const ConfigAgentLogs = () => {
     sortConfig,
     setSortConfig,
     componentKey, // Access the componentKey from context
+    setCurrentComponent,
+    setSelectedAgent,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
-  const [fetchedLogs, setFetchedLogs] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const [prevPage, setPrevPage] = useState(0);
+  const [wasLastList, setWasLastList] = useState(false);
 
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -69,21 +84,49 @@ const ConfigAgentLogs = () => {
     const fetchData = async () => {
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
-        const response = await axios.post(
-          `${config.heartieBE}/logs/`,
-          payload
-        );
+        const response = await axios.post(`${config.heartieBE}/logs/`, {
+          ...payload,
+          limit: 10,
+          offset: (currPage - 1) * 10,
+        });
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        setFilteredLogs(data);
-        setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
+        if (!data.length) {
+          setWasLastList(true);
+          return;
+        }
+        setPrevPage(currPage);
+        setFilteredLogs((prevLogs) => [...prevLogs, ...data]);
+        setLogs((prevLogs) => [
+          ...prevLogs,
+          ...sortItems(data, sortConfig.key, sortConfig.direction),
+        ]);
       } catch (error) {
         handleError(setError, "error");
       }
     };
-    fetchData();
-  }, [selectedAgentId, setLogs, componentKey]); // Add componentKey to dependencies
+    if (!wasLastList && prevPage !== currPage) {
+      fetchData();
+    }
+  }, [
+    currPage,
+    selectedAgentId,
+    setLogs,
+    sortConfig.key,
+    sortConfig.direction,
+    wasLastList,
+    prevPage,
+  ]); // Add dependencies
+
+  useEffect(() => {
+    // Reset the logs when the component mounts
+    setFilteredLogs([]);
+    setLogs([]);
+    setCurrPage(1);
+    setWasLastList(false);
+    setPrevPage(0);
+  }, [componentKey]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -94,7 +137,7 @@ const ConfigAgentLogs = () => {
     }
 
     const sortedLogs = sortItems(
-      filteredLogs.length > 0 ? filteredLogs : fetchedLogs,
+      filteredLogs.length > 0 ? filteredLogs : logs,
       key,
       direction
     );
@@ -102,12 +145,33 @@ const ConfigAgentLogs = () => {
     setSortConfig({ key, direction });
   };
 
+  const handleInteractionIdClick = async (agent) => {
+    try {
+      const response = await axios.get(
+        `${config.heartieBE}/logs/${agent.interaction_id}`
+      );
+      const data = response.data.data;
+      setSelectedAgent(data);
+      setCurrentComponent("agent-log-details");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setCurrPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
   return (
     <>
       <div
         className="agentLogs-fieldset-container"
-        id="fieldset-container-logs"
-      >
+        id="fieldset-container-logs">
         <fieldset id="agentLogsFieldset">
           <legend id="agentLogs">
             Agent Logs <i className="fa-solid fa-headset"></i>
@@ -119,7 +183,10 @@ const ConfigAgentLogs = () => {
               sortConfig={sortConfig}
               onSort={sortLogs}
             />
-            <div className="agentlogs-row-container">
+            <div
+              className="agentlogs-row-container"
+              onScroll={onScroll}
+              ref={listInnerRef}>
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
                   <TableRow
@@ -127,6 +194,7 @@ const ConfigAgentLogs = () => {
                     agent={log}
                     index={index}
                     columns={columns}
+                    onInteractionIdClick={handleInteractionIdClick}
                   />
                 )
               )}

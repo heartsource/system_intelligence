@@ -71,3 +71,6 @@
 .grid-cell:nth-child(1) {
   cursor: pointer;
 }
+.logs-grid-row .grid-cell:nth-child(1) {
+  color: #87ceeb;
+}

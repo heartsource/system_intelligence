@@ -9,6 +9,8 @@ import ConfigAgentLogs from "./ConfigUser/ConfigAgentLogs";
 import ConfigKnowledgeEnhancement from "./ConfigUser/ConfigKnowledgeEnhancement";
 import Footer from "./Footer";
 
+import ConfigAgentLogDetails from "./ConfigUser/ConfigAgentLogDetails";
+
 import { AppProvider, AppContext } from "../context/AppContext";
 
 const App = () => {
@@ -53,6 +55,8 @@ const App = () => {
         return <ConfigAskHearty onTextSubmit={handleTextSubmit} />;
       case "config-knowledge-enhancement":
         return <ConfigKnowledgeEnhancement />;
+      case "agent-log-details":
+        return <ConfigAgentLogDetails />;
       default:
         return <Home />;
       // return <Home setCurrentComponent={setCurrentComponent} />;

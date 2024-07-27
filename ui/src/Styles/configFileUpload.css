@@ -285,3 +285,18 @@ hr.configuration_form:after {
   padding: 10px 20px;
   border: 1px solid #010101;
 }
+/* .progress-bar-container {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 10px;
+} */
+
+/* .progress-bar {
+  height: 25px;
+  background-color: #4caf50;
+  text-align: center;
+  line-height: 25px;
+  color: white;
+} */

@@ -150,4 +150,5 @@
 
 .grid-row .grid-cell:nth-child(1) {
   cursor: pointer;
+  color: #87ceeb;
 }

@@ -47,7 +47,6 @@ const FilterButtonWithPopover = () => {
       const data = Array.isArray(response.data.data) ? response.data.data : [];
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredLogs(data);
-      //setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
     } catch (error) {
       console.error("Error fetching filtered logs:", error);
     }
@@ -59,8 +58,7 @@ const FilterButtonWithPopover = () => {
         className="fa fa-filter"
         aria-hidden="true"
         ref={buttonRef}
-        onClick={togglePopover}
-      ></i>
+        onClick={togglePopover}></i>
 
       <div ref={popoverRef} style={styles.popper} {...attributes.popper}>
         <FilterPopover
