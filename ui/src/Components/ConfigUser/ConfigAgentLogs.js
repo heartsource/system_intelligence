@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
+import config from "../../config";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
