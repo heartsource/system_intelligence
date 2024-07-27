@@ -33,10 +33,7 @@ const ConfigAddAgent = () => {
 
   const fetchData = async () => {
     try {
-      //const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
-      const response = await axios.get(
-        "http://4.255.69.143/heartie-be/get_ai_prompts/"
-      );
+      const response = await axios.get(`${config.heartieBE}/get_ai_prompts/`);
       const { models, flows, template } = response.data;
 
       setModels(models);

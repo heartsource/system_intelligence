@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
+import config from "../../config";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="knowledge-grid-header">
@@ -80,10 +81,7 @@ const ConfigKnowledgeEnhancement = () => {
     const fetchData = async () => {
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
-        const response = await axios.post(
-          "http://4.255.69.143/heartie-be/logs/",
-          payload
-        );
+        const response = await axios.post(`${config.heartieBE}/logs/`, payload);
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
@@ -116,7 +114,7 @@ const ConfigKnowledgeEnhancement = () => {
   const handleInteractionIdClick = async (agent) => {
     try {
       const response = await axios.get(
-        `http://4.255.69.143/heartie-be/logs/${agent.interaction_id}`
+        `${config.heartieBE}/logs/${agent.interaction_id}`
       );
       const data = response.data.data;
       setSelectedAgent(data);

@@ -5,7 +5,6 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
-import config from "../../config";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -117,7 +116,7 @@ const ConfigAgentLogs = () => {
     sortConfig.direction,
     wasLastList,
     prevPage,
-  ]);
+  ]); // Add dependencies
 
   useEffect(() => {
     // Reset the logs when the component mounts
@@ -148,7 +147,7 @@ const ConfigAgentLogs = () => {
   const handleInteractionIdClick = async (agent) => {
     try {
       const response = await axios.get(
-        `http://4.255.69.143/heartie-be/logs/${agent.interaction_id}`
+        `${config.heartieBE}/logs/${agent.interaction_id}`
       );
       const data = response.data.data;
       setSelectedAgent(data);
