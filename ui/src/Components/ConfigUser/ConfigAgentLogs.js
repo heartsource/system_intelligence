@@ -6,6 +6,7 @@ import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
 import config from "../../config";
+import Spinner from "../Spinner";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -53,14 +54,14 @@ const ConfigAgentLogs = () => {
     setFilteredLogs,
     sortConfig,
     setSortConfig,
-    componentKey, // Access the componentKey from context
+    componentKey,
     setCurrentComponent,
     setSelectedAgent,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [currPage, setCurrPage] = useState(1);
-  const [prevPage, setPrevPage] = useState(0);
   const [wasLastList, setWasLastList] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
@@ -82,6 +83,7 @@ const ConfigAgentLogs = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(`${config.heartieBE}/logs/`, {
@@ -92,11 +94,10 @@ const ConfigAgentLogs = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        if (!data.length) {
+        if (data.length === 0) {
           setWasLastList(true);
           return;
         }
-        setPrevPage(currPage);
         setFilteredLogs((prevLogs) => [...prevLogs, ...data]);
         setLogs((prevLogs) => [
           ...prevLogs,
@@ -104,38 +105,32 @@ const ConfigAgentLogs = () => {
         ]);
       } catch (error) {
         handleError(setError, "error");
+      } finally {
+        setLoading(false);
       }
     };
-    if (!wasLastList && prevPage !== currPage) {
+
+    if (!wasLastList) {
       fetchData();
     }
   }, [
     currPage,
     selectedAgentId,
-    setLogs,
     sortConfig.key,
     sortConfig.direction,
     wasLastList,
-    prevPage,
-  ]); // Add dependencies
+  ]);
 
   useEffect(() => {
-    // Reset the logs when the component mounts
     setFilteredLogs([]);
     setLogs([]);
     setCurrPage(1);
     setWasLastList(false);
-    setPrevPage(0);
   }, [componentKey]);
 
   const sortLogs = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    } else if (sortConfig.key !== key) {
-      direction = "desc";
-    }
-
+    const direction =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
     const sortedLogs = sortItems(
       filteredLogs.length > 0 ? filteredLogs : logs,
       key,
@@ -154,7 +149,7 @@ const ConfigAgentLogs = () => {
       setSelectedAgent(data);
       setCurrentComponent("agent-log-details");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -187,6 +182,7 @@ const ConfigAgentLogs = () => {
               className="agentlogs-row-container"
               onScroll={onScroll}
               ref={listInnerRef}>
+              {loading && <Spinner />} {/* Show spinner when loading */}
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
                   <TableRow
@@ -207,6 +203,8 @@ const ConfigAgentLogs = () => {
           </div>
         </fieldset>
       </div>
+      {error && <div className="error-message">{error}</div>}{" "}
+      {/* Display error */}
     </>
   );
 };

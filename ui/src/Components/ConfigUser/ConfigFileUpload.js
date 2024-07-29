@@ -11,18 +11,46 @@ const ConfigFileUpload = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
   const [fileCount, setFileCount] = useState(0);
+  const [validationError, setValidationError] = useState("");
+
+  const allowedFileTypes = ["pdf", "txt"];
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    setFiles(selectedFiles);
-    setError("");
-    setSuccessMessage("");
-    setFileCount(selectedFiles.length);
+    const validFiles = [];
+
+    selectedFiles.forEach((file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      if (allowedFileTypes.includes(fileExtension)) {
+        validFiles.push(file);
+      } else {
+        setValidationError(
+          `Invalid file type.Only PDF and TEXT files are allowed.`
+        );
+        setTimeout(() => {
+          setValidationError("");
+        }, 3000);
+      }
+    });
+
+    if (validFiles.length > 0) {
+      setFiles(validFiles);
+      setError("");
+      setSuccessMessage("");
+      setFileCount(validFiles.length);
+    } else {
+      setError(validationError);
+      setFiles([]);
+      setFileCount(0);
+    }
   };
 
   const handleUpload = async () => {
     if (files.length === 0) {
-      handleError(setError, "Please select at least one file for upload.");
+      handleError(
+        setError,
+        "Please select at least one valid file for upload."
+      );
       return;
     }
 
@@ -52,8 +80,7 @@ const ConfigFileUpload = () => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "File Size is too large.";
-
+        error.response?.data?.message || "File size is too large.";
       handleError(setError, errorMessage);
     } finally {
       setShowModal(false);
@@ -69,19 +96,9 @@ const ConfigFileUpload = () => {
       case "pdf":
         iconStyles.color = "#db061b";
         return <i className="fa-solid fa-file-pdf" style={iconStyles}></i>;
-      case "doc":
-      case "docx":
-        iconStyles.color = "#2b56a1";
-        return <i className="fa-solid fa-file-word" style={iconStyles}></i>;
       case "txt":
         iconStyles.color = "#7589ae";
         return <i className="fa-solid fa-file-alt" style={iconStyles}></i>;
-      case "jpg":
-      case "jpeg":
-      case "png":
-      case "gif":
-        iconStyles.color = "#16a777";
-        return <i className="fa-solid fa-file-image" style={iconStyles}></i>;
       default:
         iconStyles.color = "#6bcad6";
         return <i className="fa-solid fa-file" style={iconStyles}></i>;
@@ -90,6 +107,9 @@ const ConfigFileUpload = () => {
 
   return (
     <>
+      {validationError && (
+        <div className="alert alert-danger">{validationError}</div>
+      )}
       {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>
@@ -136,13 +156,7 @@ const ConfigFileUpload = () => {
               {uploadProgress < 100 ? "Uploading..." : "Uploaded"}{" "}
               {files.length} file(s)
             </h3>
-            <div className="progress-bar-container">
-              {/* <div
-                className="progress-bar"
-                style={{ width: `${uploadProgress}%` }}>
-                {uploadProgress}%
-              </div> */}
-            </div>
+            <div className="progress-bar-container"></div>
             <ul style={{ listStyle: "none" }}>
               {files.map((file, index) => (
                 <li key={index} style={{ marginBottom: "10px" }}>
@@ -160,8 +174,8 @@ const ConfigFileUpload = () => {
                       }}>
                       {file.name}
                     </div>
+                    {uploadProgress}%
                     <div>
-                      {uploadProgress} %
                       {uploadProgress < 100 ? (
                         <i
                           className="fa-solid fa-spinner"
