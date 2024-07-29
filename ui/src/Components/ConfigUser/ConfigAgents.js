@@ -24,8 +24,7 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}
-      >
+        onClick={() => column.sortable && onSort(column.key)}>
         {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
       </div>
     ))}
@@ -44,8 +43,7 @@ const TableRow = ({
       <div
         key={column.key}
         className="grid-cell"
-        onClick={() => column.key === "name" && onAgentNameClick(agent)}
-      >
+        onClick={() => column.key === "name" && onAgentNameClick(agent)}>
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -134,7 +132,6 @@ const ConfigAgents = () => {
       }
     } catch (error) {
       handleError(setError, "Error updating status:");
-      //console.error("Error updating status:", error);
     }
   };
 
@@ -150,8 +147,7 @@ const ConfigAgents = () => {
       ) : (
         <i
           className="fa-solid fa-circle-xmark"
-          style={{ color: "#db0f00" }}
-        ></i>
+          style={{ color: "#db0f00" }}></i>
       ),
     action: (agent, index) =>
       agent.name !== "Default System Agent" ? (
@@ -225,8 +221,7 @@ const ConfigAgents = () => {
                 <button
                   type="button"
                   className="close"
-                  onClick={() => closeModal(setModalInfo)}
-                >
+                  onClick={() => closeModal(setModalInfo)}>
                   <span>&times;</span>
                 </button>
               </div>
@@ -245,16 +240,14 @@ const ConfigAgents = () => {
                   type="button"
                   id="configNo"
                   className="btn btn-secondary"
-                  onClick={() => closeModal(setModalInfo)}
-                >
+                  onClick={() => closeModal(setModalInfo)}>
                   No
                 </button>
                 <button
                   type="button"
                   id="configYes"
                   className="btn btn-primary"
-                  onClick={confirmToggleStatus}
-                >
+                  onClick={confirmToggleStatus}>
                   Yes
                 </button>
               </div>
