@@ -8,28 +8,36 @@ const Navbar = () => {
     useContext(AppContext);
 
   useEffect(() => {
-    const showNavbar = (toggleId, navId, bodyId, headerId) => {
-      const toggle = document.getElementById(toggleId),
-        nav = document.getElementById(navId),
-        bodypd = document.getElementById(bodyId),
-        headerpd = document.getElementById(headerId);
+    const showNavbar = (expand) => {
+      const nav = document.getElementById("nav-bar");
+      const bodypd = document.getElementById("body-pd");
+      const headerpd = document.getElementById("header");
 
-      if (toggle && nav && bodypd && headerpd) {
-        const toggleHandler = () => {
-          nav.classList.toggle("show");
-          toggle.classList.toggle("bx-x");
-          bodypd.classList.toggle("body-pd");
-          headerpd.classList.toggle("body-pd");
-        };
-        toggle.addEventListener("click", toggleHandler);
-
-        return () => {
-          toggle.removeEventListener("click", toggleHandler);
-        };
+      if (nav && bodypd && headerpd) {
+        if (expand) {
+          nav.classList.add("show");
+          bodypd.classList.add("container");
+          // bodypd.classList.add("body-pd");
+          headerpd.classList.add("body-pd");
+        } else {
+          nav.classList.remove("show");
+          bodypd.classList.remove("container");
+          // bodypd.classList.remove("body-pd");
+          headerpd.classList.remove("body-pd");
+        }
       }
     };
 
-    showNavbar("header-toggle", "nav-bar", "body-pd", "header");
+    const navBar = document.getElementById("nav-bar");
+    if (navBar) {
+      navBar.addEventListener("mouseenter", () => showNavbar(true));
+      navBar.addEventListener("mouseleave", () => showNavbar(false));
+
+      return () => {
+        navBar.removeEventListener("mouseenter", () => showNavbar(true));
+        navBar.removeEventListener("mouseleave", () => showNavbar(false));
+      };
+    }
   }, []);
 
   const handleNavigation = (component) => {
@@ -45,13 +53,16 @@ const Navbar = () => {
           width="80px"
           style={{ backgroundColor: "transparent" }}
         />
-
+      </header>
+      <div className="headerName">
         <h1 className="gradient-text">SUPPORT GENIE</h1>
         <div className="header_toggle"></div>
         <div className="header_img">
           <i className="fa-solid fa-user"></i>
         </div>
-      </header>
+      </div>
+      {/* </header> */}
+
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">
           <div>
@@ -62,7 +73,8 @@ const Navbar = () => {
                 className={`nav_link ${
                   currentComponent === "home" ? "active" : ""
                 }`}>
-                <i className="fa-solid fa-gears"></i> Agent Configuration
+                <i className="fa-solid fa-gears"></i> Agent <br />
+                Configuration
               </div>
               <div
                 onClick={() => handleNavigation("agents")}
@@ -104,15 +116,15 @@ const Navbar = () => {
                     ? "active"
                     : ""
                 }`}>
-                <i className="fa-solid fa-chart-line"></i> Knowledge <br />
+                <i className="fa-solid fa-chart-line nav_icon"></i> Knowledge{" "}
+                <br />
                 Enhancement
               </div>
             </div>
           </div>
 
-          <div onClick={() => handleNavigation("home")} className="nav_link">
-            <i className="fa-solid fa-right-from-bracket nav_icon"></i>
-            <span className="nav_name">SignOut</span>
+          <div onClick={() => handleNavigation("profile")} className="nav_link">
+            <i class="fa-solid fa-right-from-bracket"></i> Log Out
           </div>
         </nav>
       </div>

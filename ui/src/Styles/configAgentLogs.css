@@ -1,5 +1,5 @@
 .agentLogs-fieldset-container {
-  width: 100%;
+  width: 110%;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -36,7 +36,7 @@
 .logs-grid-header,
 .logs-grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr 2fr 2fr;
   width: 100%;
   color: #fff;
 }
@@ -72,5 +72,9 @@
   cursor: pointer;
 }
 .logs-grid-row .grid-cell:nth-child(1) {
-  color: #87ceeb;
+  color: rgb(45, 182, 212);
+  font-weight: bold;
+}
+.logs-grid-row .grid-cell:nth-child(6) {
+  text-align: center;
 }

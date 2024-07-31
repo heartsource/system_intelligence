@@ -2,14 +2,7 @@ body {
   overflow-y: hidden;
 }
 
-/* .container {
-  height: 100vh;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-} */
-
-.card {
+/* .card {
   border-radius: 10px;
   box-shadow: 0 5px 10px 0 rgba(29, 29, 29, 0.823);
   width: 700px;
@@ -20,7 +13,7 @@ body {
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .card h4 {
   font-size: 22px;
@@ -224,7 +217,8 @@ label {
 }
 .fieldset-container-fileUpload {
   margin-top: -7em;
-  margin-left: 0;
+  margin-left: 7.8em;
+
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */

@@ -1,5 +1,5 @@
 .logDetails-fieldset-container {
-  width: 100%;
+  width: 115%;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -19,7 +19,8 @@
   position: relative;
 }
 
-#logDetailsLegend {
+#logDetailsLegend,
+#interactionLegend {
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -44,15 +45,16 @@
 .first-col {
   display: flex;
   flex: 1;
-  min-width: 250px;
+  min-width: 260px;
   color: white;
   height: 2em;
+  font-weight: bold;
 }
 .first-col span {
   display: inline-block;
-  /* min-width: 250px; */
   max-width: 100%;
   white-space: nowrap;
+  font-weight: lighter;
 }
 
 .sec-col {
@@ -73,6 +75,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  margin-bottom: 20px;
 }
 #interactionFieldset {
   border: 1px solid #ccc;
@@ -99,7 +102,7 @@
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
-  max-height: 70em;
+  max-height: 80em;
   transition: opacity 0.2s;
   max-width: 50em;
 }
@@ -108,6 +111,7 @@
   font-size: 1.1em;
   max-height: 30em;
   overflow-y: auto;
+  white-space: pre-wrap;
 }
 .ques,
 .answer {

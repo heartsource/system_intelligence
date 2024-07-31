@@ -78,7 +78,7 @@ const ConfigAgentLogs = () => {
     { key: "model", label: "Model", sortable: true },
     { key: "flow", label: "Flow", sortable: true },
     { key: "interaction_date", label: "Interaction Date", sortable: true },
-    { key: "duration", label: "Duration", sortable: true },
+    { key: "duration", label: "Duration (In Sec)", sortable: true },
   ];
 
   useEffect(() => {
@@ -182,7 +182,7 @@ const ConfigAgentLogs = () => {
               className="agentlogs-row-container"
               onScroll={onScroll}
               ref={listInnerRef}>
-              {loading && <Spinner />} {/* Show spinner when loading */}
+              {loading && <Spinner />}
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
                   <TableRow

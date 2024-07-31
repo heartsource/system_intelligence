@@ -15,8 +15,13 @@ const ConfigAgentLogDetails = () => {
     if (showPopover && popperElement) {
       const popperRect = popperElement.getBoundingClientRect();
       popperElement.style.position = "fixed";
-      popperElement.style.top = `calc(5% - ${popperRect.height / 2}px)`;
-      popperElement.style.left = `calc(5% - ${popperRect.width / 2}px)`;
+      if (selectedAgent.template) {
+        popperElement.style.top = `calc(20% - ${popperRect.height / 2}px)`;
+        popperElement.style.left = `calc(10% - ${popperRect.width / 2}px)`;
+      } else {
+        popperElement.style.top = `calc(5% - ${popperRect.height / 2}px)`;
+        popperElement.style.left = `calc(10% - ${popperRect.width / 2}px)`;
+      }
     }
   }, [showPopover, popperElement]);
 
@@ -53,45 +58,47 @@ const ConfigAgentLogDetails = () => {
             <div className="row">
               <div className="column">
                 <div className="first-col">
-                  Interaction Id &nbsp;&nbsp;
-                  <span style={{ color: "gray" }}>
-                    {selectedAgent.interaction_id}
-                  </span>
+                  <label>Interaction Id &nbsp;:&nbsp;</label>
+                  <span>{selectedAgent.interaction_id}</span>
                 </div>
               </div>
               <div className="column">
                 <div className="sec-col">
-                  Interaction Date&nbsp;{" "}
-                  <span style={{ color: "gray" }}>
-                    {selectedAgent.interaction_date}
-                  </span>
+                  <label style={{ fontWeight: "bold" }}>
+                    Interaction Date &nbsp;: &nbsp;
+                  </label>
+                  <span>{selectedAgent.interaction_date}</span>
                 </div>
               </div>
             </div>
             <div className="row">
               <div className="column">
                 <div className="third-col">
-                  Duration&nbsp;{" "}
-                  <span style={{ color: "gray" }}>
-                    {selectedAgent.duration}
-                  </span>
+                  <label style={{ fontWeight: "bold" }}>
+                    Duration (In Sec)&nbsp;:&nbsp;
+                  </label>
+                  <span>{selectedAgent.duration}</span>
                 </div>
               </div>
               <div className="column">
                 <div className="first-col">
-                  Model &nbsp;&nbsp;
-                  <span style={{ color: "gray" }}>{selectedAgent.model}</span>
+                  <label style={{ fontWeight: "bold" }}>
+                    Model &nbsp;:&nbsp;
+                  </label>
+                  <span>{selectedAgent.model}</span>
                 </div>
               </div>
               <div className="column">
                 <div className="sec-col">
-                  Flow &nbsp;{" "}
-                  <span style={{ color: "gray" }}>{selectedAgent.flow}</span>
+                  <label style={{ fontWeight: "bold" }}>
+                    Flow &nbsp;: &nbsp;
+                  </label>
+                  <span>{selectedAgent.flow}</span>
                 </div>
               </div>
               <div className="column">
                 <div className="third-col">
-                  Template &nbsp;
+                  <label style={{ fontWeight: "bold" }}>Template &nbsp;</label>
                   <span
                     style={{ cursor: "pointer", color: "rgb(45, 182, 212)" }}
                     ref={setReferenceElement}
@@ -107,10 +114,13 @@ const ConfigAgentLogDetails = () => {
                       className="logDetails-popover"
                       onMouseEnter={handlePopoverMouseEnter}
                       onMouseLeave={handlePopoverMouseLeave}>
-                      <div className="logDetails-popover-content">
-                        {selectedAgent.template ||
-                          "There is no template description"}
-                      </div>
+                      <div
+                        className="logDetails-popover-content"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            selectedAgent.template ||
+                            "There is no template description",
+                        }}></div>
                     </div>
                   )}
                 </div>
@@ -118,6 +128,7 @@ const ConfigAgentLogDetails = () => {
             </div>
           </fieldset>
         </div>
+
         <div className="mainRow">
           <fieldset id="interactionFieldset">
             <legend id="interactionLegend">Agent Interaction</legend>

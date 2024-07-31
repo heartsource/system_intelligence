@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import ConfigFileUpload from "../Components/ConfigUser/ConfigFileUpload";
 import Home from "./Home";
 import ConfigAskHearty from "../Components/ConfigUser/ConfigAskHearty";
@@ -15,7 +15,6 @@ import { AppProvider, AppContext } from "../context/AppContext";
 
 const App = () => {
   const { currentComponent } = useContext(AppContext);
-  //const [currentComponent, setCurrentComponent] = useState("home");
 
   useEffect(() => {
     const body = document.getElementById("body-pd");
@@ -42,7 +41,6 @@ const App = () => {
     switch (currentComponent) {
       case "home":
         return <Home />;
-      // return <Home setCurrentComponent={setCurrentComponent} />;
       case "agents":
         return <ConfigAgents />;
       case "agentDetails":
@@ -59,13 +57,11 @@ const App = () => {
         return <ConfigAgentLogDetails />;
       default:
         return <Home />;
-      // return <Home setCurrentComponent={setCurrentComponent} />;
     }
   };
 
   return (
     <div id="body-pd">
-      {/* <ConfigNavbar setCurrentComponent={setCurrentComponent} /> */}
       <ConfigNavbar />
       <div className="container">{renderComponent()}</div>
       <Footer />

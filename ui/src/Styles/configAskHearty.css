@@ -7,7 +7,7 @@
 
 .container {
   height: 100vh;
-  width: 80em;
+  width: 85em;
   align-items: center;
   justify-content: center;
 }
@@ -89,13 +89,13 @@ h5 b {
   background-color: transparent;
   color: #fff;
   box-sizing: border-box;
-  font-family: "Roboto";
+  font-family: "Montserrat";
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 50px;
-  overflow: auto; /* enable scrollbars when needed */
-  min-height: 50px; /* initial height */
-  max-height: 150px; /* 50% increase from initial height */
+  overflow: auto;
+  min-height: 50px;
+  max-height: 150px;
 }
 
 .chatbox-textbox .submit-btn {
