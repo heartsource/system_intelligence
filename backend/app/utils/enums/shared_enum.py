@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Status(str, Enum):
+class AgentStatus(str, Enum):
     ACTIVE = "active"
     INACTIVE = "inactive"
 
@@ -21,3 +21,8 @@ class SortOrder(Enum):
 class AgentType(Enum):
     DEFAULT = 'default'
     CUSTOM = 'custom'
+
+class InquiryStatus(Enum):
+    INQUIRED = 'inquired'
+    RESPONDED = 'responded'
+    INJESTED = 'injested'

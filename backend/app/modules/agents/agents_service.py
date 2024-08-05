@@ -6,7 +6,7 @@ from bson import ObjectId
 from fastapi import HTTPException
 import pymongo
 from modules.logs.logs_service import LogService
-from utils.enums.shared_enum import AgentType, Status
+from utils.enums.shared_enum import AgentType, AgentStatus
 from utils.common_utilities import custom_serializer
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
 import utils.constants.error_constants as ERROR_CONSTANTS
@@ -118,7 +118,7 @@ class AgentService:
             document = json.loads(json.dumps(agent, default=pydantic_encoder))
             document['created_dt'] = datetime.now()
 
-            return  await self.collection.insert_one(document)
+            return await self.collection.insert_one(document)
             
         except Exception as e:
             traceback.print_exc()
@@ -196,7 +196,7 @@ class AgentService:
                 await logs_service.deleteAgentLogs(agent_id)
                 return await self.collection.update_one(
                     {"_id": ObjectId(agent_id)},
-                    {"$set": {'deleted_dt': datetime.now(), 'status': Status.INACTIVE }}
+                    {"$set": {'deleted_dt': datetime.now(), 'status': AgentStatus.INACTIVE }}
                     )
             except Exception as e:
                 raise Exception(e)

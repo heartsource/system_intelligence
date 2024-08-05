@@ -1,6 +1,6 @@
 from datetime import datetime
 from bson import ObjectId
-from fastapi import HTTPException
+from fastapi import HTTPException, Response
 from utils.enums.shared_enum import AgentType
 from fastapi import status, HTTPException
 import uuid
@@ -15,7 +15,7 @@ def custom_serializer(obj):
     # Add custom serialization for other types if needed
     raise TypeError(f"Type {type(obj)} not serializable")
 
-def internalServerError(e, response):
+def internalServerError(e, response: Response):
     if e.args[0] and isinstance(e.args[0], HTTPException):
         response.status_code = e.args[0].status_code
         return { "status": "error", "data": e.args[0].detail}

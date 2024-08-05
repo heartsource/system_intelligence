@@ -1,5 +1,6 @@
 from datetime import datetime
 from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
+from modules.inquiry.inquiry_service import InquiryRequestService
 from modules.ai_models.chatgpt.chatgpt_service import ChatGPTService
 from modules.ai_models.llama.llama_service import LlamaService
 from utils.enums.shared_enum import Model
@@ -18,6 +19,7 @@ logs_service = LogService()
 chatgpt_service = ChatGPTService()
 llama_service = LlamaService()
 knowledge_upload_service = KnowledgeUploadService()
+inquiry_service = InquiryRequestService()
 
 async def talkToHeartie(question = None, prompt= None, model = None, flow= None, payload= None):
     try:
@@ -60,6 +62,10 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             raise HTTPException(status_code=400, detail=APP_CONSTANTS.MODEL_INPROGRESS)
         else:
             raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_MODEL_ERROR)
+
+        not_found = "I do not have enough information to answer your question"
+        if not_found in ai_model_response:
+            await inquiry_service.createInquiryRequest({"query": question, "agent_id": payload.agent_id})
 
         print('Heartie is in Action:  Ended')
         

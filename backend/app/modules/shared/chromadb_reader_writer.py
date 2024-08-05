@@ -3,7 +3,7 @@ from chromadb.utils import embedding_functions
 from config.chromadb_config import chromadb_config
 
 def chromadb_writer(txt_file_content):
-    print("Writting to Chroma: Started...")
+    print("Writing to Chroma: Started...")
     chunk_size = 200
     # Split the data into chunks
 

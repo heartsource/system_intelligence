@@ -24,8 +24,8 @@ class KnowledgeUploadService:
         except Exception as e:
             raise Exception(e) 
     
-    async def loadToChromadb(file_content):
-        return_value = {"status": "success", "message": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
+    async def loadToChromadb(self, file_content):
+        return_value = {"status": "success", "data": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
         chromadb_writer(file_content)
         return return_value
 
@@ -52,7 +52,7 @@ class KnowledgeUploadService:
                             pdf_text.append(content)
                 except PdfReadError as e:
                     print(f"Error reading PDF: {e}")
-                    return {"status": "error", "message": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
+                    return {"status": "error", "data": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
             
             elif file_extension == 'txt':
                 try:
@@ -64,26 +64,26 @@ class KnowledgeUploadService:
                             pdf_text.append(f.read())
                     except Exception as e:
                         print(f"Error reading TXT file with fallback encoding: {e}")
-                        return {"status": "error", "message": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                        return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
                 except Exception as e:
                     print(f"Error reading TXT file: {e}")
-                    return {"status": "error", "message": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                    return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
             
             else:
-                return {"status": "error", "message": ERROR_CONSTANTS.FILE_SUPPORT_ERROR }
+                return {"status": "error", "data": ERROR_CONSTANTS.FILE_SUPPORT_ERROR }
 
             if os.path.exists(save_to):
                 os.remove(save_to)
 
             txt_content = " ".join(pdf_text)
 
-            response = await KnowledgeUploadService.loadToChromadb(txt_content)
+            response = await self.loadToChromadb(txt_content)
 
             return response
 
         except Exception as e:
             traceback.print_exc()
-            return {"status": "error", "message": str(e)}
+            return {"status": "error", "data": str(e)}
     
 
 

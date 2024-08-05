@@ -6,7 +6,7 @@ services:
       context: .
       args:
         ENV_FILE: .env.development
-    image: issappacr.azurecr.io/si/system-intelligence-backend:2.0.17
+    image: issappacr.azurecr.io/si/system-intelligence-backend:2.1.0
     environment:
       #These two timeout parameters are added to override env variables of
       #gunicorn server start up parameters. Without this the server would

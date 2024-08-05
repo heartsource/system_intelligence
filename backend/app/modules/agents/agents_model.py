@@ -2,7 +2,7 @@ from datetime import datetime
 import uuid
 from pydantic import BaseModel
 from typing import Optional
-from utils.enums.shared_enum import Model, Flow, AgentType, SortOrder, Status
+from utils.enums.shared_enum import Model, Flow, AgentType, SortOrder, AgentStatus
 
 class AgentModel(BaseModel):
     name: str
@@ -10,8 +10,8 @@ class AgentModel(BaseModel):
     template: str
     model: Model
     flow: Flow
-    type: Optional[str] = AgentType.CUSTOM
-    status: Optional[str] = Status.ACTIVE
+    type: Optional[AgentType] = AgentType.CUSTOM
+    status: Optional[AgentStatus] = AgentStatus.ACTIVE
     created_dt: Optional[datetime] = None
     updated_dt: Optional[datetime] = None
     deleted_dt: Optional[datetime] = None
@@ -23,8 +23,8 @@ class AgentListModel(BaseModel):
     template: Optional[str] = None,
     model: Optional[Model] = None
     flow: Optional[Flow] = None
-    status: Optional[Status] = None
-    type: Optional[str] = AgentType.CUSTOM
+    status: Optional[AgentStatus] = None
+    type: Optional[AgentType] = AgentType.CUSTOM
     sort_order: Optional[SortOrder] = SortOrder.DESC
     sort_by: Optional[str] = 'created_dt'
     limit: Optional[int] = 10
@@ -37,5 +37,5 @@ class AgentUpdateModel(BaseModel):
     template: Optional[str] = None
     model: Optional[Model] = None
     flow: Optional[Flow] = None
-    status: Optional[Status]= None
+    status: Optional[AgentStatus]= None
 
