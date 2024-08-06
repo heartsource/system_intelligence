@@ -21,12 +21,7 @@ class InquiryModel(BaseModel):
 
 class InquiryListModel(BaseModel):
     status: Optional[List[InquiryStatus]] = None
-    inquiry_id: Optional[str] = None
-    sort_by: Optional[str] = InquiryStatus.INQUIRED
+    sort_by: Optional[str] = 'requested_on'
     sort_order: Optional[SortOrder] = SortOrder.DESC
     limit: Optional[int] = 10
     offset: Optional[int] = 0
-
-
-class InquiryUpdateModel(BaseModel):
-    query_response: Optional[str] = None

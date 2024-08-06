@@ -42,7 +42,10 @@ class InquiryRequestService:
         try:
             query = {}
             if request.status:
-                query['status'] = { "$in": request.status }
+                formattedStatus = []
+                for status in request.status:
+                    formattedStatus.append(status.value)
+                query['status'] = { "$in": formattedStatus }
             
             query['$or'] = [
                 { 'deleted_dt': None },
@@ -52,7 +55,7 @@ class InquiryRequestService:
             sort_dict = None
             if request.sort_by:
                 sort_order = -1 if request.sort_order.value.lower() == 'desc' else 1
-                sort_dict = { request.sort_by.value : sort_order }
+                sort_dict = { request.sort_by : sort_order }
 
             # Ensure sort_dict is converted to list of tuples
             if isinstance(sort_dict, dict):
@@ -97,7 +100,6 @@ class InquiryRequestService:
             
             body = {
                 "responded_on": datetime.now(),
-                "injested_on": datetime.now(),
                 "status": InquiryStatus.INJESTED.value
             }
             if file:
@@ -114,7 +116,7 @@ class InquiryRequestService:
                     {"deleted_dt": None}
                 ]
             }
-
+            body['injested_on'] = datetime.now()
             return self.collection.find_one_and_update(query, { "$set": body })
             
             # if result is not None:
