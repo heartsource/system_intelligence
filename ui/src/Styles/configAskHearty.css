@@ -161,17 +161,63 @@ h5 b {
   color: #000;
 }
 
-.ask-hearty-agent-input-row select {
+/* .ask-hearty-agent-input-row select {
   width: 190px;
+  height: 35px;
   box-sizing: border-box;
   transition: 0.5s ease-in;
   background-color: transparent;
   border: 1px solid #ccc;
   border-radius: 5px;
   color: white;
+} */
+
+.ask-hearty-agent-input-row select {
+  width: 190px;
+  height: 35px;
+  box-sizing: border-box;
+  transition: all 0.5s ease-in;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: white;
+  padding: 0 10px;
+  appearance: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.ask-hearty-agent-input-row select:hover {
+  border-color: #aaa;
+}
+
+.ask-hearty-agent-input-row select:focus {
+  border-color: #d0d2d3;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(223, 209, 209, 0);
+}
+
+.ask-hearty-agent-input-row select::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: white;
+}
+
+.ask-hearty-agent-input-row {
+  position: relative;
+}
+
+.ask-hearty-agent-input-row select::-ms-expand {
+  display: none;
 }
 
 .conversation-container {
-  margin: 0;
+  margin-top: -4em;
   padding: 0;
+  width: 105%;
+  margin-left: -1.2em;
 }

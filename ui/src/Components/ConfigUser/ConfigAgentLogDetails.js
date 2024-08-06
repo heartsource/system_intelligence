@@ -56,74 +56,62 @@ const ConfigAgentLogDetails = () => {
             </legend>
             <hr />
             <div className="row">
-              <div className="column">
-                <div className="first-col">
-                  <label>Interaction Id &nbsp;:&nbsp;</label>
-                  <span>{selectedAgent.interaction_id}</span>
-                </div>
+              <div className="first-col">
+                <label>Interaction Id &nbsp;&nbsp;</label>
+                <span>{selectedAgent.interaction_id}</span>
               </div>
-              <div className="column">
-                <div className="sec-col">
-                  <label style={{ fontWeight: "bold" }}>
-                    Interaction Date &nbsp;: &nbsp;
-                  </label>
-                  <span>{selectedAgent.interaction_date}</span>
-                </div>
+              <div className="sec-col">
+                <label style={{ fontWeight: "bold" }}>
+                  Interaction Date &nbsp; &nbsp;
+                </label>
+                <span>{selectedAgent.interaction_date}</span>
+              </div>
+              <div className="third-col">
+                <label style={{ fontWeight: "bold" }}>
+                  Duration (In Sec)&nbsp;&nbsp;
+                </label>
+                <span>{selectedAgent.duration}</span>
               </div>
             </div>
             <div className="row">
-              <div className="column">
-                <div className="third-col">
-                  <label style={{ fontWeight: "bold" }}>
-                    Duration (In Sec)&nbsp;:&nbsp;
-                  </label>
-                  <span>{selectedAgent.duration}</span>
-                </div>
+              <div className="first-col">
+                <label style={{ fontWeight: "bold" }}>Model &nbsp;&nbsp;</label>
+                <span>{selectedAgent.model}</span>
               </div>
-              <div className="column">
-                <div className="first-col">
-                  <label style={{ fontWeight: "bold" }}>
-                    Model &nbsp;:&nbsp;
-                  </label>
-                  <span>{selectedAgent.model}</span>
-                </div>
+              <div className="sec-col">
+                <label style={{ fontWeight: "bold" }}>Flow &nbsp;&nbsp;</label>
+                <span>{selectedAgent.flow}</span>
               </div>
-              <div className="column">
-                <div className="sec-col">
-                  <label style={{ fontWeight: "bold" }}>
-                    Flow &nbsp;: &nbsp;
-                  </label>
-                  <span>{selectedAgent.flow}</span>
-                </div>
-              </div>
-              <div className="column">
-                <div className="third-col">
-                  <label style={{ fontWeight: "bold" }}>Template &nbsp;</label>
-                  <span
-                    style={{ cursor: "pointer", color: "rgb(45, 182, 212)" }}
-                    ref={setReferenceElement}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}>
-                    View
-                  </span>
-                  {showPopover && (
+              <div className="third-col">
+                <label style={{ fontWeight: "bold" }}>Template &nbsp;</label>
+                <span
+                  style={{
+                    cursor: "pointer",
+                    color: "rgb(45, 182, 212)",
+                    fontWeight: "bold",
+                  }}
+                  ref={setReferenceElement}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  View
+                </span>
+                {showPopover && (
+                  <div
+                    ref={setPopperElement}
+                    style={styles.popper}
+                    {...attributes.popper}
+                    className="logDetails-popover"
+                    onMouseEnter={handlePopoverMouseEnter}
+                    onMouseLeave={handlePopoverMouseLeave}>
                     <div
-                      ref={setPopperElement}
-                      style={styles.popper}
-                      {...attributes.popper}
-                      className="logDetails-popover"
-                      onMouseEnter={handlePopoverMouseEnter}
-                      onMouseLeave={handlePopoverMouseLeave}>
-                      <div
-                        className="logDetails-popover-content"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            selectedAgent.template ||
-                            "There is no template description",
-                        }}></div>
-                    </div>
-                  )}
-                </div>
+                      className="logDetails-popover-content"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          selectedAgent.template ||
+                          "There is no template description",
+                      }}></div>
+                  </div>
+                )}
               </div>
             </div>
           </fieldset>
@@ -134,14 +122,14 @@ const ConfigAgentLogDetails = () => {
             <legend id="interactionLegend">Agent Interaction</legend>
             <hr />
             <div className="ques">
-              <span style={{ color: "rgb(45, 182, 212)" }}>
+              <span style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}>
                 Question:: &nbsp;
               </span>
               {selectedAgent.question}
             </div>
             <br />
             <div className="answer">
-              <span style={{ color: "rgb(45, 182, 212)" }}>
+              <span style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}>
                 Response:: &nbsp;
               </span>
               {selectedAgent.answer}

@@ -4,6 +4,7 @@
   align-items: center;
   padding: 20px;
 }
+
 #logDetailsFieldset {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -33,41 +34,52 @@
 .row {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Ensure items stay in a single row */
   width: 100%;
 }
+
 .column {
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
 }
-.first-col {
+
+.first-col,
+.sec-col,
+.third-col {
   display: flex;
+  align-items: center; /* Align items horizontally */
+  justify-content: flex-start; /* Align items to the start */
   flex: 1;
-  min-width: 260px;
   color: white;
   height: 2em;
   font-weight: bold;
 }
-.first-col span {
-  display: inline-block;
-  max-width: 100%;
-  white-space: nowrap;
-  font-weight: lighter;
+
+.first-col {
+  flex: 2; /* More space */
+  min-width: 260px;
 }
 
 .sec-col {
+  flex: 1.5; /* Less than first column */
   padding-left: 5px;
   min-width: 250px;
-  color: white;
-  height: 2em;
 }
+
 .third-col {
+  flex: 1; /* Least space */
   padding-left: 1px;
   min-width: 10px;
-  color: white;
-  height: 2em;
+}
+
+.first-col span,
+.sec-col span,
+.third-col span {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: lighter;
 }
 
 .mainRow {
@@ -77,6 +89,7 @@
   width: 100%;
   margin-bottom: 20px;
 }
+
 #interactionFieldset {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -96,6 +109,8 @@
 .logDetails-popover {
   background-color: rgb(45, 182, 212);
   color: black;
+  font-family: "Montserrat";
+  font-weight: normal;
   border: 1px solid #000;
   border-radius: 5px;
   overflow-y: auto;
@@ -113,6 +128,7 @@
   overflow-y: auto;
   white-space: pre-wrap;
 }
+
 .ques,
 .answer {
   color: #fff;
