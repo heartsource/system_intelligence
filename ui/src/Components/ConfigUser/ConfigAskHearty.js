@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import hearty from "../Images/NewHeartyIcon-without-background.png";
 import ConversationDisplay from "../ConfigUser/ConversationDisplay";
@@ -14,6 +14,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const [agentNames, setAgentNames] = useState([]); // List of agent names
   const [selectedAgent, setSelectedAgent] = useState({}); // Selected agent
   const [defaultAgent, setDefaultAgent] = useState({}); // Default agent
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to manage dropdown visibility
 
   const handleTextareaInput = (event) => {
     event.target.style.height = "auto"; // Reset height to auto to recalculate scroll height
@@ -94,6 +95,16 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
     }
   };
 
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleOptionSelect = (agentName) => {
+    const selectedAgent = agentNames.find((agent) => agent.name === agentName);
+    setSelectedAgent(selectedAgent || {});
+    setIsDropdownOpen(false); // Close dropdown after selection
+  };
+
   return (
     <>
       {error && (
@@ -130,22 +141,24 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           <div
             className="ask-hearty-agent-input-row"
             style={{ marginLeft: "64em", marginTop: "-3em" }}>
-            <select
-              value={selectedAgent.name}
-              onChange={(e) =>
-                setSelectedAgent(
-                  agentNames.find((a) => a.name === e.target.value) || {}
-                )
-              }>
-              <option value="">Select Agent</option>
-              {agentNames
-                .filter((agent) => agent.name !== "Default System Agent")
-                .map((agent, index) => (
-                  <option key={index} value={agent.name}>
-                    {agent.name}
-                  </option>
-                ))}
-            </select>
+            <div className="custom-select">
+              <div className="select-selected" onClick={handleDropdownToggle}>
+                {selectedAgent.name || "Select Agent"}
+              </div>
+              {isDropdownOpen && (
+                <div className="select-items">
+                  {agentNames
+                    .filter((agent) => agent.name !== "Default System Agent")
+                    .map((agent, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleOptionSelect(agent.name)}>
+                        {agent.name}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
           <div
             className="conversation-container"

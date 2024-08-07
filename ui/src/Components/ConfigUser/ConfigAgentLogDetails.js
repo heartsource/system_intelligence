@@ -123,14 +123,14 @@ const ConfigAgentLogDetails = () => {
             <hr />
             <div className="ques">
               <span style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}>
-                Question:: &nbsp;
+                Question &nbsp;
               </span>
               {selectedAgent.question}
             </div>
             <br />
             <div className="answer">
               <span style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}>
-                Response:: &nbsp;
+                Response &nbsp;
               </span>
               {selectedAgent.answer}
             </div>
