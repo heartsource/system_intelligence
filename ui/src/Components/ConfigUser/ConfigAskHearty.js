@@ -102,19 +102,14 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         </div>
       )}
       <div className="container-fluid">
+        <div className="ask-hearty-header">
+          <h2 style={{ marginLeft: "15em", marginTop: ".2em" }}>
+            Ask Hearty
+            <img src={hearty} alt="" height="70px" width="70px" />
+          </h2>
+        </div>
         <div className="dashboard-content">
           <div className="content">
-            <h2 style={{ marginLeft: "15em", marginTop: ".2em" }}>
-              Ask Hearty
-              <img
-                src={hearty}
-                alt=""
-                height="70px"
-                width="70px"
-                style={{ borderRadius: "50%", marginLeft: "-0.3em" }}
-              />
-            </h2>
-
             <div className="chatbox-textbox">
               <textarea
                 placeholder="Seeking answers? Ask your question here."
