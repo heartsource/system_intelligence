@@ -171,54 +171,72 @@ h5 b {
   z-index: 10;
   width: 220px;
 }
-
-.ask-hearty-agent-input-row select {
+.custom-select {
+  position: relative;
+  display: inline-block;
   width: 200px;
+}
+.custom-select select {
+  display: none;
+}
+
+.custom-select::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #3cc9e2;
+}
+.custom-select select {
+  width: 100%;
   height: 35px;
-  margin-right: 1.4em;
-  background-color: transparent;
+  padding: 5px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
-  transition: all 0.5s ease-in;
   border-radius: 5px;
+  background-color: transparent;
   color: white;
-  padding: 0 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
 }
-.ask-hearty-agent-input-row select:hover {
-  border-color: #aaa;
-  background-color: #3cc9e2;
-  color: #000;
+.custom-select .select-selected {
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid #3cc9e2;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
 }
-
-.ask-hearty-agent-input-row select:focus {
-  border-color: #d0d2d3;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(223, 209, 209, 0.5);
+.custom-select .select-selected:hover {
   background-color: #3cc9e2;
   color: black;
 }
 
-.ask-hearty-agent-input-row::after {
-  content: "▼";
+.custom-select .select-items {
   position: absolute;
-  top: 50%;
-  right: 30px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: white;
+  background-color: #2db6d4;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border: 1px solid black;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.ask-hearty-agent-input-row select option {
-  background-color: #2db6d4; /* Background color for options */
-  color: white; /* Text color for options */
-  padding: 10px; /* Padding for options */
-  font-size: 1rem; /* Font size for options */
+.custom-select .select-items div {
+  color: black;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-select .select-items div:hover {
+  background-color: #3cc9e2;
+  color: black;
 }
 
 .ask-hearty-agent-input-row select::-ms-expand {
