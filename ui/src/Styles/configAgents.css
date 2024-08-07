@@ -1,5 +1,5 @@
 .agent-fieldset-container {
-  width: 100%;
+  width: 110%;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -13,6 +13,7 @@
 }
 
 #agentListLengend {
+  /* margin-top: -0.5em; */
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -150,5 +151,6 @@
 
 .grid-row .grid-cell:nth-child(1) {
   cursor: pointer;
-  color: #87ceeb;
+  color: rgb(45, 182, 212);
+  font-weight: bold;
 }

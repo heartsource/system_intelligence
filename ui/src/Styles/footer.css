@@ -1,6 +1,6 @@
 .footer {
   position: fixed;
-  left: 2em;
+  left: 2.5%;
   bottom: 0;
   width: 100%;
   color: #8a8a8a;
@@ -8,5 +8,5 @@
   line-height: 1.6em;
   letter-spacing: normal;
   text-align: center;
-  font-family: "Roboto";
+  font-family: "Montserrat";
 }

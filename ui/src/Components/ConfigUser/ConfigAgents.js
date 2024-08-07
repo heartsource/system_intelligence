@@ -6,6 +6,7 @@ import { closeModal, requestToggleStatus } from "../../utils/modal";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
 import { handleError } from "../../utils/handleError";
 import { AppContext } from "../../context/AppContext";
+import Spinner from "../Spinner";
 import config from "../../config";
 
 const columns = [
@@ -67,9 +68,11 @@ const ConfigAgents = () => {
     newStatus: "",
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const payload = {};
 
@@ -86,6 +89,8 @@ const ConfigAgents = () => {
       } catch (error) {
         handleError(setError, "Error fetching data:");
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -194,6 +199,7 @@ const ConfigAgents = () => {
               onSort={sortAgents}
             />
             <div className="row-container">
+              {loading && <Spinner />}
               {agents.map((agent, index) => (
                 <TableRow
                   key={index}

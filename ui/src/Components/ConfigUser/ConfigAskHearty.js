@@ -72,7 +72,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         );
 
         await onTextSubmit(question);
-        setInputValue(""); // Clear input value
+        setInputValue("");
         setIsLoading(false);
         setConversation({
           question,
@@ -88,7 +88,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           "There was an error fetching data. Please try again later."
         );
         await onTextSubmit(question);
-        setInputValue(""); // Clear input value
+        setInputValue("");
         setIsLoading(false);
       }
     }
@@ -102,51 +102,42 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
         </div>
       )}
       <div className="container-fluid">
+        <div className="ask-hearty-header">
+          <h2 style={{ marginLeft: "15em", marginTop: ".2em" }}>
+            Ask Hearty
+            <img src={hearty} alt="" height="70px" width="70px" />
+          </h2>
+        </div>
         <div className="dashboard-content">
           <div className="content">
-            <h2 style={{ textAlign: "center" }}>
-              Ask Hearty
-              <img
-                src={hearty}
-                alt=""
-                height="70px"
-                width="70px"
-                style={{ borderRadius: "50%", marginLeft: "-0.3em" }}
-              />
-            </h2>
-
             <div className="chatbox-textbox">
               <textarea
                 placeholder="Seeking answers? Ask your question here."
                 rows="1"
                 value={inputValue}
                 onChange={handleTextareaInput}
-                onKeyDown={handleKeyPressOrClick}
-              ></textarea>
+                onKeyDown={handleKeyPressOrClick}></textarea>
               <button
                 className={`submit-btn ${
                   !inputValue.trim() ? "hover-disabled" : ""
                 }`}
                 onClick={handleKeyPressOrClick}
-                disabled={!inputValue.trim()}
-              >
+                disabled={!inputValue.trim()}>
                 <b>&#x2B06;</b>
               </button>
             </div>
           </div>
           <div
             className="ask-hearty-agent-input-row"
-            style={{ marginLeft: "55em", marginTop: "-6em" }}
-          >
+            style={{ marginLeft: "64em", marginTop: "-3em" }}>
             <select
               value={selectedAgent.name}
               onChange={(e) =>
                 setSelectedAgent(
                   agentNames.find((a) => a.name === e.target.value) || {}
                 )
-              }
-            >
-              <option value="">Select</option>
+              }>
+              <option value="">Select Agent</option>
               {agentNames
                 .filter((agent) => agent.name !== "Default System Agent")
                 .map((agent, index) => (
@@ -158,8 +149,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           </div>
           <div
             className="conversation-container"
-            style={{ position: "relative" }}
-          >
+            style={{ position: "relative" }}>
             {isLoading && (
               <div className="spinner-overlay">
                 <div className="spinner-border mb-2" role="status">

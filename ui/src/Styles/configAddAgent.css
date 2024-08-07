@@ -1,5 +1,5 @@
 .addAgent-fieldset-container {
-  width: 100%;
+  width: 110%;
   margin-top: 1em;
   display: flex;
   justify-content: center;
@@ -20,6 +20,7 @@
 }
 
 #agentLegend {
+  /* margin-top: -0.5em; */
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;

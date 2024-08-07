@@ -7,7 +7,7 @@
 
 .container {
   height: 100vh;
-  width: 80em;
+  width: 85em;
   align-items: center;
   justify-content: center;
 }
@@ -20,17 +20,6 @@
     background-position: 100vw 0, 0 0;
     background-position: max(100vw, 40em) 0, 0 0;
   }
-}
-
-.dashboard-content {
-  -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
-  -ms-flex-positive: 2;
-  flex-grow: 2;
-  padding: 25px;
-}
-.content {
-  margin-top: -3em;
 }
 
 @media (max-width: 768px) {
@@ -46,6 +35,30 @@
   .container-sm {
     max-width: 85%;
   }
+}
+
+.dashboard-content {
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  padding: 25px;
+}
+.ask-hearty-header {
+  position: fixed;
+  top: 3.5em;
+  left: 39%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+.ask-hearty-header img {
+  margin-left: -0.3em;
+  border-radius: 50%;
+}
+.content {
+  margin-top: 2em;
 }
 
 .col {
@@ -76,26 +89,25 @@ h5 b {
 .chatbox-textbox {
   position: relative;
   display: block;
-  width: 100%;
+  width: calc(100%-40px);
   max-width: 90%;
   margin: 0 auto;
   margin-top: -1em;
 }
 
 .chatbox-textbox textarea {
-  position: relative;
   width: 100%;
   padding: 10px 40px 10px 10px;
   background-color: transparent;
   color: #fff;
   box-sizing: border-box;
-  font-family: "Roboto";
+  font-family: "Montserrat";
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 50px;
-  overflow: auto; /* enable scrollbars when needed */
-  min-height: 50px; /* initial height */
-  max-height: 150px; /* 50% increase from initial height */
+  overflow: auto;
+  min-height: 50px;
+  max-height: 150px;
 }
 
 .chatbox-textbox .submit-btn {
@@ -118,18 +130,9 @@ h5 b {
 }
 
 .chatbox-textbox .submit-btn:hover {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
   background-color: transparent;
   color: rgb(45, 182, 212);
   border: 1px solid white;
-  border-radius: 50%;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 .hover-disabled {
@@ -161,17 +164,71 @@ h5 b {
   color: #000;
 }
 
+.ask-hearty-agent-input-row {
+  position: absolute;
+  top: 95px;
+  right: 15px;
+  z-index: 10;
+  width: 220px;
+}
+
 .ask-hearty-agent-input-row select {
-  width: 190px;
-  box-sizing: border-box;
-  transition: 0.5s ease-in;
+  width: 200px;
+  height: 35px;
+  margin-right: 1.4em;
   background-color: transparent;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  transition: all 0.5s ease-in;
   border-radius: 5px;
+  color: white;
+  padding: 0 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+}
+.ask-hearty-agent-input-row select:hover {
+  border-color: #aaa;
+  background-color: #3cc9e2;
+  color: #000;
+}
+
+.ask-hearty-agent-input-row select:focus {
+  border-color: #d0d2d3;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(223, 209, 209, 0.5);
+  background-color: #3cc9e2;
+  color: black;
+}
+
+.ask-hearty-agent-input-row::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  pointer-events: none;
   color: white;
 }
 
+.ask-hearty-agent-input-row select option {
+  background-color: #2db6d4; /* Background color for options */
+  color: white; /* Text color for options */
+  padding: 10px; /* Padding for options */
+  font-size: 1rem; /* Font size for options */
+}
+
+.ask-hearty-agent-input-row select::-ms-expand {
+  display: none;
+}
+
 .conversation-container {
-  margin: 0;
+  margin-top: -4em;
   padding: 0;
+  width: 105%;
+  position: relative;
+  margin-left: -1.2em;
 }
