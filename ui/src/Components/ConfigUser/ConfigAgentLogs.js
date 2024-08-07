@@ -203,8 +203,7 @@ const ConfigAgentLogs = () => {
           </div>
         </fieldset>
       </div>
-      {error && <div className="error-message">{error}</div>}{" "}
-      {/* Display error */}
+      {error && <div className="error-message">{error}</div>}
     </>
   );
 };
