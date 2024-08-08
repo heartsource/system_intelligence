@@ -7,7 +7,7 @@ from modules.hearty.hearty_controller import router as ask_hearty_router
 from modules.logs.logs_controller import router as agents_logs_router
 from modules.ai_models.chatgpt.chatgpt_controller import router as chatgpt_router
 from modules.ai_models.llama.llama_controller import router as llama_router
-from modules.inquiry.inquiry_controller import router as inquiry_router
+from modules.enrichment.enrichment_controller import router as enrichment_router
 
 tags_metadata = [
     {
@@ -56,4 +56,4 @@ app.include_router(ask_hearty_router) # Ask Hearty Router
 app.include_router(agents_logs_router, prefix='/logs')
 app.include_router(chatgpt_router, prefix='/chatgpt')
 app.include_router(llama_router, prefix='/llama')
-app.include_router(inquiry_router, prefix='/inquiries')
+app.include_router(enrichment_router, prefix='/enrichments')

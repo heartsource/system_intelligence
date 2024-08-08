@@ -3,9 +3,9 @@ import json
 
 from fastapi import HTTPException
 from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
-from utils.enums.shared_enum import InquiryStatus
+from utils.enums.shared_enum import EnrichmentStatus
 from utils.common_utilities import custom_serializer
-from modules.inquiry.inquiry_model import InquiryModel, InquiryListModel
+from modules.enrichment.enrichment_model import EnrichmentModel, EnrichmentListModel
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
@@ -14,10 +14,10 @@ from pydantic.json import pydantic_encoder
 
 knowledge_upload_service = KnowledgeUploadService()
 
-class InquiryRequestService:
+class EnrichmentRequestService:
     def __init__(self) -> None:
         self.db = mongo_config.get_db()
-        self.collection = self.db[DB_CONSTANTS.INQUIRY_COLLECTION]
+        self.collection = self.db[DB_CONSTANTS.ENRICHMENT_COLLECTION]
 
     async def get_next_sequence_value(self, sequence_name: str):
         result = await self.db[DB_CONSTANTS.COUNTERS_COLLECTION].find_one_and_update(
@@ -27,18 +27,18 @@ class InquiryRequestService:
         )
         return result["sequence_value"]
 
-    async def createInquiryRequest(self, request: InquiryModel):
+    async def createEnrichmentRequest(self, request: EnrichmentModel):
         try:
-            inquiry_id = await self.get_next_sequence_value("inquiry")
+            enrichment_id = await self.get_next_sequence_value("enrichment")
             document = json.loads(json.dumps(request, default=pydantic_encoder))
-            document["inquiry_id"] = inquiry_id
+            document["enrichment_id"] = enrichment_id
             document['requested_on'] = datetime.now()
             return await self.collection.insert_one(document)
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
         
-    async def fetchInquiryRequests(self, request: InquiryListModel):
+    async def fetchEnrichmentRequests(self, request: EnrichmentListModel):
         try:
             query = {}
             if request.status:
@@ -74,33 +74,33 @@ class InquiryRequestService:
             raise Exception(e)
         
 
-    async def fetchInquiryDetails(self, id):
+    async def fetchEnrichmentDetails(self, id):
         try:
             query = {
-                "inquiry_id": id,
+                "enrichment_id": id,
                 "$or": [
                     { "deleted_dt": { "$exists": False} },
                     { "deleted_dt": None }
                 ]
             }
-            inquiryDetails = await self.collection.find_one(query)
+            enrichmentDetails = await self.collection.find_one(query)
 
-            if inquiryDetails is not None:
-                inquiryDetails["_id"] = str(inquiryDetails["_id"])
-                return inquiryDetails
+            if enrichmentDetails is not None:
+                enrichmentDetails["_id"] = str(enrichmentDetails["_id"])
+                return enrichmentDetails
             return None
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
         
-    async def updateInquiryDetails(self, id, file, query_response):
+    async def updateEnrichmentDetails(self, id, file, query_response):
         try:
             if file == None and query_response == None:
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INQUIRY_UPDATE_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.ENRICHMENT_UPDATE_ERROR)
             
             body = {
                 "responded_on": datetime.now(),
-                "status": InquiryStatus.INJESTED.value
+                "status": EnrichmentStatus.INJESTED.value
             }
             if file:
                 filename = file.filename
@@ -110,7 +110,7 @@ class InquiryRequestService:
                 body['response'] = query_response
                 await knowledge_upload_service.loadToChromadb(query_response)            
             query = {
-                "inquiry_id": id,
+                "enrichment_id": id,
                 "$or": [
                     {"deleted_dt": {"$exists": False}},
                     {"deleted_dt": None}
@@ -128,11 +128,11 @@ class InquiryRequestService:
             traceback.print_exc()
             raise Exception(e)
         
-    async def deleteInquiryDetails(self, id):
+    async def deleteEnrichmentDetails(self, id):
         try:
             
             query = {
-                "inquiry_id": id,
+                "enrichment_id": id,
                 "$or": [
                     {"deleted_dt": {"$exists": False}},
                     {"deleted_dt": None}

@@ -22,7 +22,7 @@ class AgentType(Enum):
     DEFAULT = 'default'
     CUSTOM = 'custom'
 
-class InquiryStatus(Enum):
+class EnrichmentStatus(Enum):
     INQUIRED = 'inquired'
     RESPONDED = 'responded'
     INJESTED = 'injested'
