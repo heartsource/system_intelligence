@@ -71,8 +71,11 @@
 .grid-cell:nth-child(1) {
   cursor: pointer;
 }
-.knowledge-grid-row .grid-cell:nth-child(1) {
+.logs-grid-row .grid-cell:nth-child(1) {
   color: rgb(45, 182, 212);
   font-weight: bold;
+  text-align: center;
+}
+.logs-grid-row .grid-cell:nth-child(6) {
   text-align: center;
 }

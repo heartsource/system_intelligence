@@ -43,7 +43,6 @@ export const AppProvider = ({ children }) => {
         setLogs,
         filteredLogs,
         setFilteredLogs,
-
         records,
         setRecords,
         selectedInquiryId,
@@ -51,7 +50,8 @@ export const AppProvider = ({ children }) => {
         sortConfig,
         setSortConfig,
         componentKey, // Provide the componentKey
-      }}>
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

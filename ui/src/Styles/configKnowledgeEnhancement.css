@@ -73,4 +73,6 @@
 }
 .knowledge-grid-row .grid-cell:nth-child(1) {
   color: rgb(45, 182, 212);
+  font-weight: bold;
+  text-align: center;
 }
