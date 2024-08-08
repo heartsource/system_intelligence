@@ -116,7 +116,7 @@ const Navbar = () => {
                     ? "active"
                     : ""
                 }`}>
-                <i className="fa-solid fa-chart-line nav_icon"></i> Knowledge{" "}
+                <i className="fa-solid fa-chart-line"></i> Knowledge
                 <br />
                 Enhancement
               </div>

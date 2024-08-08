@@ -12,7 +12,7 @@
   height: 75vh;
 }
 
-#agentLogs {
+#knowledgeEnhancement {
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -36,7 +36,7 @@
 .knowledge-grid-header,
 .knowledge-grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 2fr 2fr 2fr;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr;
   width: 100%;
   color: #fff;
 }
@@ -50,13 +50,13 @@
   text-overflow: ellipsis;
 }
 
-.logs-grid-header .grid-cell {
+.knowledge-grid-header .grid-cell {
   font-weight: bolder;
   font-size: 1.1em;
   cursor: pointer;
 }
 
-.logs-grid-header .sortable:hover {
+.knowledge-grid-header .sortable:hover {
   background-color: transparent;
   color: rgb(45, 182, 212);
 }
@@ -71,6 +71,6 @@
 .grid-cell:nth-child(1) {
   cursor: pointer;
 }
-.logs-grid-row .grid-cell:nth-child(1) {
+.knowledge-grid-row .grid-cell:nth-child(1) {
   color: rgb(45, 182, 212);
 }
