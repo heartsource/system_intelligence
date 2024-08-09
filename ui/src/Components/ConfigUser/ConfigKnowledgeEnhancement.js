@@ -6,6 +6,7 @@ import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
 import config from "../../config";
+import Spinner from "../Spinner";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="knowledge-grid-header">
@@ -13,7 +14,8 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}>
+        onClick={() => column.sortable && onSort(column.key)}
+      >
         {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
       </div>
     ))}
@@ -33,8 +35,9 @@ const TableRow = ({
         key={column.key}
         className="grid-cell"
         onClick={() =>
-          column.key === "interaction_id" && onInteractionIdClick(agent)
-        }>
+          column.key === "enrichment_id" && onInteractionIdClick(agent)
+        }
+      >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -58,30 +61,35 @@ const ConfigKnowledgeEnhancement = () => {
   } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [fetchedLogs, setFetchedLogs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const columns = [
-    { key: "interaction_id", label: "Enhancement Id", sortable: true },
+    { key: "enrichment_id", label: "Enhancement Id", sortable: true },
     {
-      key: "agent_name",
+      key: "status",
       label: (
         <>
           Status &nbsp;
-          {!selectedAgentId && <FilterButtonWithPopover />}
+          <FilterButtonWithPopover />
         </>
       ),
       sortable: true,
     },
-    { key: "model", label: "Query", sortable: true },
-    { key: "flow", label: "Requested On", sortable: true },
-    { key: "interaction_date", label: "Responded On", sortable: true },
-    { key: "duration", label: "Ingested On", sortable: true },
+    { key: "query", label: "Query", sortable: true },
+    { key: "requested_on", label: "Requested On", sortable: true },
+    { key: "responded_on", label: "Responded On", sortable: true },
+    { key: "injested_on", label: "Ingested On", sortable: true },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
-        const response = await axios.post(`${config.heartieBE}/logs/`, payload);
+        const response = await axios.post(
+          `${config.heartieBE}/inquiries/fetch`,
+          payload
+        );
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
@@ -89,6 +97,8 @@ const ConfigKnowledgeEnhancement = () => {
         setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "error");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -112,23 +122,24 @@ const ConfigKnowledgeEnhancement = () => {
   };
 
   const handleInteractionIdClick = async (agent) => {
-    try {
-      const response = await axios.get(
-        `${config.heartieBE}/logs/${agent.interaction_id}`
-      );
-      const data = response.data.data;
-      setSelectedAgent(data);
-      setCurrentComponent("agent-log-details");
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const response = await axios.get(
+    //     `${config.heartieBE}/logs/${agent.interaction_id}`
+    //   );
+    //   const data = response.data.data;
+    //   setSelectedAgent(data);
+    //   setCurrentComponent("agent-log-details");
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
     <>
       <div
         className="knowledge-fieldset-container"
-        id="fieldset-container-knowledge">
+        id="fieldset-container-knowledge"
+      >
         <fieldset id="knowledgeFieldset">
           <legend id="agentLogs">Knowledge Enhancement Request </legend>
           <hr />
@@ -139,6 +150,7 @@ const ConfigKnowledgeEnhancement = () => {
               onSort={sortLogs}
             />
             <div className="knowledge-row-container">
+              {loading && <Spinner />}
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
                   <TableRow
