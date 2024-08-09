@@ -9,6 +9,8 @@ export const AppProvider = ({ children }) => {
 
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   const [selectedAgentId, setSelectedAgentId] = useState(null);
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [sortConfig, setSortConfig] = useState({
@@ -35,12 +37,16 @@ export const AppProvider = ({ children }) => {
         setCurrentComponent: updateCurrentComponent, // Use the new update function
         selectedAgent,
         setSelectedAgent,
-        logs,
-        setLogs,
         selectedAgentId,
         setSelectedAgentId,
+        logs,
+        setLogs,
         filteredLogs,
         setFilteredLogs,
+        records,
+        setRecords,
+        selectedInquiryId,
+        setSelectedInquiryId,
         sortConfig,
         setSortConfig,
         componentKey, // Provide the componentKey
