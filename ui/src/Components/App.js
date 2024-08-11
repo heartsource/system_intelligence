@@ -6,7 +6,7 @@ import ConfigNavbar from "../Components/ConfigUser/ConfigNavbar";
 import ConfigAgents from "./ConfigUser/ConfigAgents";
 import ConfigAgentDetails from "./ConfigUser/ConfigAgentDetails";
 import ConfigAgentLogs from "./ConfigUser/ConfigAgentLogs";
-import ConfigKnowledgeEnhancement from "./ConfigUser/ConfigKnowledgeEnhancement";
+import ConfigKnowledgeEnrichment from "./ConfigUser/ConfigKnowledgeEnrichment";
 import Footer from "./Footer";
 
 import ConfigAgentLogDetails from "./ConfigUser/ConfigAgentLogDetails";
@@ -51,8 +51,8 @@ const App = () => {
         return <ConfigFileUpload />;
       case "config-ask-hearty":
         return <ConfigAskHearty onTextSubmit={handleTextSubmit} />;
-      case "config-knowledge-enhancement":
-        return <ConfigKnowledgeEnhancement />;
+      case "config-knowledge-enrichment":
+        return <ConfigKnowledgeEnrichment />;
       case "agent-log-details":
         return <ConfigAgentLogDetails />;
       default:

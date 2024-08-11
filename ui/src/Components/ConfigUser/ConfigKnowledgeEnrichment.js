@@ -100,7 +100,7 @@ const TableRow = ({
   );
 };
 
-const ConfigKnowledgeEnhancement = () => {
+const ConfigKnowledgeEnrichment = () => {
   const {
     logs,
     setLogs,
@@ -197,7 +197,7 @@ const ConfigKnowledgeEnhancement = () => {
       id="fieldset-container-knowledge"
     >
       <fieldset id="knowledgeFieldset">
-        <legend id="agentLogs">Knowledge Enhancement Request</legend>
+        <legend id="agentLogs">Knowledge Enrichment Requests</legend>
         <hr />
         <div className="knowledge-table-container">
           <TableHeader
@@ -231,4 +231,4 @@ const ConfigKnowledgeEnhancement = () => {
   );
 };
 
-export default ConfigKnowledgeEnhancement;
+export default ConfigKnowledgeEnrichment;
