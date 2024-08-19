@@ -4,7 +4,7 @@ import "../../Styles/configAgentDetails.css";
 import { AppContext } from "../../context/AppContext";
 import { requestToggleStatus } from "../../utils/modal";
 import { handleError } from "../../utils/handleError";
-import config from '../../config'
+import config from "../../config";
 
 const ConfigAgentDetails = () => {
   const { selectedAgent, setCurrentComponent, setLogs, setSelectedAgentId } =
@@ -168,10 +168,7 @@ const ConfigAgentDetails = () => {
   const viewAgentLogsClick = async () => {
     try {
       const payload = { agent_ids: [selectedAgent._id] };
-      const response = await axios.post(
-        `${config.heartieBE}/logs/`,
-        payload
-      );
+      const response = await axios.post(`${config.heartieBE}/logs/`, payload);
       if (response.data.status === "error") {
         handleError(setError, response.data.data);
       } else {

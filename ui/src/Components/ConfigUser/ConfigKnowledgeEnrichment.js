@@ -5,7 +5,7 @@ import { sortItems, getSortIcon } from "../../utils/sort";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { handleError } from "../../utils/handleError";
-import FilterButtonWithPopover from "./FilterButtonWithPopover";
+import KnowledgeFilterButtonWithPopover from "./KnowledgeFilterButtonWithPopover";
 import config from "../../config";
 import Spinner from "../Spinner";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
@@ -104,14 +104,14 @@ const ConfigKnowledgeEnrichment = () => {
   const {
     logs,
     setLogs,
-    selectedAgentId,
+    selectedEnrichmentId,
     filteredLogs,
     setFilteredLogs,
     sortConfig,
     setSortConfig,
     componentKey,
     setCurrentComponent,
-    setSelectedAgent,
+    setSelectedEnrichmentId,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [fetchedLogs, setFetchedLogs] = useState([]);
@@ -124,7 +124,7 @@ const ConfigKnowledgeEnrichment = () => {
       label: (
         <>
           Status &nbsp;
-          <FilterButtonWithPopover />
+          <KnowledgeFilterButtonWithPopover />
         </>
       ),
       sortable: true,
@@ -139,7 +139,9 @@ const ConfigKnowledgeEnrichment = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
+        const payload = selectedEnrichmentId
+          ? { enrichment_id: [selectedEnrichmentId] }
+          : {};
         const response = await axios.post(
           `${config.heartieBE}/enrichments/fetch`,
           payload
@@ -159,7 +161,7 @@ const ConfigKnowledgeEnrichment = () => {
     if (componentKey) {
       fetchData();
     }
-  }, [selectedAgentId, setLogs, componentKey]);
+  }, [selectedEnrichmentId, setLogs, componentKey]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -181,11 +183,11 @@ const ConfigKnowledgeEnrichment = () => {
   const handleInteractionIdClick = async (agent) => {
     try {
       const response = await axios.get(
-        `${config.heartieBE}/logs/${agent.interaction_id}`
+        `${config.heartieBE}/enrichments/${agent.enrichment_id}`
       );
       const data = response.data.data;
-      setSelectedAgent(data);
-      setCurrentComponent("agent-log-details");
+      setSelectedEnrichmentId(data);
+      setCurrentComponent("knowledge-details");
     } catch (error) {
       console.error("Error fetching interaction details", error);
     }
