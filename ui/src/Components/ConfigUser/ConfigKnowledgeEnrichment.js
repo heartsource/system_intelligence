@@ -26,8 +26,8 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
 
 const getStatusClass = (status) => {
   switch (status) {
-    case "injested":
-      return "status-injested";
+    case "ingested":
+      return "status-ingested";
     case "responded":
       return "status-responded";
     case "inquired":

@@ -6,6 +6,7 @@ import ConfigNavbar from "../Components/ConfigUser/ConfigNavbar";
 import ConfigAgents from "./ConfigUser/ConfigAgents";
 import ConfigAgentDetails from "./ConfigUser/ConfigAgentDetails";
 import ConfigAgentLogs from "./ConfigUser/ConfigAgentLogs";
+import ConfigKnowledgeEnrichmentDetails from "./ConfigUser/ConfigKnowledgeEnrichmentDetails";
 import ConfigKnowledgeEnrichment from "./ConfigUser/ConfigKnowledgeEnrichment";
 import Footer from "./Footer";
 
@@ -55,6 +56,8 @@ const App = () => {
         return <ConfigKnowledgeEnrichment />;
       case "agent-log-details":
         return <ConfigAgentLogDetails />;
+      case "knowledge-details":
+        return <ConfigKnowledgeEnrichmentDetails />;
       default:
         return <Home />;
     }

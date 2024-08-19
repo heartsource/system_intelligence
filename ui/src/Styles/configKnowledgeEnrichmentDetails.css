@@ -87,9 +87,6 @@
   border: 1px solid gray;
   font-family: "Montserrat";
 }
-/* #response-text-area {
-  height: 8em;
-} */
 
 .form-description {
   color: white;
@@ -135,4 +132,9 @@
   background-color: transparent;
   color: rgb(45, 182, 212);
   border: 1px solid gray;
+}
+.file-names {
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: white;
 }

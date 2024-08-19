@@ -60,7 +60,10 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="knowledge-popover-container" onClick={handlePopoverClick}>
+    <div
+      className="knowledge-popover-container knowledge-popover-overlay"
+      onClick={handlePopoverClick}
+    >
       <div className="knowledge-popover-content">
         <div>
           <input

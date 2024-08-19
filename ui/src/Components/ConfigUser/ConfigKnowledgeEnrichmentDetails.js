@@ -1,12 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "../../Styles/configKnowledgeEnrichmentDetails.css";
 import { AppContext } from "../../context/AppContext";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
+import config from "../../config";
+import axios from "axios";
 
 const getStatusClass = (status) => {
   switch (status) {
-    case "injested":
-      return "status-injested";
+    case "ingested":
+      return "status-ingested";
     case "responded":
       return "status-responded";
     case "inquired":
@@ -18,9 +20,54 @@ const getStatusClass = (status) => {
 
 const ConfigKnowledgeEnrichmentDetails = () => {
   const { selectedEnrichmentId } = useContext(AppContext);
-
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("");
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    if (selectedEnrichmentId) {
+      setQuery(selectedEnrichmentId.query || "");
+      setResponse(selectedEnrichmentId.response || "");
+    }
+  }, [selectedEnrichmentId]);
+
+  const handleFileChange = (event) => {
+    setFiles(event.target.files);
+  };
+
+  const handleSave = async () => {
+    if (!selectedEnrichmentId) return;
+    if (!query && !files.length) {
+      console.log("Either a file or query_response must be provided.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("query", query || "");
+    formData.append("response", response || "");
+    formData.append("enrichment_id", selectedEnrichmentId.enrichment_id);
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const saveResponse = await axios.put(
+        `${config.heartieBE}/enrichments/${selectedEnrichmentId.enrichment_id}`,
+        formData
+      );
+      if (saveResponse.status === 200) {
+        console.log("Data saved successfully");
+      } else {
+        console.error("Save failed");
+      }
+    } catch (error) {
+      console.error("An error occurred while saving the data", error);
+    }
+  };
+
+  if (!selectedEnrichmentId) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="form-container">
       <fieldset id="enrichmentDetailsFieldset">
@@ -48,7 +95,12 @@ const ConfigKnowledgeEnrichmentDetails = () => {
           </div>
           <div className="form-group">
             <label>Query</label>
-            <textarea readOnly value={selectedEnrichmentId.query} />
+            <textarea
+              id="query"
+              placeholder="Enter query here"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label></label>
@@ -58,8 +110,8 @@ const ConfigKnowledgeEnrichmentDetails = () => {
                 href="#"
                 style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}
               >
-                {""}upload {""}
-              </a>
+                upload
+              </a>{" "}
               the documents containing the response to the query below.
             </p>
           </div>
@@ -68,13 +120,32 @@ const ConfigKnowledgeEnrichmentDetails = () => {
             <textarea
               id="response"
               placeholder="Enter response here"
-              value={selectedEnrichmentId.response}
+              value={response}
+              onChange={(e) => setResponse(e.target.value)}
               rows={7}
             ></textarea>
           </div>
           <div className="form-group">
             <label>Upload Response Document(s)</label>
-            <button className="upload-btn">Upload</button>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              className="file-input"
+              style={{ display: "none" }}
+              id="file-upload"
+            />
+            <button
+              className="upload-btn"
+              onClick={() => document.getElementById("file-upload").click()}
+            >
+              Upload
+            </button>
+            <span className="file-names">
+              {Array.from(files)
+                .map((file) => file.name)
+                .join(", ")}
+            </span>
           </div>
           <div className="form-group">
             <label>Request Date</label>
@@ -94,7 +165,9 @@ const ConfigKnowledgeEnrichmentDetails = () => {
           </div>
           <div className="form-group save-btn-container">
             <label></label>
-            <button className="save-btn">Save</button>
+            <button className="save-btn" onClick={handleSave}>
+              Save
+            </button>
           </div>
         </div>
       </fieldset>
