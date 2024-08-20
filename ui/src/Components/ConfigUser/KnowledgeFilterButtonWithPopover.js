@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { usePopper } from "react-popper";
 import axios from "axios";
 import KnowledgeFilterPopover from "./KnowledgeFilterPopover";
@@ -7,19 +7,33 @@ import "../../Styles/knowledgefilterButtonWithPopover.css";
 import { sortItems } from "../../utils/sort";
 import config from "../../config";
 
-const FilterButtonWithPopover = () => {
+const KnowledgeFilterButtonWithPopover = () => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const buttonRef = useRef(null);
   const popoverRef = useRef(null);
   const { setFilteredLogs, sortConfig } = useContext(AppContext);
 
-  const { styles, attributes } = usePopper(
+  const { styles, attributes, update } = usePopper(
     buttonRef.current,
     popoverRef.current,
     {
-      placement: "bottom",
+      placement: "bottom-start",
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, 4],
+          },
+        },
+      ],
     }
   );
+
+  useEffect(() => {
+    if (isPopoverOpen && update) {
+      update();
+    }
+  }, [isPopoverOpen, update]);
 
   const togglePopover = (e) => {
     e.stopPropagation();
@@ -63,15 +77,22 @@ const FilterButtonWithPopover = () => {
         onClick={togglePopover}
       ></i>
 
-      <div ref={popoverRef} style={styles.popper} {...attributes.popper}>
-        <KnowledgeFilterPopover
-          isOpen={isPopoverOpen}
-          closePopover={closePopover}
-          onApply={handleApply}
-        />
-      </div>
+      {isPopoverOpen && (
+        <div
+          ref={popoverRef}
+          style={styles.popper}
+          {...attributes.popper}
+          className="knowledge-popover-container-parent"
+        >
+          <KnowledgeFilterPopover
+            isOpen={isPopoverOpen}
+            closePopover={closePopover}
+            onApply={handleApply}
+          />
+        </div>
+      )}
     </>
   );
 };
 
-export default FilterButtonWithPopover;
+export default KnowledgeFilterButtonWithPopover;

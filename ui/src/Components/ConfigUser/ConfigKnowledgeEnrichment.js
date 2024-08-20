@@ -49,7 +49,10 @@ const TableRow = ({
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement);
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: "top",
+    modifiers: [{ name: "offset", options: { offset: [0, 4] } }],
+  });
 
   const handleMouseOver = (e, text) => {
     setPopoverText(text);

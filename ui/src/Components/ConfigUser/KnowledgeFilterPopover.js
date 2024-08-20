@@ -4,7 +4,7 @@ import "../../Styles/knowledgefilterButtonWithPopover.css";
 import config from "../../config";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
 
-const FilterPopover = ({ isOpen, closePopover, onApply }) => {
+const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [status, setStatus] = useState([]);
 
@@ -60,10 +60,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      className="knowledge-popover-container knowledge-popover-overlay"
-      onClick={handlePopoverClick}
-    >
+    <div className="knowledge-popover-container" onClick={handlePopoverClick}>
       <div className="knowledge-popover-content">
         <div>
           <input
@@ -91,4 +88,4 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   );
 };
 
-export default FilterPopover;
+export default KnowledgeFilterPopover;
