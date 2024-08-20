@@ -73,7 +73,6 @@
   margin-left: 1px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  /* font-family: "Montserrat"; */
 }
 
 .labelValue {
@@ -137,4 +136,26 @@
   margin-left: 10px;
   font-size: 0.9rem;
   color: white;
+}
+.date-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.date-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.date-group label {
+  margin-right: 10px;
+  width: 40%;
+}
+
+.labelValue {
+  white-space: nowrap;
 }

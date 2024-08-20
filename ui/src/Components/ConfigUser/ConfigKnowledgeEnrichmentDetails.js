@@ -3,6 +3,7 @@ import "../../Styles/configKnowledgeEnrichmentDetails.css";
 import { AppContext } from "../../context/AppContext";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
 import config from "../../config";
+import { dateFormat } from "../../utils/dateFormat";
 import axios from "axios";
 
 const getStatusClass = (status) => {
@@ -42,11 +43,10 @@ const ConfigKnowledgeEnrichmentDetails = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("query", query || "");
-    formData.append("response", response || "");
+    formData.append("payload", response);
     formData.append("enrichment_id", selectedEnrichmentId.enrichment_id);
     Array.from(files).forEach((file) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
 
     try {
@@ -57,10 +57,13 @@ const ConfigKnowledgeEnrichmentDetails = () => {
       if (saveResponse.status === 200) {
         console.log("Data saved successfully");
       } else {
-        console.error("Save failed");
+        console.error("Save failed", saveResponse);
       }
     } catch (error) {
-      console.error("An error occurred while saving the data", error);
+      console.error(
+        "An error occurred while saving the data",
+        error.response || error.message || error
+      );
     }
   };
 
@@ -89,7 +92,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
         <div className="form-content">
           <div className="form-group">
             <label>Enrichment Id</label>
-            <span className="labelValue">
+            <span style={{ color: "white" }}>
               {selectedEnrichmentId.enrichment_id}
             </span>
           </div>
@@ -97,6 +100,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
             <label>Query</label>
             <textarea
               id="query"
+              readOnly
               placeholder="Enter query here"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -109,6 +113,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               <a
                 href="#"
                 style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}
+                onClick={() => document.getElementById("file-upload").click()}
               >
                 upload
               </a>{" "}
@@ -147,21 +152,25 @@ const ConfigKnowledgeEnrichmentDetails = () => {
                 .join(", ")}
             </span>
           </div>
-          <div className="form-group">
-            <label>Request Date</label>
-            <div className="labelValue">
-              {selectedEnrichmentId.requested_on}
+          <div className="form-group date-row">
+            <div className="date-group">
+              <label>Request Date</label>
+              <div className="labelValue">
+                {dateFormat(selectedEnrichmentId.requested_on)}
+              </div>
             </div>
-          </div>
-          <div className="form-group">
-            <label>Response Date</label>
-            <div className="labelValue">
-              {selectedEnrichmentId.responded_on}
+            <div className="date-group">
+              <label>Response Date</label>
+              <div className="labelValue">
+                {dateFormat(selectedEnrichmentId.responded_on)}
+              </div>
             </div>
-          </div>
-          <div className="form-group">
-            <label>Ingested Date</label>
-            <div className="labelValue">{selectedEnrichmentId.injested_on}</div>
+            <div className="date-group">
+              <label>Ingested Date</label>
+              <div className="labelValue">
+                {dateFormat(selectedEnrichmentId.injested_on)}
+              </div>
+            </div>
           </div>
           <div className="form-group save-btn-container">
             <label></label>
