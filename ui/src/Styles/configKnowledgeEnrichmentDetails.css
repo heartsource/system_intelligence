@@ -172,3 +172,26 @@
 .labelValue {
   white-space: nowrap;
 }
+.knowledge-spinner-overlay {
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 30%;
+  background-color: rgba(45, 182, 212, 0.8);
+  z-index: 10;
+  border: 1px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.knowledge-loading-text {
+  color: rgb(16, 17, 18);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  text-align: center;
+}

@@ -5,7 +5,6 @@ import { capitalizeFirstLetter } from "../../utils/camelCase";
 import config from "../../config";
 import { dateFormat } from "../../utils/dateFormat";
 import axios from "axios";
-import Spinner from "../Spinner";
 import { handleError } from "../../utils/handleError";
 
 const getStatusClass = (status) => {
@@ -99,7 +98,16 @@ const ConfigKnowledgeEnrichmentDetails = () => {
 
   return (
     <>
-      {/* {loading && <Spinner />} */}
+      {loading && (
+        <div className="knowledge-spinner-overlay">
+          <div className="spinner-border mb-2" role="status">
+            <span className="sr-only"></span>
+          </div>
+          <span className="knowledge-loading-text">
+            Please wait response is being saved...
+          </span>
+        </div>
+      )}
       {error && (
         <div className="alert alert-danger" role="alert">
           {error}
