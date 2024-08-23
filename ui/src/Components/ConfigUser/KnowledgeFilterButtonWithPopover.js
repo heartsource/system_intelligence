@@ -11,9 +11,9 @@ const KnowledgeFilterButtonWithPopover = () => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const buttonRef = useRef(null);
   const popoverRef = useRef(null);
-  const { setFilteredLogs, sortConfig } = useContext(AppContext);
+  const { setFilteredStatus, sortConfig } = useContext(AppContext);
 
-  const { styles, attributes, update } = usePopper(
+  const { styles, attributes } = usePopper(
     buttonRef.current,
     popoverRef.current,
     {
@@ -29,12 +29,6 @@ const KnowledgeFilterButtonWithPopover = () => {
     }
   );
 
-  useEffect(() => {
-    if (isPopoverOpen && update) {
-      update();
-    }
-  }, [isPopoverOpen, update]);
-
   const togglePopover = (e) => {
     e.stopPropagation();
     setPopoverOpen((prev) => !prev);
@@ -44,25 +38,27 @@ const KnowledgeFilterButtonWithPopover = () => {
     setPopoverOpen(false);
   };
 
-  const handleApply = async (checkedItems, agents) => {
+  const handleApply = async (checkedItems, enrichment) => {
     closePopover();
-    const selectedAgentNames = Object.keys(checkedItems).filter(
-      (name) => checkedItems[name]
+    const selectedStatuses = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key] === true
     );
-    const selectedAgentIds = agents
-      .filter((agent) => selectedAgentNames.includes(agent.status))
-      .map((agent) => agent._id);
+    const selectedEnrichmentIds = enrichment
+      .filter((enrichment) => selectedStatuses.includes(enrichment.status))
+      .map((enrichment) => enrichment.enrichment_id);
 
+    console.log(selectedEnrichmentIds);
     try {
       const response = await axios.post(
         `${config.heartieBE}/enrichments/fetch`,
         {
-          agent_ids: selectedAgentIds,
+          status: selectedStatuses,
         }
       );
       const data = Array.isArray(response.data.data) ? response.data.data : [];
+
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
-      setFilteredLogs(data);
+      setFilteredStatus(sortedData);
     } catch (error) {
       console.error("Error fetching Status:", error);
     }

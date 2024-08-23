@@ -15,6 +15,7 @@ export const AppProvider = ({ children }) => {
   const [selectedAgentId, setSelectedAgentId] = useState(null);
   const [selectedEnrichmentId, setSelectedEnrichmentId] = useState(null);
   const [filteredLogs, setFilteredLogs] = useState([]);
+  const [filteredStatus, setFilteredStatus] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     key: "interaction_id",
     direction: "desc",
@@ -49,6 +50,8 @@ export const AppProvider = ({ children }) => {
         setSelectedEnrichmentId,
         records,
         setRecords,
+        filteredStatus,
+        setFilteredStatus,
         selectedInquiryId,
         setSelectedInquiryId,
         sortConfig,

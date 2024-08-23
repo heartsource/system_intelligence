@@ -113,9 +113,8 @@
 
 .save-btn-container {
   display: flex;
-
   width: 60%;
-  margin-left: 22em;
+  margin-left: 19em;
 }
 
 .save-btn {
@@ -128,6 +127,20 @@
 }
 
 .save-btn:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+  border: 1px solid gray;
+}
+.cancel-btn {
+  background-color: #6c757d;
+  color: black;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-left: 10px;
+}
+.cancel-btn:hover {
   background-color: transparent;
   color: rgb(45, 182, 212);
   border: 1px solid gray;

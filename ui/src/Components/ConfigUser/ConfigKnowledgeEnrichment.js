@@ -105,11 +105,11 @@ const TableRow = ({
 
 const ConfigKnowledgeEnrichment = () => {
   const {
-    logs,
-    setLogs,
+    records,
+    setRecords,
     selectedEnrichmentId,
-    filteredLogs,
-    setFilteredLogs,
+    filteredStatus,
+    setFilteredStatus,
     sortConfig,
     setSortConfig,
     componentKey,
@@ -117,11 +117,11 @@ const ConfigKnowledgeEnrichment = () => {
     setSelectedEnrichmentId,
   } = useContext(AppContext);
   const [error, setError] = useState(null);
-  const [fetchedLogs, setFetchedLogs] = useState([]);
+  const [fetchedStatus, setFetchedStatus] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const columns = [
-    { key: "enrichment_id", label: "Enhancement Id", sortable: true },
+    { key: "enrichment_id", label: "Enrichment Id", sortable: true },
     {
       key: "status",
       label: (
@@ -152,8 +152,8 @@ const ConfigKnowledgeEnrichment = () => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        setFilteredLogs(data);
-        setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
+        setFilteredStatus(data);
+        records(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "Error fetching data");
       } finally {
@@ -164,7 +164,7 @@ const ConfigKnowledgeEnrichment = () => {
     if (componentKey) {
       fetchData();
     }
-  }, [selectedEnrichmentId, setLogs, componentKey]);
+  }, [selectedEnrichmentId, records, componentKey]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -175,11 +175,11 @@ const ConfigKnowledgeEnrichment = () => {
     }
 
     const sortedLogs = sortItems(
-      filteredLogs.length > 0 ? filteredLogs : fetchedLogs,
+      filteredStatus.length > 0 ? filteredStatus : fetchedStatus,
       key,
       direction
     );
-    setLogs(sortedLogs);
+    setRecords(sortedLogs);
     setSortConfig({ key, direction });
   };
 
@@ -212,7 +212,7 @@ const ConfigKnowledgeEnrichment = () => {
           />
           <div className="knowledge-row-container">
             {loading && <Spinner />}
-            {(filteredLogs.length > 0 ? filteredLogs : logs).map(
+            {(filteredStatus.length > 0 ? filteredStatus : records).map(
               (log, index) => (
                 <TableRow
                   key={index}
@@ -227,8 +227,10 @@ const ConfigKnowledgeEnrichment = () => {
           </div>
           <div id="pagination">
             Showing{" "}
-            {filteredLogs.length > 0 ? filteredLogs.length : logs.length} of{" "}
-            {logs.length} Records
+            {filteredStatus.length > 0
+              ? filteredStatus.length
+              : setRecords.length}{" "}
+            of {records.length} Records
           </div>
         </div>
       </fieldset>
