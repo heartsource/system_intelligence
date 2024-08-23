@@ -1,3 +1,4 @@
+# Kafka Consumer Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.0
+          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.1
           ports:
             - containerPort: 9092
           env:
@@ -23,12 +24,15 @@ spec:
             - name: KAFKA_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://localhost:9092"
+              value: "PLAINTEXT://kafka-service:9092"
             - name: KAFKA_ZOOKEEPER_CONNECT
-              value: "zookeeper:2181"
+              value: "zookeeper-service:2181"
+            - name: KAFKA_HOST
+              value: "kafka-service"  # Added this for the consumer to connect to Kafka
           # Add more environment variables if needed
 
 ---
+# Kafka Consumer Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -43,6 +47,7 @@ spec:
   type: ClusterIP
 
 ---
+# Zookeeper Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -67,6 +72,7 @@ spec:
               value: "yes"
 
 ---
+# Zookeeper Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -81,6 +87,7 @@ spec:
   type: ClusterIP
 
 ---
+# Kafka Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -106,13 +113,14 @@ spec:
             - name: KAFKA_LISTENERS
               value: "PLAINTEXT://:9092"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://localhost:9092"
+              value: "PLAINTEXT://kafka-service:9092"
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: "zookeeper-service:2181"
             - name: ALLOW_PLAINTEXT_LISTENER
               value: "yes"
 
 ---
+# Kafka Service
 apiVersion: v1
 kind: Service
 metadata:
