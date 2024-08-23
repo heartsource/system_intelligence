@@ -39,7 +39,13 @@ const ConfigKnowledgeEnrichmentDetails = () => {
   }, [selectedEnrichmentId]);
 
   const handleFileChange = (event) => {
-    setFiles(event.target.files);
+    const newFiles = Array.from(event.target.files);
+    setFiles(newFiles);
+    event.target.value = "";
+  };
+
+  const handleRemoveFile = (index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleSave = async () => {
@@ -52,7 +58,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
     const formData = new FormData();
     formData.append("payload", response);
     formData.append("enrichment_id", selectedEnrichmentId.enrichment_id);
-    Array.from(files).forEach((file) => {
+    files.forEach((file) => {
       formData.append("file", file);
     });
 
@@ -178,11 +184,18 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               >
                 Upload
               </button>
-              <span className="file-names">
-                {Array.from(files)
-                  .map((file) => file.name)
-                  .join(", ")}
-              </span>
+              <div className="file-names">
+                {files.map((file, index) => (
+                  <div key={index} className="file-item">
+                    <span>{file.name}</span>
+
+                    <i
+                      className="fa-solid fa-xmark remove-file-btn"
+                      onClick={() => handleRemoveFile(index)}
+                    ></i>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="form-group date-row">
               <div className="date-group">
