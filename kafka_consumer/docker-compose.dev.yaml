@@ -4,7 +4,7 @@ services:
   kafka_consumer_service:
     build:
       context: .
-    image: kafka_consumer_service:latest
+    image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.0
     depends_on:
       - kafka
 
