@@ -4,7 +4,7 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9 AS build
 WORKDIR /app
 
 # Copy only the requirements to install dependencies
-COPY requirements.txt .
+COPY ./py_lib/requirements.txt .
 
 # Install dependencies
 RUN pip install --upgrade pip && \
