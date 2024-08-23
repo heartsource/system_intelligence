@@ -1,0 +1,4 @@
+chromadb==0.5.0
+confluent-kafka
+PyPDF2
+sentence_transformers
