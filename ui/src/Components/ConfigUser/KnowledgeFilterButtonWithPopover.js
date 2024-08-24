@@ -38,16 +38,11 @@ const KnowledgeFilterButtonWithPopover = () => {
     setPopoverOpen(false);
   };
 
-  const handleApply = async (checkedItems, enrichment) => {
+  const handleApply = async (checkedItems) => {
     closePopover();
     const selectedStatuses = Object.keys(checkedItems).filter(
       (key) => checkedItems[key] === true
     );
-    const selectedEnrichmentIds = enrichment
-      .filter((enrichment) => selectedStatuses.includes(enrichment.status))
-      .map((enrichment) => enrichment.enrichment_id);
-
-    console.log(selectedEnrichmentIds);
     try {
       const response = await axios.post(
         `${config.heartieBE}/enrichments/fetch`,
@@ -56,7 +51,6 @@ const KnowledgeFilterButtonWithPopover = () => {
         }
       );
       const data = Array.isArray(response.data.data) ? response.data.data : [];
-
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredStatus(sortedData);
     } catch (error) {

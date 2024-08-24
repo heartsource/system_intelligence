@@ -18,11 +18,12 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
+        const uniqueStatuses = [...new Set(data.map((item) => item.status))];
         const initialCheckedItems = {};
-        data.forEach((status) => {
-          initialCheckedItems[status.status] = false;
+        uniqueStatuses.forEach((status) => {
+          initialCheckedItems[status] = false;
         });
-        setStatus(data);
+        setStatus(uniqueStatuses);
         setCheckedItems(initialCheckedItems);
       } catch (error) {
         console.error("Error fetching Status:", error);
@@ -47,8 +48,8 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
     event.stopPropagation();
     event.preventDefault();
     const newCheckedItems = {};
-    status.forEach((agent) => {
-      newCheckedItems[agent.status] = event.target.checked;
+    status.forEach((status) => {
+      newCheckedItems[status] = event.target.checked;
     });
     setCheckedItems(newCheckedItems);
   };
@@ -70,15 +71,15 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
           />
           <label>Select All</label>
         </div>
-        {status.map((agent) => (
-          <div key={agent.id}>
+        {status.map((status, index) => (
+          <div key={index}>
             <input
               type="checkbox"
-              name={agent.status}
-              checked={checkedItems[agent.status] || false}
+              name={status}
+              checked={checkedItems[status] || false}
               onChange={handleCheckboxChange}
             />
-            <label>{capitalizeFirstLetter(agent.status)}</label>
+            <label>{capitalizeFirstLetter(status)}</label>
           </div>
         ))}
         <button onClick={() => onApply(checkedItems, status)}>Apply</button>
