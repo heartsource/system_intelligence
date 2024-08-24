@@ -227,11 +227,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
             </div>
             <div className="form-group save-btn-container">
               <label></label>
-              <button
-                className="save-btn"
-                onClick={handleSave}
-                disabled={loading}
-              >
+              <button className="save-btn" onClick={handleSave}>
                 {isSubmitted ? "Edit" : "Save"}
               </button>
               <button className="cancel-btn" onClick={handleCancel}>
