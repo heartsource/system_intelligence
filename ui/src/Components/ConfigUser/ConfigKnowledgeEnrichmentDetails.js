@@ -64,11 +64,11 @@ const ConfigKnowledgeEnrichmentDetails = () => {
     try {
       const saveResponse = await axios.put(
         `${config.heartieBE}/enrichments/${selectedEnrichmentId.enrichment_id}`,
-        formData,
-        (selectedEnrichmentId.status = "responded")
+        formData
       );
 
       if (saveResponse.status === 200) {
+        selectedEnrichmentId.status = "responded";
         setShowSuccess(true);
         setIsSubmitted(true);
         setTimeout(() => {

@@ -68,7 +68,8 @@
   text-align: center;
 }
 
-.grid-cell:nth-child(1) {
+.knowledge-grid-row .grid-cell:nth-child(1),
+.knowledge-grid-row .grid-cell:nth-child(3) {
   cursor: pointer;
 }
 .knowledge-grid-row .grid-cell:nth-child(1) {
