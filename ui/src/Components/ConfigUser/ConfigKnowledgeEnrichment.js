@@ -229,8 +229,8 @@ const ConfigKnowledgeEnrichment = () => {
             Showing{" "}
             {filteredStatus.length > 0
               ? filteredStatus.length
-              : setRecords.length}{" "}
-            of {records.length} Records
+              : filteredStatus.length}{" "}
+            of {filteredStatus.length} Records
           </div>
         </div>
       </fieldset>

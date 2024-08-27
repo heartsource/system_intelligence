@@ -1,5 +1,6 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { usePopper } from "react-popper";
+import { createPopper } from "@popperjs/core";
 import axios from "axios";
 import KnowledgeFilterPopover from "./KnowledgeFilterPopover";
 import { AppContext } from "../../context/AppContext";
@@ -30,8 +31,13 @@ const KnowledgeFilterButtonWithPopover = () => {
   );
 
   const togglePopover = (e) => {
-    e.stopPropagation();
-    setPopoverOpen((prev) => !prev);
+    // e.stopPropagation();
+    setPopoverOpen(!isPopoverOpen);
+    if (!isPopoverOpen) {
+      createPopper(buttonRef.current, popoverRef.current, {
+        placement: "bottom-start",
+      });
+    }
   };
 
   const closePopover = () => {
@@ -50,6 +56,7 @@ const KnowledgeFilterButtonWithPopover = () => {
           status: selectedStatuses,
         }
       );
+      console.log(response);
       const data = Array.isArray(response.data.data) ? response.data.data : [];
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredStatus(sortedData);
