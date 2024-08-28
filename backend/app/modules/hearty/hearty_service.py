@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
 from modules.enrichment.enrichment_service import EnrichmentRequestService
 from modules.ai_models.chatgpt.chatgpt_service import ChatGPTService
@@ -34,7 +34,7 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         agentlog = {
             "agent_id": ObjectId(payload.agent_id),
             "interaction_id": str(uuid4()),
-            "interaction_date": datetime.now()
+            "interaction_date": datetime.now(timezone.utc)
         }
         agent_data = await agent_service.fetchAgentDetails(payload.agent_id)
         if agent_data is None or agent_data['model'] != payload.model or agent_data['flow'] != payload.flow:
@@ -69,7 +69,7 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
 
         print('Heartie is in Action:  Ended')
         
-        agentlog['duration'] = datetime.now() - agentlog['interaction_date']
+        agentlog['duration'] = datetime.now(timezone.utc) - agentlog['interaction_date']
         agentlog['question'] = question
         agentlog['template'] = template
         agentlog['answer'] = ai_model_response

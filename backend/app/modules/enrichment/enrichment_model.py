@@ -15,7 +15,7 @@ class EnrichmentModel(BaseModel):
     requested_on: Optional[datetime] = None
     responded_on: Optional[datetime] = None
     responded_by: Optional[str] = None
-    injested_on: Optional[datetime] = None
+    ingested_on: Optional[datetime] = None
     updated_dt: Optional[datetime] = None
     deleted_dt: Optional[datetime] = None
 
