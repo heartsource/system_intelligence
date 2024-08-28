@@ -16,7 +16,7 @@ export const dateFormat = (dateString) => {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Use the local time zone
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 
   // Convert the UTC date to the local timezone
