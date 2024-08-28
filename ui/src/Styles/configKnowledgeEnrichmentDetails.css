@@ -1,0 +1,203 @@
+.form-container {
+  width: 115%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: "Montserrat";
+}
+
+#enrichmentDetailsFieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
+  text-align: left;
+  overflow-y: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: "Montserrat";
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  font-family: "Montserrat";
+  color: white;
+}
+
+.status span {
+  margin-right: 5px;
+}
+
+.status-inquired {
+  color: red;
+  font-weight: bold;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.form-group label {
+  width: 15%;
+}
+
+.form-group .form-value {
+  width: 60%;
+  color: white;
+}
+
+.form-group textarea,
+.form-group .form-value {
+  flex: 1;
+  padding: 10px;
+  margin-left: 1px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.labelValue {
+  color: white;
+}
+
+.form-group textarea {
+  resize: none;
+  background-color: transparent;
+  color: white;
+  border: 1px solid gray;
+  font-family: "Montserrat";
+}
+
+.form-description {
+  color: white;
+  margin-left: 10px;
+  width: 70%;
+  font-size: 14px;
+  font-family: "Montserrat";
+}
+
+.upload-btn {
+  background-color: rgb(45, 182, 212);
+  color: black;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  width: 10%;
+}
+
+.upload-btn:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+  border: 1px solid gray;
+}
+
+.save-btn-container {
+  display: flex;
+  width: 60%;
+  margin-left: 19em;
+}
+
+.save-btn {
+  background-color: rgb(45, 182, 212);
+  color: black;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+}
+
+.save-btn:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+  border: 1px solid gray;
+}
+.cancel-btn {
+  background-color: #6c757d;
+  color: black;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-left: 10px;
+}
+.cancel-btn:hover {
+  background-color: transparent;
+  color: rgb(45, 182, 212);
+  border: 1px solid gray;
+}
+.file-names {
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: white;
+}
+.date-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.date-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+.date-group label {
+  margin-right: 10px;
+  width: auto;
+}
+
+.labelValue {
+  white-space: nowrap;
+}
+.displayDate {
+  display: contents;
+  margin-right: 10px;
+  width: auto;
+}
+.knowledge-spinner-overlay {
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 30%;
+  background-color: rgba(45, 182, 212, 0.8);
+  z-index: 10;
+  border: 1px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.knowledge-loading-text {
+  color: rgb(16, 17, 18);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  text-align: center;
+}

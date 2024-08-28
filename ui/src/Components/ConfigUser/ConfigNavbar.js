@@ -72,7 +72,8 @@ const Navbar = () => {
                 onClick={() => handleNavigation("home")}
                 className={`nav_link ${
                   currentComponent === "home" ? "active" : ""
-                }`}>
+                }`}
+              >
                 <i className="fa-solid fa-gears"></i> Agent <br />
                 Configuration
               </div>
@@ -80,7 +81,8 @@ const Navbar = () => {
                 onClick={() => handleNavigation("agents")}
                 className={`nav_link ${
                   currentComponent === "agents" ? "active" : ""
-                }`}>
+                }`}
+              >
                 <i className="fas fa-users"></i> Agents
               </div>
 
@@ -91,7 +93,8 @@ const Navbar = () => {
                 }}
                 className={`nav_link ${
                   currentComponent === "agentLogs" ? "active" : ""
-                }`}>
+                }`}
+              >
                 <i className="fa-solid fa-headset"></i> Agent Logs
               </div>
 
@@ -99,26 +102,29 @@ const Navbar = () => {
                 onClick={() => handleNavigation("upload")}
                 className={`nav_link ${
                   currentComponent === "upload" ? "active" : ""
-                }`}>
+                }`}
+              >
                 <i className="fa-solid fa-upload"></i> Knowledge Upload
               </div>
               <div
                 onClick={() => handleNavigation("config-ask-hearty")}
                 className={`nav_link ${
                   currentComponent === "config-ask-hearty" ? "active" : ""
-                }`}>
+                }`}
+              >
                 <i className="fa-solid fa-heart"></i> Ask Hearty
               </div>
               <div
-                onClick={() => handleNavigation("config-knowledge-enhancement")}
+                onClick={() => handleNavigation("config-knowledge-enrichment")}
                 className={`nav_link ${
-                  currentComponent === "config-knowledge-enhancement"
+                  currentComponent === "config-knowledge-enrichment"
                     ? "active"
                     : ""
-                }`}>
+                }`}
+              >
                 <i className="fa-solid fa-chart-line"></i> Knowledge
                 <br />
-                Enhancement
+                Enrichment
               </div>
             </div>
           </div>
