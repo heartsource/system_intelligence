@@ -39,12 +39,15 @@
   grid-template-columns: 2fr 1.5fr 2fr 2.5fr 2.5fr 2.5fr;
   width: 100%;
   color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 }
 
 .grid-cell {
-  padding: 10px;
+  padding: 4px;
   border-bottom: 1px solid #ddd;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,20 +80,31 @@
   font-weight: bold;
   text-align: center;
 }
+.status-ingested,
+.status-inquired,
+.status-responded {
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px 3px;
+  display: inline-block;
+  height: auto;
+  width: 7em;
+  line-height: 1.2;
+  margin: 1px 0;
+}
 
 .status-ingested {
-  color: #28a745;
-  font-weight: bold;
+  background-color: #28a745;
 }
 
 .status-responded {
-  color: #ffc107;
-  font-weight: bold;
+  background-color: orange;
 }
 
 .status-inquired {
-  color: #dc3545;
-  font-weight: bold;
+  background-color: #dc3545;
 }
 
 .status-default {
