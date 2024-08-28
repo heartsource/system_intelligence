@@ -3,7 +3,8 @@ export const dateFormat = (dateString) => {
     return "-";
   }
 
-  const date = new Date(dateString);
+  // Parse the date string as a UTC date
+  const date = new Date(dateString + "Z");
   if (isNaN(date)) {
     return "-";
   }
@@ -15,8 +16,10 @@ export const dateFormat = (dateString) => {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Use the local time zone
   };
 
+  // Convert the UTC date to the local timezone
   const formattedDate = date.toLocaleString(undefined, options);
   return formattedDate;
 };
