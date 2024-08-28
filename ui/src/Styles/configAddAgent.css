@@ -62,13 +62,24 @@ hr {
   color: #d7d5d5;
   padding: 0;
 }
-.alert-danger,
+/* .alert-danger,
 .alert-success {
   position: fixed;
   top: 20px;
   right: 20px;
   width: 30%;
   z-index: 1050;
+} */
+.bg-success,
+.bg-danger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 30%;
+  z-index: 1050;
+  color: white;
+  border-radius: 5px;
+  font-size: bold;
 }
 
 #model,

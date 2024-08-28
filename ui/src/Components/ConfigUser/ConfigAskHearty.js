@@ -108,7 +108,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   return (
     <>
       {error && (
-        <div className="alert alert-danger" role="alert">
+        <div className="p-3 mb-2 bg-danger" role="alert">
           {error}
         </div>
       )}
@@ -127,20 +127,23 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                 rows="1"
                 value={inputValue}
                 onChange={handleTextareaInput}
-                onKeyDown={handleKeyPressOrClick}></textarea>
+                onKeyDown={handleKeyPressOrClick}
+              ></textarea>
               <button
                 className={`submit-btn ${
                   !inputValue.trim() ? "hover-disabled" : ""
                 }`}
                 onClick={handleKeyPressOrClick}
-                disabled={!inputValue.trim()}>
+                disabled={!inputValue.trim()}
+              >
                 <b>&#x2B06;</b>
               </button>
             </div>
           </div>
           <div
             className="ask-hearty-agent-input-row"
-            style={{ marginLeft: "64em", marginTop: "-3em" }}>
+            style={{ marginLeft: "64em", marginTop: "-3em" }}
+          >
             <div className="custom-select">
               <div className="select-selected" onClick={handleDropdownToggle}>
                 {selectedAgent.name || "Select Agent"}
@@ -152,7 +155,8 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
                     .map((agent, index) => (
                       <div
                         key={index}
-                        onClick={() => handleOptionSelect(agent.name)}>
+                        onClick={() => handleOptionSelect(agent.name)}
+                      >
                         {agent.name}
                       </div>
                     ))}
@@ -162,7 +166,8 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           </div>
           <div
             className="conversation-container"
-            style={{ position: "relative" }}>
+            style={{ position: "relative" }}
+          >
             {isLoading && (
               <div className="spinner-overlay">
                 <div className="spinner-border mb-2" role="status">

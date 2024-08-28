@@ -109,12 +109,12 @@ const ConfigKnowledgeEnrichmentDetails = () => {
         </div>
       )}
       {error && (
-        <div className="alert alert-danger" role="alert">
+        <div className="p-3 mb-2 bg-danger" role="alert">
           {error}
         </div>
       )}
       {showSuccess && (
-        <div className="alert alert-success" role="alert">
+        <div className="p-3 mb-2 bg-success" role="alert">
           Knowledge Enrichment updated successfully!
         </div>
       )}
@@ -213,15 +213,19 @@ const ConfigKnowledgeEnrichmentDetails = () => {
                 </div>
               </div>
               <div className="date-group">
-                <label>Response Date</label>
+                <label className="displayDate">Response Date</label>
                 <div className="labelValue">
-                  {dateFormat(selectedEnrichmentId.responded_on)}
+                  {selectedEnrichmentId.responded_on
+                    ? dateFormat(selectedEnrichmentId.responded_on)
+                    : "-"}
                 </div>
               </div>
               <div className="date-group">
-                <label>Ingested Date</label>
+                <label className="displayDate">Ingested Date</label>
                 <div className="labelValue">
-                  {dateFormat(selectedEnrichmentId.injested_on)}
+                  {selectedEnrichmentId.injested_on
+                    ? dateFormat(selectedEnrichmentId.injested_on)
+                    : "-"}
                 </div>
               </div>
             </div>

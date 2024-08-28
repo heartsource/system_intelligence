@@ -9,6 +9,7 @@ import KnowledgeFilterButtonWithPopover from "./KnowledgeFilterButtonWithPopover
 import config from "../../config";
 import Spinner from "../Spinner";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
+import { dateFormat } from "../../utils/dateFormat";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="knowledge-grid-header">
@@ -86,6 +87,10 @@ const TableRow = ({
             ? customRenderers[column.key](agent, index)
             : column.key === "status"
             ? capitalizeFirstLetter(agent[column.key])
+            : column.key === "requested_on" ||
+              column.key === "responded_on" ||
+              column.key === "injested_on"
+            ? dateFormat(agent[column.key])
             : agent[column.key]}
         </div>
       ))}

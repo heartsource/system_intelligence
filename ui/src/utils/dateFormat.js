@@ -1,13 +1,22 @@
-// Date format utility function
 export const dateFormat = (dateString) => {
+  if (!dateString) {
+    return "-";
+  }
+
+  const date = new Date(dateString);
+  if (isNaN(date)) {
+    return "-";
+  }
+
   const options = {
     year: "numeric",
-    month: "long",
+    month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false, // Use 24-hour format
+    hour12: true,
   };
-  const date = new Date(dateString);
-  return date.toLocaleString("en-US", options).replace(",", "");
+
+  const formattedDate = date.toLocaleString(undefined, options);
+  return formattedDate;
 };

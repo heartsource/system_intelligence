@@ -152,12 +152,12 @@ const ConfigAddAgent = () => {
   return (
     <>
       {error && (
-        <div className="alert alert-danger" role="alert">
+        <div className="p-3 mb-2 bg-danger" role="alert">
           {error}
         </div>
       )}
       {showSuccess && (
-        <div className="alert alert-success" role="alert">
+        <div className="p-3 mb-2 bg-success" role="alert">
           Agent created successfully!
         </div>
       )}
@@ -192,14 +192,16 @@ const ConfigAddAgent = () => {
               {formErrors.name && (
                 <span
                   className="error"
-                  style={{ marginTop: "5em", padding: "0px" }}>
+                  style={{ marginTop: "5em", padding: "0px" }}
+                >
                   {formErrors.name}
                 </span>
               )}
               {nameExistsError && (
                 <div
                   className="error"
-                  style={{ marginTop: "5em", color: "red" }}>
+                  style={{ marginTop: "5em", color: "red" }}
+                >
                   * Name already exists. Please try a different name.
                 </div>
               )}
@@ -209,9 +211,8 @@ const ConfigAddAgent = () => {
               <textarea
                 id="description"
                 placeholder="You can add a few lines here to describe what this Agent will do."
-                onChange={(e) =>
-                  handleInputChange(e, "description")
-                }></textarea>
+                onChange={(e) => handleInputChange(e, "description")}
+              ></textarea>
             </div>
             <div className="agent-input-row">
               <label htmlFor="model">
@@ -227,7 +228,8 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.model ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "model")}>
+                onChange={(e) => handleInputChange(e, "model")}
+              >
                 <option value="Select">Select</option>
                 {models.map((model, index) => (
                   <option key={index} value={model}>
@@ -256,7 +258,8 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.flow ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "flow")}>
+                onChange={(e) => handleInputChange(e, "flow")}
+              >
                 <option value="Select">Select</option>
                 {filteredFlows.map((flow, index) => (
                   <option key={index} value={flow}>
@@ -284,13 +287,15 @@ const ConfigAddAgent = () => {
                     : "1px solid #ccc",
                   marginBottom: formErrors.template ? "0" : "initial",
                 }}
-                onChange={(e) => handleInputChange(e, "template")}></textarea>
+                onChange={(e) => handleInputChange(e, "template")}
+              ></textarea>
             </div>
           </div>
           {formErrors.template && (
             <span
               className="error"
-              style={{ marginTop: "10em", marginLeft: "10em" }}>
+              style={{ marginTop: "10em", marginLeft: "10em" }}
+            >
               {formErrors.template}
             </span>
           )}

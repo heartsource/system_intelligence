@@ -163,14 +163,20 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 30%;
 }
 .date-group label {
   margin-right: 10px;
-  width: 40%;
+  width: auto;
 }
 
 .labelValue {
   white-space: nowrap;
+}
+.displayDate {
+  display: contents;
+  margin-right: 10px;
+  width: auto;
 }
 .knowledge-spinner-overlay {
   position: fixed;

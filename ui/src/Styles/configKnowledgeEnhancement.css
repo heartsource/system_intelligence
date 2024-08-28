@@ -79,17 +79,17 @@
 }
 
 .status-ingested {
-  color: rgb(8, 173, 8);
+  color: #28a745;
   font-weight: bold;
 }
 
 .status-responded {
-  color: orange;
+  color: #ffc107;
   font-weight: bold;
 }
 
 .status-inquired {
-  color: red;
+  color: #dc3545;
   font-weight: bold;
 }
 
