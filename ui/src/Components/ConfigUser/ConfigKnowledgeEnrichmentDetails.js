@@ -73,7 +73,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
         setIsSubmitted(true);
         setTimeout(() => {
           setShowSuccess(false);
-        }, 3000);
+        }, 6000);
       } else {
         console.error("Save failed", saveResponse);
       }

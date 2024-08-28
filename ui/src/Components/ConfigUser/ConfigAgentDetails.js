@@ -141,7 +141,7 @@ const ConfigAgentDetails = () => {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
-        }, 3000);
+        }, 6000);
       } else {
         handleError(
           setError,

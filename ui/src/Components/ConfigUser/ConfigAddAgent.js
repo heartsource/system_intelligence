@@ -66,7 +66,7 @@ const ConfigAddAgent = () => {
           setShowSuccess(true);
           setTimeout(() => {
             setShowSuccess(false);
-          }, 3000);
+          }, 6000);
           // Reset the form
           setName("");
           setDescription("");
@@ -95,7 +95,7 @@ const ConfigAddAgent = () => {
           setNameExistsError(true);
           setTimeout(() => {
             setNameExistsError(false);
-          }, 3000);
+          }, 6000);
         } else {
           handleError(
             setError,

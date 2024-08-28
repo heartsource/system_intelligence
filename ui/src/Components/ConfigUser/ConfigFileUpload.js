@@ -29,7 +29,7 @@ const ConfigFileUpload = () => {
         );
         setTimeout(() => {
           setValidationError("");
-        }, 3000);
+        }, 6000);
       }
     });
 
@@ -77,7 +77,7 @@ const ConfigFileUpload = () => {
           ? "Files uploaded successfully."
           : "File uploaded successfully."
       );
-      setTimeout(() => setSuccessMessage(""), 3000);
+      setTimeout(() => setSuccessMessage(""), 6000);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "File size is too large.";
