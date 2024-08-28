@@ -223,8 +223,8 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               <div className="date-group">
                 <label className="displayDate">Ingested Date</label>
                 <div className="labelValue">
-                  {selectedEnrichmentId.injested_on
-                    ? dateFormat(selectedEnrichmentId.injested_on)
+                  {selectedEnrichmentId.ingested_on
+                    ? dateFormat(selectedEnrichmentId.ingested_on)
                     : "-"}
                 </div>
               </div>

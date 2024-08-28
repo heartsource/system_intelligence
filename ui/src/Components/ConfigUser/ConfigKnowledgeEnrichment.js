@@ -89,7 +89,7 @@ const TableRow = ({
             ? capitalizeFirstLetter(agent[column.key])
             : column.key === "requested_on" ||
               column.key === "responded_on" ||
-              column.key === "injested_on"
+              column.key === "ingested_on"
             ? dateFormat(agent[column.key])
             : agent[column.key]}
         </div>
@@ -140,7 +140,7 @@ const ConfigKnowledgeEnrichment = () => {
     { key: "query", label: "Query", sortable: true },
     { key: "requested_on", label: "Requested On", sortable: true },
     { key: "responded_on", label: "Responded On", sortable: true },
-    { key: "injested_on", label: "Ingested On", sortable: true },
+    { key: "ingested_on", label: "Ingested On", sortable: true },
   ];
 
   useEffect(() => {

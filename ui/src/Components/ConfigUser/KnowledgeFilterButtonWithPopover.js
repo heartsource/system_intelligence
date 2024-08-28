@@ -31,7 +31,6 @@ const KnowledgeFilterButtonWithPopover = () => {
   );
 
   const togglePopover = (e) => {
-    // e.stopPropagation();
     setPopoverOpen(!isPopoverOpen);
     if (!isPopoverOpen) {
       createPopper(buttonRef.current, popoverRef.current, {
@@ -56,7 +55,7 @@ const KnowledgeFilterButtonWithPopover = () => {
           status: selectedStatuses,
         }
       );
-      console.log(response);
+
       const data = Array.isArray(response.data.data) ? response.data.data : [];
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredStatus(sortedData);
