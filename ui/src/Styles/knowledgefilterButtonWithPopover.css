@@ -1,4 +1,8 @@
-.popover-container {
+.knowledge-popover-container-parent {
+  position: relative;
+  z-index: 1000;
+}
+.knowledge-popover-container {
   border: 1px solid #ccc;
   background-color: rgb(45, 182, 212);
   color: black;
@@ -6,26 +10,26 @@
   padding: 10px;
   border-radius: 4px;
   width: 20em;
-  z-index: 10;
-  margin-top: 1em;
-  margin-left: -5em;
+  z-index: 2000;
+  margin-top: 0em;
+  margin-left: 0em;
 }
 
-.popover-content {
+.knowledge-popover-content {
   display: flex;
   flex-direction: column;
 }
-.popover-content label {
+.knowledge-popover-content label {
   color: black !important;
 }
 
-.popover-content div {
+.knowledge-popover-content div {
   margin-bottom: 5px;
   display: flex;
   align-items: center;
 }
 
-.popover-content input {
+.knowledge-popover-content input {
   margin-right: 10px;
 }
 
@@ -36,7 +40,7 @@ input[type="checkbox"] {
   border-radius: 5px;
 }
 
-.popover-content button {
+.knowledge-popover-content button {
   margin-top: 10px;
   padding: 5px;
   cursor: pointer;
@@ -47,17 +51,17 @@ input[type="checkbox"] {
   transition: background-color 0.3s ease;
 }
 
-.popover-content button:hover {
+.knowledge-popover-content button:hover {
   background-color: transparent;
   border: 1px solid black;
   color: black;
 }
 
-.popover-content button:last-of-type {
+.knowledge-popover-content button:last-of-type {
   background-color: #6c757d;
 }
 
-.popover-content button:last-of-type:hover {
+.knowledge-popover-content button:last-of-type:hover {
   background-color: transparent;
   color: black;
 }
