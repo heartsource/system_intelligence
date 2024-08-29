@@ -135,8 +135,8 @@ class EnrichmentRequestService:
                     {"deleted_dt": None}
                 ]
             }
-            body['ingested_on'] = datetime.now(timezone.utc)
-            body['status'] = EnrichmentStatus.INGESTED.value
+            # body['ingested_on'] = datetime.now(timezone.utc)
+            # body['status'] = EnrichmentStatus.INGESTED.value
             return self.collection.find_one_and_update(query, { "$set": body })
             
             # if result is not None:
