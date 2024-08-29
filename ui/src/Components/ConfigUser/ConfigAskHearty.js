@@ -151,7 +151,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               {isDropdownOpen && (
                 <div className="select-items">
                   {agentNames
-                    .filter((agent) => agent.name !== "Default System Agent")
+                    // .filter((agent) => agent.name !== "Default System Agent")
                     .map((agent, index) => (
                       <div
                         key={index}
