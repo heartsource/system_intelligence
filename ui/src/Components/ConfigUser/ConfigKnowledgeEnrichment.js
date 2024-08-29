@@ -33,6 +33,8 @@ const getStatusClass = (status) => {
       return "status-responded";
     case "inquired":
       return "status-inquired";
+    case "response updated":
+      return "status-Response_updated";
     default:
       return "status-default";
   }
@@ -69,7 +71,7 @@ const TableRow = ({
       {columns.map((column) => (
         <div
           key={column.key}
-          className={`grid-cell ${
+          className={`knowledge-grid-cell ${
             column.key === "status" ? getStatusClass(agent[column.key]) : ""
           }`}
           onClick={() =>
@@ -89,7 +91,7 @@ const TableRow = ({
             ? capitalizeFirstLetter(agent[column.key])
             : column.key === "requested_on" ||
               column.key === "responded_on" ||
-              column.key === "injested_on"
+              column.key === "ingested_on"
             ? dateFormat(agent[column.key])
             : agent[column.key]}
         </div>
@@ -140,7 +142,7 @@ const ConfigKnowledgeEnrichment = () => {
     { key: "query", label: "Query", sortable: true },
     { key: "requested_on", label: "Requested On", sortable: true },
     { key: "responded_on", label: "Responded On", sortable: true },
-    { key: "injested_on", label: "Ingested On", sortable: true },
+    { key: "ingested_on", label: "Ingested On", sortable: true },
   ];
 
   useEffect(() => {

@@ -141,7 +141,7 @@ const ConfigAgentDetails = () => {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
-        }, 3000);
+        }, 6000);
       } else {
         handleError(
           setError,
@@ -187,12 +187,12 @@ const ConfigAgentDetails = () => {
   return (
     <>
       {error && (
-        <div className="alert alert-danger" role="alert">
+        <div className="p-3 mb-2 bg-danger" role="alert">
           {error}
         </div>
       )}
       {showSuccess && (
-        <div className="alert alert-success" role="alert">
+        <div className="p-3 mb-2 bg-success" role="alert">
           Agent "{selectedAgent.name}" updated successfully!
         </div>
       )}
