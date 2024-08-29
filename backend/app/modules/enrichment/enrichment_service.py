@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import json
-
+import traceback
 from fastapi import HTTPException
 from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
 from utils.enums.shared_enum import EnrichmentStatus
@@ -9,7 +9,7 @@ from modules.enrichment.enrichment_model import EnrichmentModel, EnrichmentListM
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
-import traceback
+import utils.constants.app_constants as APP_CONSTANTS
 from pydantic.json import pydantic_encoder
 
 knowledge_upload_service = KnowledgeUploadService()
@@ -32,7 +32,7 @@ class EnrichmentRequestService:
             enrichment_id = await self.get_next_sequence_value("enrichment")
             document = json.loads(json.dumps(request, default=pydantic_encoder))
             document["enrichment_id"] = enrichment_id
-            document['requested_on'] = datetime.now()
+            document['requested_on'] = datetime.now(timezone.utc)
             return await self.collection.insert_one(document)
         except Exception as e:
             traceback.print_exc()
@@ -97,12 +97,24 @@ class EnrichmentRequestService:
         try:
             if file == None and query_response == None:
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.ENRICHMENT_UPDATE_ERROR)
-            
-            body = {
-                "responded_on": datetime.now(),
-                "status": EnrichmentStatus.INJESTED.value
-            }
-            if file:
+            exisitngRecord = await self.collection.find_one({"enrichment_id": id})
+            body = {}
+            if('responded_on' in exisitngRecord):
+                body = {
+                "responded_on": datetime.now(timezone.utc),
+                "status": EnrichmentStatus.RESPONSE_UPDATED.value
+                }
+            else:
+                body = {
+                    "responded_on": datetime.now(timezone.utc),
+                    "status": EnrichmentStatus.RESPONDED.value
+                }
+            if file and query_response:
+                filename = file.filename
+                body['response'] = query_response
+                await knowledge_upload_service.loadFileToChromadb(file)                
+                await knowledge_upload_service.loadToChromadb(query_response)  
+            elif file:
                 filename = file.filename
                 body['response'] = f'File {filename} has been uploaded'
                 await knowledge_upload_service.loadFileToChromadb(file)
@@ -116,7 +128,8 @@ class EnrichmentRequestService:
                     {"deleted_dt": None}
                 ]
             }
-            body['injested_on'] = datetime.now()
+            body['ingested_on'] = datetime.now(timezone.utc)
+            body['status'] = EnrichmentStatus.INGESTED.value
             return self.collection.find_one_and_update(query, { "$set": body })
             
             # if result is not None:
@@ -139,7 +152,7 @@ class EnrichmentRequestService:
                 ]
             }
             
-            return await self.collection.find_one_and_update(query, { "$set": { "deleted_dt":datetime.now() } })
+            return await self.collection.find_one_and_update(query, { "$set": { "deleted_dt":datetime.now(timezone.utc) } })
 
         except Exception as e:
             traceback.print_exc()

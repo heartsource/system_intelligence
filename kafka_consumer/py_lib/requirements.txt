@@ -1,0 +1,4 @@
+chromadb
+confluent-kafka
+PyPDF2
+sentence_transformers

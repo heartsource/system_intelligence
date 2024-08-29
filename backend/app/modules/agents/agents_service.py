@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 import json
 import traceback
@@ -116,7 +116,7 @@ class AgentService:
             
             # Convert agent_dict to a plain Python dictionary
             document = json.loads(json.dumps(agent, default=pydantic_encoder))
-            document['created_dt'] = datetime.now()
+            document['created_dt'] = datetime.now(timezone.utc)
 
             return await self.collection.insert_one(document)
             
@@ -162,7 +162,7 @@ class AgentService:
             
             # Convert updated agent to a dictionary
             agent_dict = json.loads(json.dumps(agent, default=custom_serializer))
-            agent_dict['updated_dt'] = datetime.now()
+            agent_dict['updated_dt'] = datetime.now(timezone.utc)
 
             return  await self.collection.update_one({"_id": ObjectId(agent_id)}, { "$set": agent_dict})
         except Exception as e:
@@ -196,7 +196,7 @@ class AgentService:
                 await logs_service.deleteAgentLogs(agent_id)
                 return await self.collection.update_one(
                     {"_id": ObjectId(agent_id)},
-                    {"$set": {'deleted_dt': datetime.now(), 'status': AgentStatus.INACTIVE }}
+                    {"$set": {'deleted_dt': datetime.now(timezone.utc), 'status': AgentStatus.INACTIVE }}
                     )
             except Exception as e:
                 raise Exception(e)

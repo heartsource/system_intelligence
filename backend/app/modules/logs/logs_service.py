@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict
 from fastapi import HTTPException
 from utils.common_utilities import custom_serializer, is_valid_uuid
@@ -106,6 +106,6 @@ class LogService:
         try:
             if not ObjectId.is_valid(agent_id):
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
-            return await self.collection.update_many({"agent_id": ObjectId(agent_id)}, {"$set": {"deleted_dt": datetime.now()}})
+            return await self.collection.update_many({"agent_id": ObjectId(agent_id)}, {"$set": {"deleted_dt": datetime.now(timezone.utc)}})
         except Exception as e:
             raise Exception(e)
