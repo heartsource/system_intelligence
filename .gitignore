@@ -45,3 +45,4 @@
 /backend/.idea
 /backend/app/.idea
 *.pyc
+.venv
