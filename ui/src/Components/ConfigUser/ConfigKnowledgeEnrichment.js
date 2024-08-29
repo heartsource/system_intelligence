@@ -33,6 +33,8 @@ const getStatusClass = (status) => {
       return "status-responded";
     case "inquired":
       return "status-inquired";
+    case "response updated":
+      return "status-Response_updated";
     default:
       return "status-default";
   }
