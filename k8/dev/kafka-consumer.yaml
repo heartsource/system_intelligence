@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.1
+          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.2
           ports:
             - containerPort: 9092
           env:
