@@ -63,9 +63,19 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         else:
             raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_MODEL_ERROR)
 
-        not_found = "I do not have enough information to answer your question"
-        if not_found in ai_model_response:
+        # Check for various "not found" indicators
+        not_found_indicators = [
+            "I do not have enough information",
+            "I apologize, but I don't have any information",
+            "The context is an empty list",
+            "Could you please provide more information"
+        ]
+        if any(phrase in ai_model_response for phrase in not_found_indicators):
             await enrichment_service.createEnrichmentRequest({"query": question, "agent_id": payload.agent_id})
+
+        # not_found = "I do not have enough information"
+        # if not_found in ai_model_response:
+        #     await enrichment_service.createEnrichmentRequest({"query": question, "agent_id": payload.agent_id})
 
         print('Heartie is in Action:  Ended')
         

@@ -8,3 +8,5 @@ ENRICHMENT_DELETED_SUCCESS = "Enrichment deleted successfully."
 
 FILE_UPLOAD_SUCCESS = "File uploaded successfully."
 MODEL_INPROGRESS= "Mistral model is currently not supported. Please select other Model"
+
+KAFKA_TOPIC_ENRICHMENT = "enrichment"

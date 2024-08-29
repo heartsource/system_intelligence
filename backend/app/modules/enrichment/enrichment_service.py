@@ -11,6 +11,7 @@ import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
 from pydantic.json import pydantic_encoder
+from modules.shared.kafka_producer import produce_message
 
 knowledge_upload_service = KnowledgeUploadService()
 
@@ -112,15 +113,21 @@ class EnrichmentRequestService:
             if file and query_response:
                 filename = file.filename
                 body['response'] = query_response
-                await knowledge_upload_service.loadFileToChromadb(file)                
-                await knowledge_upload_service.loadToChromadb(query_response)  
+                # await knowledge_upload_service.loadFileToChromadb(file)                
+                # await knowledge_upload_service.loadToChromadb(query_response) 
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, file_content)
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, query_response) 
             elif file:
                 filename = file.filename
                 body['response'] = f'File {filename} has been uploaded'
-                await knowledge_upload_service.loadFileToChromadb(file)
+                # await knowledge_upload_service.loadFileToChromadb(file)
+                file_content = file.file.read().decode("utf-8", errors="ignore")
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, file_content)
             else:
                 body['response'] = query_response
-                await knowledge_upload_service.loadToChromadb(query_response)            
+                #await knowledge_upload_service.loadToChromadb(query_response)
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, query_response) 
+                  
             query = {
                 "enrichment_id": id,
                 "$or": [
@@ -128,8 +135,8 @@ class EnrichmentRequestService:
                     {"deleted_dt": None}
                 ]
             }
-            body['ingested_on'] = datetime.now(timezone.utc)
-            body['status'] = EnrichmentStatus.INGESTED.value
+            # body['ingested_on'] = datetime.now(timezone.utc)
+            # body['status'] = EnrichmentStatus.INGESTED.value
             return self.collection.find_one_and_update(query, { "$set": body })
             
             # if result is not None:

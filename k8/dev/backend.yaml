@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: systemintelligencebackendapp
-        image: issappacr.azurecr.io/si/system-intelligence-backend:2.1.3
+        image: issappacr.azurecr.io/si/system-intelligence-backend:2.1.6
         resources:
           requests:
             memory: "2Gi"

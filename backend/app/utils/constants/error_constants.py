@@ -16,4 +16,6 @@ INVALID_MODEL_ERROR="Inavlid Model"
 
 CHORMADB_CONN_ERROR="Error connectiong to ChromaDB"
 
-ENRICHMENT_UPDATE_ERROR="File or query_response either one of the field should be passed"
+ENRICHMENT_UPDATE_ERROR="file or payload either one of the field should be passed"
+
+KAFKA_CONN_ERROR="Error connectiong to Kafka"
