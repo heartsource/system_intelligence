@@ -1,5 +1,5 @@
 .knowledge-fieldset-container {
-  width: 110%;
+  width: 114%;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -36,24 +36,26 @@
 .knowledge-grid-header,
 .knowledge-grid-row {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 2fr 2.5fr 2.5fr 2.5fr;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr;
   width: 100%;
   color: #fff;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  padding: 6px;
 }
 
-.grid-cell {
+.knowledge-grid-cell {
   padding: 4px;
   border-bottom: 1px solid #ddd;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
 }
 
-.knowledge-grid-header .grid-cell {
+.knowledge-grid-header .knowledge-grid-cell {
   font-weight: bolder;
   font-size: 1.1em;
   cursor: pointer;
@@ -71,28 +73,29 @@
   text-align: center;
 }
 
-.knowledge-grid-row .grid-cell:nth-child(1),
-.knowledge-grid-row .grid-cell:nth-child(3) {
+.knowledge-grid-row .knowledge-grid-cell:nth-child(1),
+.knowledge-grid-row .knowledge-grid-cell:nth-child(3) {
   cursor: pointer;
 }
-.knowledge-grid-row .grid-cell:nth-child(1) {
+.knowledge-grid-row .knowledge-grid-cell:nth-child(1) {
   color: rgb(45, 182, 212);
   font-weight: bold;
   text-align: center;
 }
 .status-ingested,
 .status-inquired,
-.status-responded {
+.status-responded,
+.status-Response_updated {
   color: white;
   border-radius: 5px;
   font-weight: bold;
-  text-align: center;
-  padding: 3px 3px;
+  /* text-align: center;
+  padding: 10px 5px;
   display: inline-block;
   height: auto;
   width: 7em;
-  line-height: 1.2;
-  margin: 1px 0;
+  line-height: 1.5em;
+  margin-top: 0; */
 }
 
 .status-ingested {
@@ -105,6 +108,9 @@
 
 .status-inquired {
   background-color: #dc3545;
+}
+.status-Response_updated {
+  background-color: #007bff;
 }
 
 .status-default {

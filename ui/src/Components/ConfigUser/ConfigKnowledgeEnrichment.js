@@ -71,7 +71,7 @@ const TableRow = ({
       {columns.map((column) => (
         <div
           key={column.key}
-          className={`grid-cell ${
+          className={`knowledge-grid-cell ${
             column.key === "status" ? getStatusClass(agent[column.key]) : ""
           }`}
           onClick={() =>
