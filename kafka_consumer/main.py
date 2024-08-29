@@ -5,6 +5,9 @@ import sys
 import asyncio
 from config.kafka_consumer_config import kafkaConsumerConfig
 import utils.constants.app_constants as APP_CONSTANTS
+from fastapi import FastAPI
+
+app = FastAPI()
 
 def decode_message(value):
     """Attempt to decode the message with UTF-8 and handle errors."""

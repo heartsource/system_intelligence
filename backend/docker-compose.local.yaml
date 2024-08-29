@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      args:
+        ENV_FILE: .env.development
+    image: backend:2.1.1
+    environment:
+      #These two timeout parameters are added to override env variables of
+      #gunicorn server start up parameters. Without this the server would
+      #timeout.  It was a pain to understand the generic message of timeout.
+      #Good we resolved it ... Look at Gunicorn startup code to understand.
+      - GRACEFUL_TIMEOUT=800
+      - TIMEOUT=800
+    ports:
+      - 80:80
+
+#    networks:
+#      - net
+#networks:
+#  net:
+#    driver: bridge
