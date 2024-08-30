@@ -29,7 +29,7 @@ const ConfigFileUpload = () => {
         );
         setTimeout(() => {
           setValidationError("");
-        }, 3000);
+        }, 6000);
       }
     });
 
@@ -77,7 +77,7 @@ const ConfigFileUpload = () => {
           ? "Files uploaded successfully."
           : "File uploaded successfully."
       );
-      setTimeout(() => setSuccessMessage(""), 3000);
+      setTimeout(() => setSuccessMessage(""), 6000);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "File size is too large.";
@@ -108,11 +108,11 @@ const ConfigFileUpload = () => {
   return (
     <>
       {validationError && (
-        <div className="alert alert-danger">{validationError}</div>
+        <div className="p-3 mb-2 bg-danger">{validationError}</div>
       )}
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="p-3 mb-2 bg-danger">{error}</div>}
       {successMessage && (
-        <div className="alert alert-success">{successMessage}</div>
+        <div className="p-3 mb-2 bg-success">{successMessage}</div>
       )}
 
       <div className="fieldset-container-fileUpload">
@@ -171,7 +171,8 @@ const ConfigFileUpload = () => {
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
                         marginRight: "10px",
-                      }}>
+                      }}
+                    >
                       {file.name}
                     </div>
                     {uploadProgress}%
@@ -179,11 +180,13 @@ const ConfigFileUpload = () => {
                       {uploadProgress < 100 ? (
                         <i
                           className="fa-solid fa-spinner"
-                          style={{ color: "black" }}></i>
+                          style={{ color: "black" }}
+                        ></i>
                       ) : (
                         <i
                           className="fa-solid fa-circle-check"
-                          id="checkGreen"></i>
+                          id="checkGreen"
+                        ></i>
                       )}
                     </div>
                   </div>

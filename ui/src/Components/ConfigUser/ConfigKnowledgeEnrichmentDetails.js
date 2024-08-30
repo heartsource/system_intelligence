@@ -15,6 +15,8 @@ const getStatusClass = (status) => {
       return "status-responded";
     case "inquired":
       return "status-inquired";
+    case "response updated":
+      return "status-Response_updated";
     default:
       return "status-default";
   }
@@ -73,7 +75,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
         setIsSubmitted(true);
         setTimeout(() => {
           setShowSuccess(false);
-        }, 3000);
+        }, 6000);
       } else {
         console.error("Save failed", saveResponse);
       }
@@ -223,8 +225,8 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               <div className="date-group">
                 <label className="displayDate">Ingested Date</label>
                 <div className="labelValue">
-                  {selectedEnrichmentId.injested_on
-                    ? dateFormat(selectedEnrichmentId.injested_on)
+                  {selectedEnrichmentId.ingested_on
+                    ? dateFormat(selectedEnrichmentId.ingested_on)
                     : "-"}
                 </div>
               </div>

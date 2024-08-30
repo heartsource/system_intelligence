@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import Logo from "../Components/../Images/HEART SOURCE ICON.png";
+import Logo from "../Components/../Images/WhiteLogo-removebg.png";
 import "../../Styles/sidenavbar.css";
 
 const Navbar = () => {
@@ -50,7 +50,7 @@ const Navbar = () => {
         <img
           src={Logo}
           height="80px"
-          width="80px"
+          width="100px"
           style={{ backgroundColor: "transparent" }}
         />
       </header>
@@ -61,7 +61,6 @@ const Navbar = () => {
           <i className="fa-solid fa-user"></i>
         </div>
       </div>
-      {/* </header> */}
 
       <div className="l-navbar" id="nav-bar">
         <nav className="nav">

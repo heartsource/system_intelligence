@@ -13,13 +13,13 @@ spec:
         app: systemintelligenceui
     spec:
       containers:
-      - name: systemintelligenceui
-        image: issappacr.azurecr.io/si/system-intelligence-ui:0.1.2
-        ports:
-        - containerPort: 80
-        envFrom:
-        - configMapRef:
-            name: si-ui-configmap-dev
+        - name: systemintelligenceui
+          image: issappacr.azurecr.io/si/system-intelligence-ui:0.1.4
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: si-ui-configmap-dev
 ---
 apiVersion: v1
 kind: Service
@@ -28,6 +28,6 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 80
+    - port: 80
   selector:
     app: systemintelligenceui
