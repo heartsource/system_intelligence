@@ -2,9 +2,8 @@ from datetime import datetime, timezone
 import json
 import traceback
 from fastapi import HTTPException
-from modules.knowledge_upload.knowledge_upload_service import KnowledgeUploadService
 from utils.enums.shared_enum import EnrichmentStatus
-from utils.common_utilities import custom_serializer
+from utils.common_utilities import custom_serializer, read_file
 from modules.enrichment.enrichment_model import EnrichmentModel, EnrichmentListModel
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
@@ -12,8 +11,8 @@ import utils.constants.error_constants as ERROR_CONSTANTS
 import utils.constants.app_constants as APP_CONSTANTS
 from pydantic.json import pydantic_encoder
 from modules.shared.kafka_producer import produce_message
-
-knowledge_upload_service = KnowledgeUploadService()
+from bson import ObjectId
+# knowledge_upload_service = KnowledgeUploadService()
 
 class EnrichmentRequestService:
     def __init__(self) -> None:
@@ -32,7 +31,9 @@ class EnrichmentRequestService:
         try:
             enrichment_id = await self.get_next_sequence_value("enrichment")
             document = json.loads(json.dumps(request, default=pydantic_encoder))
+            document['agent_id'] = ObjectId(document['agent_id'])
             document["enrichment_id"] = enrichment_id
+            document['status'] = EnrichmentStatus.INQUIRED.value
             document['requested_on'] = datetime.now(timezone.utc)
             return await self.collection.insert_one(document)
         except Exception as e:
@@ -110,23 +111,32 @@ class EnrichmentRequestService:
                     "responded_on": datetime.now(timezone.utc),
                     "status": EnrichmentStatus.RESPONDED.value
                 }
+            data = {
+                'enrichment_id' : id
+            }
             if file and query_response:
                 filename = file.filename
                 body['response'] = query_response
                 # await knowledge_upload_service.loadFileToChromadb(file)                
-                # await knowledge_upload_service.loadToChromadb(query_response) 
-                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, file_content)
-                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, query_response) 
+                # await knowledge_upload_service.loadToChromadb(query_response)
+                file_content = read_file(file)
+                data['message'] = file_content
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, data)
+                del data['message']
+                data['message'] = query_response
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, data) 
             elif file:
                 filename = file.filename
                 body['response'] = f'File {filename} has been uploaded'
                 # await knowledge_upload_service.loadFileToChromadb(file)
-                file_content = file.file.read().decode("utf-8", errors="ignore")
-                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, file_content)
+                file_content = read_file(file)
+                data['message'] = file_content
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, data)
             else:
                 body['response'] = query_response
+                data['message'] = query_response
                 #await knowledge_upload_service.loadToChromadb(query_response)
-                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, query_response) 
+                await produce_message(APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT, data) 
                   
             query = {
                 "enrichment_id": id,
