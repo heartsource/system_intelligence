@@ -88,8 +88,7 @@ class EnrichmentRequestService:
             enrichmentDetails = await self.collection.find_one(query)
 
             if enrichmentDetails is not None:
-                enrichmentDetails["_id"] = str(enrichmentDetails["_id"])
-                return enrichmentDetails
+                return json.loads(json.dumps(enrichmentDetails, default=custom_serializer))
             return None
         except Exception as e:
             traceback.print_exc()
