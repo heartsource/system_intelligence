@@ -4,6 +4,7 @@ from fastapi import HTTPException, Response
 from utils.enums.shared_enum import AgentType
 from fastapi import status, HTTPException
 import uuid
+import chardet
 
 def custom_serializer(obj):
     if isinstance(obj, datetime):
@@ -29,3 +30,27 @@ def is_valid_uuid(uuid_string):
         return False
     
     return val.hex == uuid_string.replace('-', '')
+
+import chardet
+
+def read_file(file):
+    try:
+        # Read the raw bytes
+        raw_data = file.file.read()
+        
+        # Automatically detect encoding
+        result = chardet.detect(raw_data)
+        encoding = result['encoding']
+        
+        # Fallback to 'utf-8' if detection fails
+        if encoding is None:
+            encoding = 'utf-8'
+        
+        # Decode using the detected or fallback encoding
+        file_content = raw_data.decode(encoding, errors='replace')  # Using 'replace' to handle any decoding issues
+        
+        return file_content
+    
+    except Exception as e:
+        print(f"Failed to read and decode file: {e}")
+        return None

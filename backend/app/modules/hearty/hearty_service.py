@@ -65,6 +65,7 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
 
         # Check for various "not found" indicators
         not_found_indicators = [
+            "I don't have enough information",
             "I do not have enough information",
             "I apologize, but I don't have any information",
             "The context is an empty list",

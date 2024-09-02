@@ -6,8 +6,11 @@ import asyncio
 from config.kafka_consumer_config import kafkaConsumerConfig
 import utils.constants.app_constants as APP_CONSTANTS
 from fastapi import FastAPI
+from modules.enrichment import EnrichmentRequestService
+
 
 app = FastAPI()
+enrichmentService = EnrichmentRequestService()
 
 def decode_message(value):
     """Attempt to decode the message with UTF-8 and handle errors."""
@@ -49,15 +52,18 @@ async def basic_consume_loop(consumer, topics):
                         # Attempt to parse the JSON message
                         try:
                             message_data = json.loads(message_value)
-                            print(f'Parsed JSON message: {message_data}')
                             # Process the message data
+                            await loadToChromadb(message_data['message'])
+                            await enrichmentService.updateEnrichmentDetails(message_data['enrichment_id'])
                         except json.JSONDecodeError as e:
                             print(f'Failed to decode JSON from message: {message_value} - Error: {e}')
                     else:
                         # Handle non-JSON messages here
                         await loadToChromadb(message_value)
+                        await enrichmentService.updateEnrichmentDetails(message_value)
                 else:
                     await loadFileToChromadb(message_value)
+                    await enrichmentService.updateEnrichmentDetails(message_value)
 
     finally:
         # Close down consumer cleanly

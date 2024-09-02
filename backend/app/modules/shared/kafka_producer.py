@@ -1,4 +1,5 @@
 from config.kafka_producer_config import kafkaProducerConfig
+import json
 
 producer = kafkaProducerConfig.kafka_producer()
 
@@ -8,7 +9,19 @@ def delivery_report(err, msg):
     else:
         print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
 
-async def produce_message(topic: str, message: str):
-    producer.produce(topic, message.encode('utf-8'), callback= delivery_report)
-    producer.flush()
-    return {"status": "Message produced"}
+async def produce_message(topic: str, data: dict):
+    try:
+        # Serialize the dictionary to a JSON string and encode it as bytes
+        serialized_data = json.dumps(data).encode('utf-8')
+        
+        # Produce the message
+        producer.produce(topic, serialized_data, callback=delivery_report)
+        
+        # Wait for any outstanding messages to be delivered
+        producer.flush()
+
+        return {"status": "Message produced"}
+    
+    except Exception as e:
+        print(f"Failed to produce message: {e}")
+        return {"status": "Failed to produce message", "error": str(e)}
