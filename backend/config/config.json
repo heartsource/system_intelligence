@@ -3,7 +3,7 @@
 
   "AZURE_CLIENT_ID": "7f35cd86-e3e8-4d70-833a-8961f6dc9d82",
   "AZURE_TENANT_ID": "0d8d044e-89bf-4722-9556-04163b0c4348",
-  "AZURE_CLIENT_SECRET_VALUE": "8GD8Q~5HXHTY-wj6MBD7w0OgBGjNcvrVTwDMUaIW",
+  "AZURE_CLIENT_SECRET_VALUE": "Eoi8Q~ylCcZKaDIQ7CYR8vtXxBcJZHup0OL6KbPs",
   "AZURE_VAULT_URL": "https://productsupport-kv.vault.azure.net/",
 
   "OPEN_AI_API_KEY": "product-support-ai-openai-api-key1",
