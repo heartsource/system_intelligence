@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.8
+          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
           env:
             - name: KAFKA_HOST
               value: "kafka-service"  # Added this for the consumer to connect to Kafka
