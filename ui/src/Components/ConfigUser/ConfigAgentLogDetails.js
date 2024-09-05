@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { usePopper } from "react-popper";
 import { AppContext } from "../../context/AppContext";
 import "../../Styles/configAgentLogDetails.css";
+import { dateFormat } from "../../utils/dateFormat";
 
 const ConfigAgentLogDetails = () => {
   const { selectedAgent } = useContext(AppContext);
@@ -64,7 +65,7 @@ const ConfigAgentLogDetails = () => {
                 <label style={{ fontWeight: "bold" }}>
                   Interaction Date &nbsp; &nbsp;
                 </label>
-                <span>{selectedAgent.interaction_date}</span>
+                <span>{dateFormat(selectedAgent.interaction_date)}</span>
               </div>
               <div className="third-col">
                 <label style={{ fontWeight: "bold" }}>
@@ -92,7 +93,8 @@ const ConfigAgentLogDetails = () => {
                   }}
                   ref={setReferenceElement}
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}>
+                  onMouseLeave={handleMouseLeave}
+                >
                   View
                 </span>
                 {showPopover && (
@@ -102,14 +104,16 @@ const ConfigAgentLogDetails = () => {
                     {...attributes.popper}
                     className="logDetails-popover"
                     onMouseEnter={handlePopoverMouseEnter}
-                    onMouseLeave={handlePopoverMouseLeave}>
+                    onMouseLeave={handlePopoverMouseLeave}
+                  >
                     <div
                       className="logDetails-popover-content"
                       dangerouslySetInnerHTML={{
                         __html:
                           selectedAgent.template ||
                           "There is no template description",
-                      }}></div>
+                      }}
+                    ></div>
                   </div>
                 )}
               </div>
