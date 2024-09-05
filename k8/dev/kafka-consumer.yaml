@@ -18,7 +18,7 @@ spec:
           image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
           envFrom:
           - configMapRef:
-            name: si-kafka-consumer-configmap-dev
+              name: si-kafka-consumer-configmap-dev
 
 ---
 # Kafka Consumer Service
