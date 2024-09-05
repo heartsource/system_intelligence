@@ -16,11 +16,9 @@ spec:
       containers:
         - name: kafka-consumer
           image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
-          env:
-            - name: KAFKA_HOST
-              value: "kafka-service"  # Added this for the consumer to connect to Kafka
-            - name: KAFKA_PORT
-              value: "9092"
+          envFrom:
+          - configMapRef:
+            name: si-kafka-consumer-configmap-dev
 
 ---
 # Kafka Consumer Service

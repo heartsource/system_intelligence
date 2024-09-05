@@ -16,7 +16,7 @@ class MongoConfig:
             self.client = AsyncIOMotorClient(self.host, server_api=ServerApi('1'))
             self.db = self.client[self.db_name]
         except Exception as e:
-             print(f"Error connecting to MongoDB: {e}")
+             print(f"Error initializing MongoDB config: {e}")
              raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.MONGODB_CONN_ERROR)
 
     def get_db(self):

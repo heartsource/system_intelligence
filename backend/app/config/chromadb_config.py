@@ -18,7 +18,7 @@ class ChromaDbConfig:
             self.chromaDb_reader_embed_model = os.getenv('CHROMA_DB_READER_EMBED_MODEL') # This is better trained
             self.chromaDb_writer_embed_model = os.getenv('CHROMA_DB_WRITER_EMBED_MODEL') # This is better trained
         except Exception as e:
-            print(f"Error connecting to MongoDB: {e}")
+            print(f"Error initializing ChromaDB config: {e}")
             raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.CHORMADB_CONN_ERROR)
 
     def get_client(self):

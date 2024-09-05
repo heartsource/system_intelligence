@@ -1,8 +1,6 @@
 import os
-import utils.constants.error_constants as ERROR_CONSTANTS
 import chromadb
 from dotenv import load_dotenv
-from fastapi import HTTPException
 from chromadb.utils import embedding_functions
 
 load_dotenv()
@@ -18,8 +16,8 @@ class ChromaDbConfig:
             self.chromaDb_reader_embed_model = os.getenv('CHROMA_DB_READER_EMBED_MODEL') # This is better trained
             self.chromaDb_writer_embed_model = os.getenv('CHROMA_DB_WRITER_EMBED_MODEL') # This is better trained
         except Exception as e:
-            print(f"Error connecting to MongoDB: {e}")
-            raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.CHORMADB_CONN_ERROR)
+            print(f"Error initializing ChromaDB config: {e}")
+            raise Exception(e)
 
     def get_client(self):
         try:

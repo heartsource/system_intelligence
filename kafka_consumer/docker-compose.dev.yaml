@@ -1,13 +1,6 @@
 version: '3.8'
 
 services:
-  kafka_consumer_service:
-    build:
-      context: .
-    image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
-    depends_on:
-      - kafka
-
   zookeeper:
     image: bitnami/zookeeper:latest
     ports:
@@ -28,3 +21,10 @@ services:
     depends_on:
       - zookeeper
     restart: unless-stopped
+
+  kafka_consumer_service:
+    build:
+      context: .
+    image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
+    depends_on:
+      - kafka
