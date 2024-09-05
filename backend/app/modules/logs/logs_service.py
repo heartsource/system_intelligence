@@ -79,18 +79,50 @@ class LogService:
         try:
             if not is_valid_uuid(id):
                 raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_INTERACTION_ID_ERROR)
-            query = {
-                "interaction_id": id,
-                "$or": [
-                    {"deleted_dt": {"$exists": False}},
-                    {"deleted_dt": None}
-                ]
-            }
-            agent_log =  await self.collection.find_one(query) 
+            
+            pipeline = [
+                {
+                    '$match': {
+                        'interaction_id': id,
+                        "$or": [
+                            {"deleted_dt": {"$exists": False}},
+                            {"deleted_dt": None}
+                        ]
+                    }
+                },
+                {
+                    '$lookup': {
+                        'from': 'agents',  # The collection to join with
+                        'localField': 'agent_id',  # Field from the logs collection
+                        'foreignField': '_id',  # Field from the agents collection
+                        'as': 'agent_details'  # Name of the new field to add with agent details
+                    }
+                },
+                {
+                    '$unwind': '$agent_details'  # Optional: Unwind the agent_details array if only one agent is expected
+                },
+                {
+                    "$project": {
+                            "_id": 1,
+                            "agent_id": 1,                            
+                            "agent_name": "$agent_details.name",
+                            "interaction_id": 1,
+                            "interaction_date": 1,
+                            "duration": 1,
+                            "question": 1,
+                            "answer": 1,
+                            "model": 1,
+                            "flow": 1
+                    }
+                }
+            ]
+    
+            result = await self.collection.aggregate(pipeline).to_list(length=None)
+            # agent_log =  await self.collection.find_one(query)
 
-            if agent_log is not None:
+            if result is not None:
                 # Convert ObjectId to string for JSON serialization
-                return json.loads(json.dumps(agent_log, default=custom_serializer))
+                return json.loads(json.dumps(result[0], default=custom_serializer))
             return None
         except Exception as e:
             raise Exception(e)
