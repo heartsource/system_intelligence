@@ -52,7 +52,7 @@ const ConfigAgentLogDetails = () => {
         <div className="mainRow">
           <fieldset id="logDetailsFieldset">
             <legend id="logDetailsLegend">
-              Agent Log Details
+              {selectedAgent.agent_name} Log Details
               <i className="fa-solid fa-user-pen"></i>
             </legend>
             <hr />
