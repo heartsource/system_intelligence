@@ -7,6 +7,7 @@ import { handleError } from "../../utils/handleError";
 import FilterButtonWithPopover from "./FilterButtonWithPopover";
 import config from "../../config";
 import Spinner from "../Spinner";
+import { dateFormat } from "../../utils/dateFormat";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="logs-grid-header">
@@ -14,7 +15,8 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}>
+        onClick={() => column.sortable && onSort(column.key)}
+      >
         {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
       </div>
     ))}
@@ -35,7 +37,8 @@ const TableRow = ({
         className="grid-cell"
         onClick={() =>
           column.key === "interaction_id" && onInteractionIdClick(agent)
-        }>
+        }
+      >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
           : agent[column.key]}
@@ -162,11 +165,17 @@ const ConfigAgentLogs = () => {
     }
   };
 
+  // Custom renderers for specific columns
+  const customRenderers = {
+    interaction_date: (agent) => dateFormat(agent.interaction_date),
+  };
+
   return (
     <>
       <div
         className="agentLogs-fieldset-container"
-        id="fieldset-container-logs">
+        id="fieldset-container-logs"
+      >
         <fieldset id="agentLogsFieldset">
           <legend id="agentLogs">
             Agent Logs <i className="fa-solid fa-headset"></i>
@@ -181,7 +190,8 @@ const ConfigAgentLogs = () => {
             <div
               className="agentlogs-row-container"
               onScroll={onScroll}
-              ref={listInnerRef}>
+              ref={listInnerRef}
+            >
               {loading && <Spinner />}
               {(filteredLogs.length > 0 ? filteredLogs : logs).map(
                 (log, index) => (
@@ -190,6 +200,7 @@ const ConfigAgentLogs = () => {
                     agent={log}
                     index={index}
                     columns={columns}
+                    customRenderers={customRenderers}
                     onInteractionIdClick={handleInteractionIdClick}
                   />
                 )

@@ -31,6 +31,7 @@ const KnowledgeFilterButtonWithPopover = () => {
   );
 
   const togglePopover = (e) => {
+    e.stopPropagation();
     setPopoverOpen(!isPopoverOpen);
     if (!isPopoverOpen) {
       createPopper(buttonRef.current, popoverRef.current, {
