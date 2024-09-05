@@ -103,7 +103,8 @@ const Navbar = () => {
                   currentComponent === "upload" ? "active" : ""
                 }`}
               >
-                <i className="fa-solid fa-upload"></i> Knowledge Upload
+                <i className="fa-solid fa-upload"></i> Knowledge <br />
+                Upload
               </div>
               <div
                 onClick={() => handleNavigation("config-ask-hearty")}
