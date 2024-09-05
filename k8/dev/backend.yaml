@@ -27,6 +27,8 @@ spec:
         envFrom:
         - configMapRef:
             name: si-backend-configmap-dev
+        - secretRef:
+            name: si-backend-secret-dev
 ---
 apiVersion: v1
 kind: Service
