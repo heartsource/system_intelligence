@@ -51,7 +51,7 @@ const ConfigAgentLogDetails = () => {
         <div className="mainRow">
           <fieldset id="logDetailsFieldset">
             <legend id="logDetailsLegend">
-              Agent Log Details
+              {selectedAgent.agent_name} Log Details
               <i className="fa-solid fa-user-pen"></i>
             </legend>
             <hr />
@@ -92,7 +92,8 @@ const ConfigAgentLogDetails = () => {
                   }}
                   ref={setReferenceElement}
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}>
+                  onMouseLeave={handleMouseLeave}
+                >
                   View
                 </span>
                 {showPopover && (
@@ -102,14 +103,16 @@ const ConfigAgentLogDetails = () => {
                     {...attributes.popper}
                     className="logDetails-popover"
                     onMouseEnter={handlePopoverMouseEnter}
-                    onMouseLeave={handlePopoverMouseLeave}>
+                    onMouseLeave={handlePopoverMouseLeave}
+                  >
                     <div
                       className="logDetails-popover-content"
                       dangerouslySetInnerHTML={{
                         __html:
                           selectedAgent.template ||
                           "There is no template description",
-                      }}></div>
+                      }}
+                    ></div>
                   </div>
                 )}
               </div>
