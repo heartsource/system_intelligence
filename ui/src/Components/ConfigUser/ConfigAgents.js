@@ -8,6 +8,7 @@ import { handleError } from "../../utils/handleError";
 import { AppContext } from "../../context/AppContext";
 import Spinner from "../Spinner";
 import config from "../../config";
+import { dateFormat } from "../../utils/dateFormat";
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -49,6 +50,8 @@ const TableRow = ({
       >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
+          : column.key === "updated_dt" || column.key === "created_dt"
+          ? dateFormat(agent[column.key])
           : agent[column.key]}
       </div>
     ))}
