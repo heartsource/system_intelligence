@@ -102,7 +102,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
   const handleOptionSelect = (agentName) => {
     const selectedAgent = agentNames.find((agent) => agent.name === agentName);
     setSelectedAgent(selectedAgent || {});
-    setIsDropdownOpen(false); // Close dropdown after selection
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -112,7 +112,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           {error}
         </div>
       )}
-      <div className="container-fluid">
+      <div className="hearty-container-fluid">
         <div className="ask-hearty-header">
           <h2 style={{ marginLeft: "15em", marginTop: ".2em" }}>
             Ask Hearty
@@ -142,7 +142,7 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
           </div>
           <div
             className="ask-hearty-agent-input-row"
-            style={{ marginLeft: "64em", marginTop: "-3em" }}
+            style={{ marginLeft: "64em", marginTop: "2em" }}
           >
             <div className="custom-select">
               <div className="select-selected" onClick={handleDropdownToggle}>

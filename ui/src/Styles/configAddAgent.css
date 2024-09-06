@@ -1,5 +1,6 @@
 .addAgent-fieldset-container {
-  width: 110%;
+  position: fixed;
+  width: 85%;
   margin-top: 1em;
   display: flex;
   justify-content: center;
@@ -20,7 +21,6 @@
 }
 
 #agentLegend {
-  /* margin-top: -0.5em; */
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -62,14 +62,7 @@ hr {
   color: #d7d5d5;
   padding: 0;
 }
-/* .alert-danger,
-.alert-success {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 30%;
-  z-index: 1050;
-} */
+
 .bg-success,
 .bg-danger {
   position: fixed;
