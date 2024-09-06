@@ -1,4 +1,5 @@
 .hearty-container-fluid {
+  position: fixed;
   height: 100vh;
   width: 71em !important;
   margin-left: -4em;
@@ -58,7 +59,7 @@ h5 b {
 .chatbox-textbox {
   position: relative;
   display: block;
-  width: calc(100% - 40px); /* Corrected the syntax */
+  width: calc(100% - 40px);
   max-width: 90%;
   margin: 0 auto;
   margin-top: -1em;
@@ -135,10 +136,10 @@ h5 b {
 
 .ask-hearty-agent-input-row {
   position: absolute;
-  top: 95px;
-  right: 15px;
+  top: 30px;
+  right: -10em;
   z-index: 10;
-  width: 220px;
+  width: 235px;
 }
 .custom-select {
   position: relative;
@@ -153,7 +154,7 @@ h5 b {
   content: "▼";
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 2px;
   transform: translateY(-50%);
   pointer-events: none;
   color: #3cc9e2;
