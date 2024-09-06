@@ -8,6 +8,7 @@ import { handleError } from "../../utils/handleError";
 import { AppContext } from "../../context/AppContext";
 import Spinner from "../Spinner";
 import config from "../../config";
+import { dateFormat } from "../../utils/dateFormat";
 
 const columns = [
   { key: "name", label: "Agent Name", sortable: true },
@@ -175,6 +176,8 @@ const ConfigAgents = () => {
       ) : (
         <span></span>
       ),
+    updated_dt: (agent) => dateFormat(agent.updated_dt),
+    created_dt: (agent) => dateFormat(agent.created_dt),
   };
 
   const handleAgentNameClick = (agent) => {

@@ -25,5 +25,5 @@ class AgentType(Enum):
 class EnrichmentStatus(Enum):
     INQUIRED = 'inquired'
     RESPONDED = 'responded'
-    RESPONSE_UPDATED = 'response_updated'
+    RESPONSE_UPDATED = 'response updated'
     INGESTED = 'ingested'

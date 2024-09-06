@@ -5,9 +5,10 @@ import sys
 import asyncio
 from config.kafka_consumer_config import kafkaConsumerConfig
 import utils.constants.app_constants as APP_CONSTANTS
-from fastapi import FastAPI
+from modules.enrichment import EnrichmentRequestService
 
-app = FastAPI()
+
+enrichmentService = EnrichmentRequestService()
 
 def decode_message(value):
     """Attempt to decode the message with UTF-8 and handle errors."""
@@ -27,7 +28,7 @@ def is_json(message_value):
 async def basic_consume_loop(consumer, topics):
     try:
         consumer.subscribe(topics)
-
+        print(f"Subscribed to topics: {topics}")
         while True:
             msg = consumer.poll(timeout=1.0)
             if msg is None:
@@ -41,6 +42,7 @@ async def basic_consume_loop(consumer, topics):
             else:
                 # Process the message
                 raw_message_value = msg.value()
+                print("Received message")
                 message_value = decode_message(raw_message_value)
 
                 if message_value:
@@ -49,15 +51,19 @@ async def basic_consume_loop(consumer, topics):
                         # Attempt to parse the JSON message
                         try:
                             message_data = json.loads(message_value)
-                            print(f'Parsed JSON message: {message_data}')
                             # Process the message data
+                            await loadToChromadb(message_data['message'])
+                            await enrichmentService.updateEnrichmentDetails(message_data['enrichment_id'])
                         except json.JSONDecodeError as e:
                             print(f'Failed to decode JSON from message: {message_value} - Error: {e}')
                     else:
                         # Handle non-JSON messages here
                         await loadToChromadb(message_value)
+                        await enrichmentService.updateEnrichmentDetails(message_value)
                 else:
+                    print(f"Could not decode message: {raw_message_value}")
                     await loadFileToChromadb(message_value)
+                    await enrichmentService.updateEnrichmentDetails(message_value)
 
     finally:
         # Close down consumer cleanly

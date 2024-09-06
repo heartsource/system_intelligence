@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: systemintelligencebackendapp
-        image: issappacr.azurecr.io/si/system-intelligence-backend:2.1.6
+        image: issappacr.azurecr.io/si/system-intelligence-backend:2.1.9
         resources:
           requests:
             memory: "2Gi"
@@ -27,6 +27,8 @@ spec:
         envFrom:
         - configMapRef:
             name: si-backend-configmap-dev
+        - secretRef:
+            name: si-backend-secret-dev
 ---
 apiVersion: v1
 kind: Service

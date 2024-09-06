@@ -18,7 +18,10 @@ class KafkaConsumerConfig:
             consumer_conf = {
                 'bootstrap.servers': f'{self.kafka_host}:{self.kafka_port}',  # e.g., 'localhost:9092' or Confluent Cloud broker
                 'group.id': 'test-group',
-                'auto.offset.reset': 'earliest'
+                'auto.offset.reset': 'earliest',
+                'session.timeout.ms': 6000,   # Adjust session timeout as needed
+                'max.poll.interval.ms': 300000,  # Adjust poll interval as needed
+                'message.max.bytes': 1000000000
             }
             consumer = Consumer(consumer_conf)
             return consumer

@@ -9,7 +9,7 @@ class KafkaProducerConfig:
             self.kafka_host = os.getenv('KAFKA_HOST')
             self.kafka_port = int(os.getenv('KAFKA_PORT'))
         except Exception as e:
-            print(f"Error connecting to Kafka: {e}")
+            print(f"Error initializing KafkaProducerConfig: {e}")
             raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.KAFKA_CONN_ERROR)
 
     def kafka_producer(self):

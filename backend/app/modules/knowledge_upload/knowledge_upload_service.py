@@ -47,9 +47,7 @@ class KnowledgeUploadService:
                 try:
                     with open(save_to, 'rb') as f:
                         reader = PdfReader(f, strict=False)
-                        for page in reader.pages:
-                            content = page.extract_text()
-                            pdf_text.append(content)
+                        pdf_text = [page.extract_text() for page in reader.pages]
                 except PdfReadError as e:
                     print(f"Error reading PDF: {e}")
                     return {"status": "error", "data": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
