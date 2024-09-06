@@ -1,6 +1,9 @@
 .knowledge-fieldset-container {
-  width: 114%;
-  padding: 20px;
+  position: fixed;
+  width: 85%;
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
   box-sizing: border-box;
 }
 
@@ -8,8 +11,14 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 20px;
-  background-color: transparent;
-  height: 75vh;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: auto;
+  text-align: left;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
 }
 
 #knowledgeEnhancement {
@@ -29,7 +38,7 @@
   width: 100%;
 }
 .knowledge-row-container {
-  height: 50vh;
+  height: 60vh;
   overflow-y: auto;
   width: 100%;
 }
@@ -89,13 +98,6 @@
   color: white;
   border-radius: 5px;
   font-weight: bold;
-  /* text-align: center;
-  padding: 10px 5px;
-  display: inline-block;
-  height: auto;
-  width: 7em;
-  line-height: 1.5em;
-  margin-top: 0; */
 }
 
 .status-ingested {

@@ -1,5 +1,5 @@
 .logDetails-fieldset-container {
-  width: 115%;
+  width: 107%;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -34,7 +34,7 @@
 .row {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap; /* Ensure items stay in a single row */
+  flex-wrap: nowrap;
   width: 100%;
 }
 
@@ -49,8 +49,8 @@
 .sec-col,
 .third-col {
   display: flex;
-  align-items: center; /* Align items horizontally */
-  justify-content: flex-start; /* Align items to the start */
+  align-items: center;
+  justify-content: flex-start;
   flex: 1;
   color: white;
   height: 2em;
@@ -58,18 +58,18 @@
 }
 
 .first-col {
-  flex: 2; /* More space */
+  flex: 2;
   min-width: 260px;
 }
 
 .sec-col {
-  flex: 1.5; /* Less than first column */
+  flex: 1.5;
   padding-left: 5px;
   min-width: 250px;
 }
 
 .third-col {
-  flex: 1; /* Least space */
+  flex: 1;
   padding-left: 1px;
   min-width: 10px;
 }

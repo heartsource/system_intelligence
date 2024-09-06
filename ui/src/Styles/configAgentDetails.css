@@ -1,9 +1,10 @@
 .agentDetails-fieldset-container {
-  width: 115%;
+  position: fixed;
+  width: 85%;
+  margin-top: 1em;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  box-sizing: border-box;
 }
 
 #agentDetailsFieldset {
@@ -16,13 +17,11 @@
   height: auto;
   text-align: left;
   overflow-y: auto;
-  background-color: transparent;
   box-sizing: border-box;
   position: relative;
 }
 
 #agentDetailsLegend {
-  /* margin-top: -0.5em; */
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -48,7 +47,6 @@
 
 .flex-container {
   display: flex;
-  /* overflow-y: auto; */
   flex-direction: column;
 }
 

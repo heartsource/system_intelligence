@@ -17,22 +17,6 @@ import { AppProvider, AppContext } from "../context/AppContext";
 const App = () => {
   const { currentComponent } = useContext(AppContext);
 
-  useEffect(() => {
-    const body = document.getElementById("body-pd");
-    const toggle = document.getElementById("header-toggle");
-
-    if (body && toggle) {
-      const toggleHandler = () => {
-        body.classList.toggle("body-pd");
-      };
-      toggle.addEventListener("click", toggleHandler);
-
-      return () => {
-        toggle.removeEventListener("click", toggleHandler);
-      };
-    }
-  }, []);
-
   const handleTextSubmit = (text) => {
     console.log("Text submitted:", text);
     // any further actions here, such as making an API call, updating state, etc.
@@ -64,11 +48,11 @@ const App = () => {
   };
 
   return (
-    <div id="body-pd">
+    <>
       <ConfigNavbar />
       <div className="container">{renderComponent()}</div>
       <Footer />
-    </div>
+    </>
   );
 };
 

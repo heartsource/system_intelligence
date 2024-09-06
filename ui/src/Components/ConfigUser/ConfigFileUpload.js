@@ -118,7 +118,7 @@ const ConfigFileUpload = () => {
       <div className="fieldset-container-fileUpload">
         <fieldset id="fileUploadFieldset">
           <legend>Upload Knowledge Documents</legend>
-          <hr className="configuration_form" />
+          <hr />
           <div className="drop_box_fileUpload">
             <header>
               <label htmlFor="fileID">

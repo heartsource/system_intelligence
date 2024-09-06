@@ -1,40 +1,9 @@
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition-duration: 0.001s !important;
-  }
-}
-
-.container {
+.hearty-container-fluid {
   height: 100vh;
-  width: 85em;
+  width: 71em !important;
+  margin-left: -4em;
   align-items: center;
   justify-content: center;
-}
-
-@keyframes background-move {
-  0% {
-    background-position: 0 0, 0 0;
-  }
-  100% {
-    background-position: 100vw 0, 0 0;
-    background-position: max(100vw, 40em) 0, 0 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .dashboard-content {
-    padding: 15px 0px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm {
-    max-width: 85%;
-  }
 }
 
 .dashboard-content {
@@ -58,7 +27,7 @@
   border-radius: 50%;
 }
 .content {
-  margin-top: 2em;
+  margin-top: 3em;
 }
 
 .col {
@@ -89,7 +58,7 @@ h5 b {
 .chatbox-textbox {
   position: relative;
   display: block;
-  width: calc(100%-40px);
+  width: calc(100% - 40px); /* Corrected the syntax */
   max-width: 90%;
   margin: 0 auto;
   margin-top: -1em;
@@ -249,4 +218,19 @@ h5 b {
   width: 105%;
   position: relative;
   margin-left: -1.2em;
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 15px 0px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    max-width: 85%;
+  }
 }

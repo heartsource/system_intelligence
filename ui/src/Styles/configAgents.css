@@ -1,6 +1,9 @@
 .agent-fieldset-container {
-  width: 110%;
-  padding: 20px;
+  position: fixed;
+  width: 85%;
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
   box-sizing: border-box;
 }
 
@@ -8,12 +11,17 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 20px;
-  background-color: transparent;
-  height: 75vh;
+  width: 95%;
+  max-width: 95%;
+  max-height: 82vh;
+  height: 90vh;
+  text-align: left;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
 }
 
 #agentListLengend {
-  /* margin-top: -0.5em; */
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
@@ -29,7 +37,7 @@
   flex-direction: column;
 }
 .row-container {
-  height: 50vh;
+  height: 60vh;
   overflow-y: auto;
 }
 .grid-header,
