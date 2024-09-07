@@ -128,7 +128,7 @@ const ConfigKnowledgeEnrichment = () => {
   const [loading, setLoading] = useState(false);
 
   const columns = [
-    { key: "enrichment_id", label: "Enrichment Id", sortable: true },
+    { key: "enrichment_id", label: "Id", sortable: true },
     {
       key: "status",
       label: (
