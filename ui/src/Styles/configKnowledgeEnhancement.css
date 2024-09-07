@@ -66,9 +66,12 @@
 }
 
 .knowledge-grid-header .knowledge-grid-cell {
+  display: flex;
   font-weight: bolder;
   font-size: 1.1em;
   cursor: pointer;
+  text-align: left; /* Ensure header text is left-aligned */
+  justify-content: flex-start;
 }
 
 .knowledge-grid-header .sortable:hover {
@@ -82,7 +85,16 @@
   color: #fff;
   text-align: center;
 }
-
+.knowledge-grid-cell {
+  padding: 10px; /* Default padding for all grid cells */
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+}
 .knowledge-grid-row .knowledge-grid-cell:nth-child(1),
 .knowledge-grid-row .knowledge-grid-cell:nth-child(3) {
   cursor: pointer;
