@@ -112,6 +112,7 @@ const TableRow = ({
 };
 
 const ConfigKnowledgeEnrichment = () => {
+  const listInnerRef = useRef();
   const {
     records,
     setRecords,
@@ -127,6 +128,8 @@ const ConfigKnowledgeEnrichment = () => {
   const [error, setError] = useState(null);
   const [fetchedStatus, setFetchedStatus] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currPage, setCurrPage] = useState(1);
+  const [wasLastList, setWasLastList] = useState(false);
 
   const columns = [
     { key: "enrichment_id", label: "Enrichment Id", sortable: true },
@@ -146,6 +149,15 @@ const ConfigKnowledgeEnrichment = () => {
     { key: "ingested_on", label: "Ingested On", sortable: true },
   ];
 
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setCurrPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -155,13 +167,26 @@ const ConfigKnowledgeEnrichment = () => {
           : {};
         const response = await axios.post(
           `${config.heartieBE}/enrichments/fetch`,
-          payload
+          {
+            ...payload,
+            limit: 10,
+            offset: (currPage - 1) * 10,
+          }
         );
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
-        setFilteredStatus(data);
-        records(sortItems(data, sortConfig.key, sortConfig.direction));
+        if (data.length === 0) {
+          setWasLastList(true);
+          return;
+        }
+        setFilteredStatus((prevLogs) => [...prevLogs, ...data]);
+        records((prevLogs) => [
+          ...prevLogs,
+          ...sortItems(data, sortConfig.key, sortConfig.direction),
+        ]);
+        //setFilteredStatus(data);
+        //records(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "Error fetching data");
       } finally {
@@ -169,10 +194,25 @@ const ConfigKnowledgeEnrichment = () => {
       }
     };
 
-    if (componentKey) {
+    if (!wasLastList) {
       fetchData();
     }
-  }, [selectedEnrichmentId, records, componentKey]);
+  }, [
+    selectedEnrichmentId,
+    records,
+    componentKey,
+    currPage,
+    sortConfig.key,
+    sortConfig.direction,
+    wasLastList,
+  ]);
+
+  useEffect(() => {
+    setFilteredStatus([]);
+    setRecords([]);
+    setCurrPage(1);
+    setWasLastList(false);
+  }, [componentKey]);
 
   const sortLogs = (key) => {
     let direction = "asc";
@@ -218,7 +258,11 @@ const ConfigKnowledgeEnrichment = () => {
             sortConfig={sortConfig}
             onSort={sortLogs}
           />
-          <div className="knowledge-row-container">
+          <div
+            className="knowledge-row-container"
+            onScroll={onScroll}
+            ref={listInnerRef}
+          >
             {loading && <Spinner />}
             {(filteredStatus.length > 0 ? filteredStatus : records).map(
               (log, index) => (
