@@ -45,18 +45,19 @@
 .knowledge-grid-header,
 .knowledge-grid-row {
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 2fr 1.5fr 2fr 2fr 2fr 2fr;
   width: 100%;
   color: #fff;
   align-items: center;
   justify-content: center;
-  padding: 6px;
+  height: 50px;
+  text-align: left;
 }
 
 .knowledge-grid-cell {
-  padding: 4px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #ddd;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
