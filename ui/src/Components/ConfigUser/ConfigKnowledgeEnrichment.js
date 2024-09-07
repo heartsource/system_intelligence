@@ -10,6 +10,7 @@ import config from "../../config";
 import Spinner from "../Spinner";
 import { capitalizeFirstLetter } from "../../utils/camelCase";
 import { dateFormat } from "../../utils/dateFormat";
+import Badge from "../Badge";
 
 const TableHeader = ({ columns, sortConfig, onSort }) => (
   <div className="knowledge-grid-header">
@@ -71,9 +72,7 @@ const TableRow = ({
       {columns.map((column) => (
         <div
           key={column.key}
-          className={`knowledge-grid-cell ${
-            column.key === "status" ? getStatusClass(agent[column.key]) : ""
-          }`}
+          className="knowledge-grid-cell"
           onClick={() =>
             column.key === "enrichment_id" && onInteractionIdClick(agent)
           }
@@ -85,15 +84,17 @@ const TableRow = ({
           onMouseOut={column.key === "query" ? handleMouseOut : null}
           ref={column.key === "query" ? setReferenceElement : null}
         >
-          {customRenderers && customRenderers[column.key]
-            ? customRenderers[column.key](agent, index)
-            : column.key === "status"
-            ? capitalizeFirstLetter(agent[column.key])
-            : column.key === "requested_on" ||
-              column.key === "responded_on" ||
-              column.key === "ingested_on"
-            ? dateFormat(agent[column.key])
-            : agent[column.key]}
+          {customRenderers && customRenderers[column.key] ? (
+            customRenderers[column.key](agent, index)
+          ) : column.key === "status" ? (
+            <Badge text={agent[column.key]} />
+          ) : column.key === "requested_on" ||
+            column.key === "responded_on" ||
+            column.key === "ingested_on" ? (
+            dateFormat(agent[column.key])
+          ) : (
+            agent[column.key]
+          )}
         </div>
       ))}
       {showPopover && (

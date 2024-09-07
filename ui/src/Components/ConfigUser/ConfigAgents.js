@@ -50,6 +50,8 @@ const TableRow = ({
       >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
+          : column.key === "updated_dt" || column.key === "created_dt"
+          ? dateFormat(agent[column.key])
           : agent[column.key]}
       </div>
     ))}

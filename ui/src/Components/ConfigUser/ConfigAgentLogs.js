@@ -41,6 +41,8 @@ const TableRow = ({
       >
         {customRenderers && customRenderers[column.key]
           ? customRenderers[column.key](agent, index)
+          : column.key === "interaction_date"
+          ? dateFormat(agent[column.key])
           : agent[column.key]}
       </div>
     ))}
