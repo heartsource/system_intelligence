@@ -145,6 +145,8 @@ h5 b {
   position: relative;
   display: inline-block;
   width: 200px;
+  margin-top: -3px;
+  font-weight: 400;
 }
 .custom-select select {
   display: none;
@@ -175,7 +177,7 @@ h5 b {
 }
 .custom-select .select-selected {
   background-color: transparent;
-  border-radius: 5px;
+  border-radius: 50px;
   border: 1px solid #3cc9e2;
   padding: 10px;
   color: white;
@@ -184,6 +186,7 @@ h5 b {
 .custom-select .select-selected:hover {
   background-color: #3cc9e2;
   color: black;
+  border-radius: 50px;
 }
 
 .custom-select .select-items {
