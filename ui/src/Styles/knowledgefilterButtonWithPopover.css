@@ -1,5 +1,7 @@
 .knowledge-popover-container-parent {
-  position: relative;
+  position: fixed !important;
+  left: 3% !important;
+  top: 2% !important;
   z-index: 1000;
 }
 .knowledge-popover-container {

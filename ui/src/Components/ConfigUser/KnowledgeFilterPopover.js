@@ -36,8 +36,6 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
   }, [isOpen]);
 
   const handleCheckboxChange = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
     setCheckedItems({
       ...checkedItems,
       [event.target.name]: event.target.checked,
@@ -45,8 +43,6 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
   };
 
   const handleSelectAllChange = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
     const newCheckedItems = {};
     status.forEach((status) => {
       newCheckedItems[status] = event.target.checked;
@@ -55,7 +51,7 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
   };
 
   const handlePopoverClick = (event) => {
-    event.stopPropagation();
+    //event.stopPropagation();
   };
 
   if (!isOpen) return null;

@@ -39,10 +39,34 @@
   height: 90%;
 }
 .agentlogs-row-container {
-  height: 60vh;
+  height: calc(100vh - 300px);
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ */
+  max-height: calc(100vh - 200px); /* Adjust based on your layout */
   overflow-y: auto;
-  width: 100%;
 }
+
+@media (max-width: 768px) {
+  .agentlogs-row-container {
+    max-height: calc(100vh - 150px); /* For tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .agentlogs-row-container {
+    max-height: calc(100vh - 120px); /* For mobile devices */
+  }
+}
+
+/* For Webkit-based browsers (Chrome, Safari, etc.) */
+.agentlogs-row-container::-webkit-scrollbar {
+  width: 12px;
+}
+.agentlogs-row-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
 .logs-grid-header,
 .logs-grid-row {
   display: grid;

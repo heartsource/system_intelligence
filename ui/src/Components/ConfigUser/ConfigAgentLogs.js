@@ -93,7 +93,7 @@ const ConfigAgentLogs = () => {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(`${config.heartieBE}/logs/`, {
           ...payload,
-          limit: 10,
+          limit: 20,
           offset: (currPage - 1) * 10,
         });
         const data = Array.isArray(response.data.data)

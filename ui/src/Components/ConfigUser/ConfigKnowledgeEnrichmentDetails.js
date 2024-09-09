@@ -6,21 +6,7 @@ import config from "../../config";
 import { dateFormat } from "../../utils/dateFormat";
 import axios from "axios";
 import { handleError } from "../../utils/handleError";
-
-const getStatusClass = (status) => {
-  switch (status) {
-    case "ingested":
-      return "status-ingested";
-    case "responded":
-      return "status-responded";
-    case "inquired":
-      return "status-inquired";
-    case "response updated":
-      return "status-Response_updated";
-    default:
-      return "status-default";
-  }
-};
+import Badge from "../Badge";
 
 const ConfigKnowledgeEnrichmentDetails = () => {
   const { selectedEnrichmentId, setCurrentComponent } = useContext(AppContext);
@@ -130,9 +116,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
             <div className="view-agent-logs">
               <div className="status">
                 <span>Status</span>
-                <span className={getStatusClass(selectedEnrichmentId.status)}>
-                  {capitalizeFirstLetter(selectedEnrichmentId.status)}
-                </span>
+                <Badge text={selectedEnrichmentId.status} />
               </div>
             </div>
           </div>

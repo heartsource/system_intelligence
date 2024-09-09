@@ -38,9 +38,32 @@
   width: 100%;
 }
 .knowledge-row-container {
-  height: 60vh;
+  height: calc(100vh - 300px);
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ */
+  max-height: calc(100vh - 200px); /* Adjust based on your layout */
   overflow-y: auto;
-  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .knowledge-row-container {
+    max-height: calc(100vh - 150px); /* For tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .knowledge-row-container {
+    max-height: calc(100vh - 120px); /* For mobile devices */
+  }
+}
+
+/* For Webkit-based browsers (Chrome, Safari, etc.) */
+.knowledge-row-container::-webkit-scrollbar {
+  width: 12px;
+}
+.knowledge-row-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 .knowledge-grid-header,
 .knowledge-grid-row {
@@ -111,25 +134,6 @@
   color: white;
   border-radius: 5px;
   font-weight: bold;
-}
-
-.status-ingested {
-  background-color: #28a745;
-}
-
-.status-responded {
-  background-color: orange;
-}
-
-.status-inquired {
-  background-color: #dc3545;
-}
-.status-Response_updated {
-  background-color: #007bff;
-}
-
-.status-default {
-  color: white;
 }
 
 .queryPopover {

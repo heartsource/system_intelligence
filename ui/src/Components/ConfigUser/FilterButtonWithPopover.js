@@ -22,7 +22,6 @@ const FilterButtonWithPopover = () => {
   );
 
   const togglePopover = (e) => {
-    e.stopPropagation();
     setPopoverOpen((prev) => !prev);
   };
 
@@ -40,10 +39,9 @@ const FilterButtonWithPopover = () => {
       .map((agent) => agent._id);
 
     try {
-      const response = await axios.post(
-        `${config.heartieBE}/logs/`,
-        { agent_ids: selectedAgentIds }
-      );
+      const response = await axios.post(`${config.heartieBE}/logs/`, {
+        agent_ids: selectedAgentIds,
+      });
       const data = Array.isArray(response.data.data) ? response.data.data : [];
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredLogs(data);
@@ -58,7 +56,8 @@ const FilterButtonWithPopover = () => {
         className="fa fa-filter"
         aria-hidden="true"
         ref={buttonRef}
-        onClick={togglePopover}></i>
+        onClick={togglePopover}
+      ></i>
 
       <div ref={popoverRef} style={styles.popper} {...attributes.popper}>
         <FilterPopover

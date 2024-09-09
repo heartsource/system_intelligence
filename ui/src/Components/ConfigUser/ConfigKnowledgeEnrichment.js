@@ -8,7 +8,6 @@ import { handleError } from "../../utils/handleError";
 import KnowledgeFilterButtonWithPopover from "./KnowledgeFilterButtonWithPopover";
 import config from "../../config";
 import Spinner from "../Spinner";
-import { capitalizeFirstLetter } from "../../utils/camelCase";
 import { dateFormat } from "../../utils/dateFormat";
 import Badge from "../Badge";
 
@@ -18,28 +17,17 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}
       >
-        {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
+        {column.label}{" "}
+        {column.sortable && (
+          <span onClick={() => onSort(column.key)}>
+            {getSortIcon(column.key, sortConfig)}
+          </span>
+        )}
       </div>
     ))}
   </div>
 );
-
-const getStatusClass = (status) => {
-  switch (status) {
-    case "ingested":
-      return "status-ingested";
-    case "responded":
-      return "status-responded";
-    case "inquired":
-      return "status-inquired";
-    case "response updated":
-      return "status-Response_updated";
-    default:
-      return "status-default";
-  }
-};
 
 const TableRow = ({
   agent,
@@ -169,7 +157,7 @@ const ConfigKnowledgeEnrichment = () => {
           `${config.heartieBE}/enrichments/fetch`,
           {
             ...payload,
-            limit: 10,
+            limit: 20,
             offset: (currPage - 1) * 10,
           }
         );
@@ -181,12 +169,10 @@ const ConfigKnowledgeEnrichment = () => {
           return;
         }
         setFilteredStatus((prevLogs) => [...prevLogs, ...data]);
-        records((prevLogs) => [
+        setRecords((prevLogs) => [
           ...prevLogs,
           ...sortItems(data, sortConfig.key, sortConfig.direction),
         ]);
-        //setFilteredStatus(data);
-        //records(sortItems(data, sortConfig.key, sortConfig.direction));
       } catch (error) {
         handleError(setError, "Error fetching data");
       } finally {
@@ -199,8 +185,6 @@ const ConfigKnowledgeEnrichment = () => {
     }
   }, [
     selectedEnrichmentId,
-    records,
-    componentKey,
     currPage,
     sortConfig.key,
     sortConfig.direction,

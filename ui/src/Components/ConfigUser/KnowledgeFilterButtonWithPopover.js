@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { usePopper } from "react-popper";
 import { createPopper } from "@popperjs/core";
 import axios from "axios";
@@ -30,19 +30,21 @@ const KnowledgeFilterButtonWithPopover = () => {
     }
   );
 
-  const togglePopover = (e) => {
-    e.stopPropagation();
-    setPopoverOpen(!isPopoverOpen);
-    if (!isPopoverOpen) {
-      createPopper(buttonRef.current, popoverRef.current, {
-        placement: "bottom-start",
-      });
-    }
+  const togglePopover = () => {
+    setPopoverOpen((prev) => !prev);
   };
 
   const closePopover = () => {
     setPopoverOpen(false);
   };
+
+  useEffect(() => {
+    if (isPopoverOpen) {
+      createPopper(buttonRef.current, popoverRef.current, {
+        placement: "bottom-start",
+      });
+    }
+  }, [isPopoverOpen]);
 
   const handleApply = async (checkedItems) => {
     closePopover();

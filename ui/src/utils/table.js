@@ -7,14 +7,14 @@ const Table = ({ data, columns, sortConfig, onSort, customRenderers }) => {
     <div className="table-container">
       <div className="grid-header">
         {columns.map((column) => (
-          <div
+          <span
             key={column.key}
             onClick={() => column.sortable && onSort(column.key)}
             style={{ cursor: column.sortable ? "pointer" : "default" }}
           >
             {column.label}{" "}
             {column.sortable && getSortIcon(column.key, sortConfig)}
-          </div>
+          </span>
         ))}
       </div>
       {Array.isArray(data) &&
