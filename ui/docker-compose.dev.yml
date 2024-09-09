@@ -6,6 +6,6 @@ services:
       context: .
       args:
         ENV_FILE: .env.development
-    image: issappacr.azurecr.io/si/system-intelligence-ui:0.1.7
+    image: issappacr.azurecr.io/si/system-intelligence-ui:0.1.8
     ports:
       - "80:80"
