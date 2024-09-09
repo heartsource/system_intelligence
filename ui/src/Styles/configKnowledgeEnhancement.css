@@ -38,7 +38,7 @@
   height: 72vh;
 }
 .knowledge-row-container {
-  height: calc(100vh - 300px);
+  height: calc(98vh - 300px);
   scrollbar-width: thin; /* Firefox */
   -ms-overflow-style: auto; /* Internet Explorer 10+ */
   max-height: calc(100vh - 200px); /* Adjust based on your layout */
