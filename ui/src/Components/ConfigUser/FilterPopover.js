@@ -10,10 +10,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   useEffect(() => {
     const fetchAgentNames = async () => {
       try {
-        const response = await axios.post(
-          `${config.heartieBE}/agents/`,
-          {}
-        );
+        const response = await axios.post(`${config.heartieBE}/agents/`, {});
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
@@ -34,8 +31,8 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   }, [isOpen]);
 
   const handleCheckboxChange = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
     setCheckedItems({
       ...checkedItems,
       [event.target.name]: event.target.checked,
@@ -43,8 +40,8 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   };
 
   const handleSelectAllChange = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
     const newCheckedItems = {};
     agents.forEach((agent) => {
       newCheckedItems[agent.name] = event.target.checked;
@@ -53,7 +50,7 @@ const FilterPopover = ({ isOpen, closePopover, onApply }) => {
   };
 
   const handlePopoverClick = (event) => {
-    event.stopPropagation();
+    //event.stopPropagation();
   };
 
   if (!isOpen) return null;

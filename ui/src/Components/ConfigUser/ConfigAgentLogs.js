@@ -15,9 +15,13 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
       <div
         key={column.key}
         className={`grid-cell ${column.sortable ? "sortable" : ""}`}
-        onClick={() => column.sortable && onSort(column.key)}
       >
-        {column.label} {column.sortable && getSortIcon(column.key, sortConfig)}
+        {column.label}{" "}
+        {column.sortable && (
+          <span onClick={() => onSort(column.key)}>
+            {getSortIcon(column.key, sortConfig)}
+          </span>
+        )}
       </div>
     ))}
   </div>
