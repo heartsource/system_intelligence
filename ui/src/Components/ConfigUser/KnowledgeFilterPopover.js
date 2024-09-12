@@ -50,9 +50,7 @@ const KnowledgeFilterPopover = ({ isOpen, closePopover, onApply }) => {
     setCheckedItems(newCheckedItems);
   };
 
-  const handlePopoverClick = (event) => {
-    //event.stopPropagation();
-  };
+  const handlePopoverClick = (event) => {};
 
   if (!isOpen) return null;
 
