@@ -2,7 +2,7 @@ import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import  HTTPException
 from dotenv import load_dotenv
-import utils.constants.error_constants as ERROR_CONSTANTS
+import utils.constants.error_messages as ERROR_MESSAGES
 from pymongo.server_api import ServerApi
 
 load_dotenv()
@@ -17,7 +17,7 @@ class MongoConfig:
             self.db = self.client[self.db_name]
         except Exception as e:
              print(f"Error initializing MongoDB config: {e}")
-             raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.MONGODB_CONN_ERROR)
+             raise HTTPException(status_code=500, detail=ERROR_MESSAGES.MONGODB_CONN_ERROR)
 
     def get_db(self):
         return self.db

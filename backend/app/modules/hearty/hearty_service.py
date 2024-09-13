@@ -9,8 +9,8 @@ from modules.logs.logs_service import LogService
 from uuid import uuid4
 from bson import ObjectId
 from fastapi import HTTPException
-import utils.constants.error_constants as ERROR_CONSTANTS
-import utils.constants.app_constants as APP_CONSTANTS
+import utils.constants.error_messages as ERROR_MESSAGES
+import utils.constants.success_messages as SUCCESS_MESSAGES
 from modules.shared.chromadb_reader_writer import chromadb_reader
 from modules.shared.key_vault_secret_loader import get_value_from_key_vault
 
@@ -38,7 +38,7 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         }
         agent_data = await agent_service.fetchAgentDetails(payload.agent_id)
         if agent_data is None or agent_data['model'] != payload.model or agent_data['flow'] != payload.flow:
-            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_MISMATCH_ERROR)
+            raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_MISMATCH_ERROR)
         
         context = chromadb_reader(question) #Context creation
         # Define your template with context and prompt
@@ -59,9 +59,9 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         elif model == Model.Llama3:
             ai_model_response = await llama_service.LlamaChatCompletions(template_with_context_and_question)
         elif model == Model.Mistral:
-            raise HTTPException(status_code=400, detail=APP_CONSTANTS.MODEL_INPROGRESS)
+            raise HTTPException(status_code=400, detail=ERROR_MESSAGES.MODEL_INPROGRESS)
         else:
-            raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_MODEL_ERROR)
+            raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_MODEL_ERROR)
 
         # Check for various "not found" indicators
         not_found_indicators = [

@@ -1,2 +1,5 @@
-FILE_UPLOAD_SUCCESS = "File uploaded successfully."
-KAFKA_TOPIC_ENRICHMENT = "enrichment"
+import os
+
+KAFKA_TOPIC_NAME = os.getenv('KAFKA_TOPIC_NAME')
+NUM_PARTITIONS=int(os.getenv('NUM_PARTITIONS'))
+REPLICATION_FACTOR=int(os.getenv('REPLICATION_FACTOR'))

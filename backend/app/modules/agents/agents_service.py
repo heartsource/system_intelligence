@@ -9,7 +9,7 @@ from modules.logs.logs_service import LogService
 from utils.enums.shared_enum import AgentType, AgentStatus
 from utils.common_utilities import custom_serializer
 from modules.agents.agents_model import AgentListModel, AgentModel, AgentUpdateModel
-import utils.constants.error_constants as ERROR_CONSTANTS
+import utils.constants.error_messages as ERROR_MESSAGES
 import utils.constants.db_constants as DB_CONSTANTS
 from pydantic.json import pydantic_encoder
 from config.mongodb_config import mongo_config
@@ -54,9 +54,11 @@ class AgentService:
             skip = agent_model.offset if agent_model.offset else 0
             limit = agent_model.limit if agent_model.limit else None
 
+            agents_data_length = await self.collection.count_documents(query)
+
             # Perform the MongoDB find operation with the constructed query     
             filtered_agents_data = await self.collection.find(query).sort(sort_criteria).skip(skip).limit(limit).to_list(length=None)
-            return json.loads(json.dumps(filtered_agents_data, default=custom_serializer))
+            return { "data": json.loads(json.dumps(filtered_agents_data, default=custom_serializer)), "length": agents_data_length }
         except Exception as e:
             traceback.print_exc()
             raise Exception(e)
@@ -82,7 +84,7 @@ class AgentService:
     async def fetchAgentDetails(self, id: str) -> Dict[str, Any]:
         try:
             if not ObjectId.is_valid(id):
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_ID_ERROR)
 
             query = {
                 "_id": ObjectId(id),
@@ -112,7 +114,7 @@ class AgentService:
             existing_agent = await self.collection.find_one({"name": agent.name})
 
             if existing_agent:
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_EXISTS_ERROR)
             
             # Convert agent_dict to a plain Python dictionary
             document = json.loads(json.dumps(agent, default=pydantic_encoder))
@@ -127,7 +129,7 @@ class AgentService:
     async def updateAgentDetails(self, agent_id:str, updatedAgentData: AgentUpdateModel):
         try:
             if not ObjectId.is_valid(agent_id):
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_ID_ERROR)
 
             query = {
                 "_id": ObjectId(agent_id),
@@ -139,14 +141,14 @@ class AgentService:
 
             agent =  await self.collection.find_one(query)
             if not agent:
-                raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)
+                raise HTTPException(status_code=404, detail=ERROR_MESSAGES.NOT_FOUND_ERROR)
 
             # Update agent attributes
             if updatedAgentData.name is not None:
                 updatedName = updatedAgentData.name.strip()
                 duplicateAgent =  await self.collection.find_one({"_id": {"$ne": ObjectId(agent_id)}, "name": updatedName})
                 if duplicateAgent:
-                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_EXISTS_ERROR)
+                    raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_EXISTS_ERROR)
                 agent['name'] = updatedName
             if updatedAgentData.description is not None:
                 agent['description'] = updatedAgentData.description
@@ -172,7 +174,7 @@ class AgentService:
     async def deleteAgent(self, agent_id:str):
             try:
                 if not ObjectId.is_valid(agent_id):
-                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+                    raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_ID_ERROR)
 
                 query = {
                     "_id": ObjectId(agent_id),
@@ -184,14 +186,14 @@ class AgentService:
 
                 agent =  await self.collection.find_one(query)
                 if not agent:
-                    raise HTTPException(status_code=404, detail=ERROR_CONSTANTS.NOT_FOUND_ERROR)   
+                    raise HTTPException(status_code=404, detail=ERROR_MESSAGES.NOT_FOUND_ERROR)   
 
                 if agent.get('type') == AgentType.DEFAULT.value:
-                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_DELETE_ERROR)
+                    raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_DELETE_ERROR)
                 
                 # Check if the agent is already marked as deleted
                 if agent.get('deleted_dt') is not None:
-                    raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.AGENT_UPDATE_ERROR)
+                    raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_UPDATE_ERROR)
 
                 await logs_service.deleteAgentLogs(agent_id)
                 return await self.collection.update_one(

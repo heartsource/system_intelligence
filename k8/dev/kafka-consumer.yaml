@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka-consumer-app
+  name: kafka-consumer
 spec:
   replicas: 1
   selector:
@@ -15,10 +15,17 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.5
+          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.1.2
           envFrom:
           - configMapRef:
               name: si-kafka-consumer-configmap-dev
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
 
 ---
 # Kafka Consumer Service
@@ -33,92 +40,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: ClusterIP
-
----
-# Zookeeper Deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: zookeeper-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: zookeeper
-  template:
-    metadata:
-      labels:
-        app: zookeeper
-    spec:
-      containers:
-        - name: zookeeper
-          image: bitnami/zookeeper:latest
-          ports:
-            - containerPort: 2181
-          env:
-            - name: ALLOW_ANONYMOUS_LOGIN
-              value: "yes"
-
----
-# Zookeeper Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: zookeeper-service
-spec:
-  selector:
-    app: zookeeper
-  ports:
-    - protocol: TCP
-      port: 2181
-      targetPort: 2181
-  type: ClusterIP
-
----
-# Kafka Deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kafka-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kafka
-  template:
-    metadata:
-      labels:
-        app: kafka
-    spec:
-      containers:
-        - name: kafka
-          image: bitnami/kafka:latest
-          ports:
-            - containerPort: 9092
-          env:
-            - name: KAFKA_BROKER_ID
-              value: "1"
-            - name: KAFKA_LISTENERS
-              value: "PLAINTEXT://0.0.0.0:9092"
-            - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka-service:9092"
-            - name: KAFKA_ZOOKEEPER_CONNECT
-              value: "zookeeper-service:2181"
-            - name: ALLOW_PLAINTEXT_LISTENER
-              value: "yes"
-
----
-# Kafka Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: kafka-service
-spec:
-  selector:
-    app: kafka
-  ports:
-    - protocol: TCP
-      port: 9092
-      targetPort: 9092
   type: ClusterIP
