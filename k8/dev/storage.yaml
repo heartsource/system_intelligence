@@ -5,6 +5,6 @@ metadata:
 provisioner: disk.csi.azure.com
 parameters:
   storageaccounttype: Premium_LRS
-  cachingmode: None  # Ensure this is set to None or ReadWrite
+  cachingmode: ReadWrite  # Ensure this is set to None or ReadWrite
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
