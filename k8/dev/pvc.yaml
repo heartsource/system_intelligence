@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 1Gi  # Adjust according to your needs
-  storageClassName: managed-premium  # Change to an available storage class
+  storageClassName: standard  # Change to an available storage class

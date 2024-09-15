@@ -39,7 +39,7 @@ spec:
       name: kafka-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: managed-premium
+      storageClassName: standard
       resources:
         requests:
           storage: 1Gi
