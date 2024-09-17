@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: confluentinc/cp-zookeeper:7.5.0
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+            - name: ZOOKEEPER_MIN_SESSION_TIMEOUT  # Add the min session timeout
+              value: "4000"                        # Example: 4000ms (4 seconds)
+            - name: ZOOKEEPER_MAX_SESSION_TIMEOUT  # Add the max session timeout
+              value: "60000"                       # Example: 40000ms (60 seconds)
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+          volumeMounts:
+            - name: zookeeper-data
+              mountPath: /var/lib/zookeeper/data
+            - name: zookeeper-log
+              mountPath: /var/lib/zookeeper/log
+      volumes:
+        - name: zookeeper-data
+          emptyDir: {}
+        - name: zookeeper-log
+          emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  ports:
+    - port: 2181
+      name: zookeeper
+  clusterIP: None
+  selector:
+    app: zookeeper
