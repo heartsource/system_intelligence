@@ -30,11 +30,11 @@ spec:
               value: "60000"                       # Example: 40000ms (60 seconds)
           resources:
             requests:
+              memory: "500m"
+              cpu: "250m"
+            limits:
               memory: "1Gi"
               cpu: "500m"
-            limits:
-              memory: "2Gi"
-              cpu: "1"
           volumeMounts:
             - name: zookeeper-data
               mountPath: /var/lib/zookeeper/data
