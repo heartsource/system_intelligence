@@ -30,7 +30,7 @@ spec:
               value: "60000"                       # Example: 40000ms (60 seconds)
           resources:
             requests:
-              memory: "500m"
+              memory: "512Mi"
               cpu: "250m"
             limits:
               memory: "1Gi"
