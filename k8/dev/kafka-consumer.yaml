@@ -21,11 +21,11 @@ spec:
               name: si-kafka-consumer-configmap-dev
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "250Mi"
+              cpu: "250m"
             limits:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "500Mi"
+              cpu: "250m"
 
 ---
 # Kafka Consumer Service
