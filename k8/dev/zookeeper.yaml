@@ -20,7 +20,7 @@ metadata:
   namespace: si-app-dev
 spec:
   serviceName: "zookeeper"
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: zookeeper
@@ -34,11 +34,6 @@ spec:
         image: confluentinc/cp-zookeeper:latest
         ports:
         - containerPort: 2181
-          name: client
-        - containerPort: 2888
-          name: peer
-        - containerPort: 3888
-          name: leader-election
         volumeMounts:
         - name: zookeeper-data
           mountPath: /var/lib/zookeeper
