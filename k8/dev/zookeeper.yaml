@@ -1,11 +1,26 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
   name: zookeeper
+  namespace: si-app-dev
   labels:
     app: zookeeper
 spec:
-  replicas: 1
+  ports:
+  - port: 2181
+    name: client
+  clusterIP: None
+  selector:
+    app: zookeeper
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+  namespace: si-app-dev
+spec:
+  serviceName: "zookeeper"
+  replicas: 3
   selector:
     matchLabels:
       app: zookeeper
@@ -15,51 +30,33 @@ spec:
         app: zookeeper
     spec:
       containers:
-        - name: zookeeper
-          image: confluentinc/cp-zookeeper:7.5.0
-          ports:
-            - containerPort: 2181
-          env:
-            - name: ZOOKEEPER_CLIENT_PORT
-              value: "2181"
-            - name: ZOOKEEPER_TICK_TIME
-              value: "2000"
-            - name: ZOOKEEPER_MIN_SESSION_TIMEOUT  # Added min session timeout
-              value: "4000"                        # 4 seconds
-            - name: ZOOKEEPER_MAX_SESSION_TIMEOUT  # Added max session timeout
-              value: "600000"                      # 600 seconds (10 minutes)
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "500m"
-          volumeMounts:
-            - name: zookeeper-data
-              mountPath: /var/lib/zookeeper/data
-            - name: zookeeper-log
-              mountPath: /var/lib/zookeeper/log
-      volumes:
+      - name: zookeeper
+        image: confluentinc/cp-zookeeper:latest
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: peer
+        - containerPort: 3888
+          name: leader-election
+        volumeMounts:
         - name: zookeeper-data
-          emptyDir: {}
-        - name: zookeeper-log
-          emptyDir: {}
-
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: zookeeper
-  labels:
-    app: zookeeper
-spec:
-  ports:
-    - port: 2181
-      name: zookeeper
-  type: ClusterIP  # Using ClusterIP instead of headless
-  selector:
-    app: zookeeper
-
+          mountPath: /var/lib/zookeeper
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name: ZOOKEEPER_TICK_TIME
+          value: "2000"
+        - name: ZOOKEEPER_INIT_LIMIT
+          value: "10"
+        - name: ZOOKEEPER_SYNC_LIMIT
+          value: "5"
+  volumeClaimTemplates:
+  - metadata:
+      name: zookeeper-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
+      storageClassName: managed-premium-rw
