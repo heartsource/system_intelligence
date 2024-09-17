@@ -27,11 +27,11 @@ spec:
             - name: ZOOKEEPER_MIN_SESSION_TIMEOUT  # Add the min session timeout
               value: "4000"                        # Example: 4000ms (4 seconds)
             - name: ZOOKEEPER_MAX_SESSION_TIMEOUT  # Add the max session timeout
-              value: "60000"                       # Example: 40000ms (60 seconds)
+              value: "600000"                       # Example: 40000ms (60 seconds)
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: "1Gi"
+              cpu: "500m"
             limits:
               memory: "1Gi"
               cpu: "500m"
