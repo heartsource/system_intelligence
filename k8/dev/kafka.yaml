@@ -55,15 +55,11 @@ spec:
         - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
           value: "1"
         - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
-          value: "2"
+          value: "1"
         - name: KAFKA_LOG_DIRS
           value: "/var/lib/kafka"
         - name: ALLOW_PLAINTEXT_LISTENER
           value: "yes"
-        lifecycle:
-          preStop:
-            exec:
-              command: ["/bin/sh", "-c", "kafka-server-stop"]
   volumeClaimTemplates:
   - metadata:
       name: kafka-storage
