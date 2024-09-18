@@ -16,7 +16,7 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
     {columns.map((column) => (
       <div
         key={column.key}
-        className={`grid-cell ${column.sortable ? "sortable" : ""}`}
+        className={`knowledge-grid-cell ${column.sortable ? "sortable" : ""}`}
       >
         {column.label}{" "}
         {column.sortable && (
@@ -113,12 +113,15 @@ const ConfigKnowledgeEnrichment = () => {
     setCurrentComponent,
     setSelectedEnrichmentId,
   } = useContext(AppContext);
+
   const [error, setError] = useState(null);
   const [fetchedStatus, setFetchedStatus] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currPage, setCurrPage] = useState(1);
   const [wasLastList, setWasLastList] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
 
+  const limit = 10;
   const columns = [
     { key: "enrichment_id", label: "Enrichment Id", sortable: true },
     {
@@ -140,7 +143,11 @@ const ConfigKnowledgeEnrichment = () => {
   const onScroll = () => {
     if (listInnerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (
+        scrollTop + clientHeight >= scrollHeight &&
+        !loading &&
+        !wasLastList
+      ) {
         setCurrPage((prevPage) => prevPage + 1);
       }
     }
@@ -148,19 +155,23 @@ const ConfigKnowledgeEnrichment = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (loading || wasLastList) return;
       setLoading(true);
+
       try {
         const payload = selectedEnrichmentId
           ? { enrichment_id: [selectedEnrichmentId] }
           : {};
+
         const response = await axios.post(
           `${config.heartieBE}/enrichments/fetch`,
           {
             ...payload,
-            limit: 20,
-            offset: (currPage - 1) * 10,
+            limit,
+            offset: (currPage - 1) * limit,
           }
         );
+
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
@@ -168,11 +179,18 @@ const ConfigKnowledgeEnrichment = () => {
           setWasLastList(true);
           return;
         }
-        setFilteredStatus((prevLogs) => [...prevLogs, ...data]);
-        setRecords((prevLogs) => [
-          ...prevLogs,
-          ...sortItems(data, sortConfig.key, sortConfig.direction),
-        ]);
+
+        if (currPage === 1) {
+          setFilteredStatus(data);
+          setRecords(sortItems(data, sortConfig.key, sortConfig.direction));
+        } else {
+          setFilteredStatus((prevLogs) => [...prevLogs, ...data]);
+          setRecords((prevLogs) => [
+            ...prevLogs,
+            ...sortItems(data, sortConfig.key, sortConfig.direction),
+          ]);
+        }
+        setTotalRecords(response.data.totalRecords);
       } catch (error) {
         handleError(setError, "Error fetching data");
       } finally {
@@ -180,15 +198,16 @@ const ConfigKnowledgeEnrichment = () => {
       }
     };
 
-    if (!wasLastList) {
-      fetchData();
-    }
+    fetchData();
   }, [
-    selectedEnrichmentId,
     currPage,
     sortConfig.key,
     sortConfig.direction,
-    wasLastList,
+    // selectedEnrichmentId,
+    // currPage,
+    // sortConfig.key,
+    // sortConfig.direction,
+    // wasLastList,
   ]);
 
   useEffect(() => {
@@ -263,10 +282,8 @@ const ConfigKnowledgeEnrichment = () => {
           </div>
           <div id="pagination">
             Showing{" "}
-            {filteredStatus.length > 0
-              ? filteredStatus.length
-              : filteredStatus.length}{" "}
-            of {filteredStatus.length} Records
+            {filteredStatus.length > 0 ? filteredStatus.length : records.length}{" "}
+            of {totalRecords} Records
           </div>
         </div>
       </fieldset>

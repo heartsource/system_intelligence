@@ -71,7 +71,9 @@ const ConfigAgentLogs = () => {
   const [currPage, setCurrPage] = useState(1);
   const [wasLastList, setWasLastList] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
 
+  const limit = 10;
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
     {
@@ -97,8 +99,8 @@ const ConfigAgentLogs = () => {
         const payload = selectedAgentId ? { agent_ids: [selectedAgentId] } : {};
         const response = await axios.post(`${config.heartieBE}/logs/`, {
           ...payload,
-          limit: 20,
-          offset: (currPage - 1) * 10,
+          limit,
+          offset: (currPage - 1) * limit,
         });
         const data = Array.isArray(response.data.data)
           ? response.data.data
@@ -107,11 +109,17 @@ const ConfigAgentLogs = () => {
           setWasLastList(true);
           return;
         }
-        setFilteredLogs((prevLogs) => [...prevLogs, ...data]);
-        setLogs((prevLogs) => [
-          ...prevLogs,
-          ...sortItems(data, sortConfig.key, sortConfig.direction),
-        ]);
+        if (currPage === 1) {
+          setFilteredLogs(data);
+          setLogs(sortItems(data, sortConfig.key, sortConfig.direction));
+        } else {
+          setFilteredLogs((prevLogs) => [...prevLogs, ...data]);
+          setLogs((prevLogs) => [
+            ...prevLogs,
+            ...sortItems(data, sortConfig.key, sortConfig.direction),
+          ]);
+        }
+        setTotalRecords(response.data.totalRecords);
       } catch (error) {
         handleError(setError, "error");
       } finally {
@@ -215,7 +223,7 @@ const ConfigAgentLogs = () => {
             <div id="pagination">
               Showing{" "}
               {filteredLogs.length > 0 ? filteredLogs.length : logs.length} of{" "}
-              {logs.length} Logs
+              {totalRecords} Logs
             </div>
           </div>
         </fieldset>

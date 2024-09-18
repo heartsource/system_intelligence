@@ -8,7 +8,7 @@ const Badge = ({ text }) => {
       case "inquired":
         return "#dc3545"; // Red
       case "responded":
-        return "orange"; // Yellow
+        return "darkorange"; // Orange
       case "response updated":
         return "#007bff"; // Blue
       default:
@@ -19,14 +19,15 @@ const Badge = ({ text }) => {
   const badgeStyle = {
     backgroundColor: getBackgroundColor(text),
     color: "#fff",
-    padding: "2px 6px", // Adjusted padding to reduce the size
-    borderRadius: "8px", // Smaller border radius
-    display: "inline-block", // Inline-block to keep it in line
-    fontSize: "14px", // Reduced font size to fit better in the table
+    padding: "2px 10px",
+    borderRadius: "8px",
+    display: "inline-block",
+    fontSize: "13px",
     fontWeight: "bold",
     textTransform: "capitalize",
-    lineHeight: "1.2", // Ensure no extra line-height space is added
-    verticalAlign: "middle", // Vertically center the badge within the row
+    lineHeight: "1.2",
+    verticalAlign: "middle",
+    textAlign: "left",
   };
 
   return <span style={badgeStyle}>{text}</span>;

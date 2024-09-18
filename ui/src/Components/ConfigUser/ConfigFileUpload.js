@@ -30,6 +30,7 @@ const ConfigFileUpload = () => {
         setTimeout(() => {
           setValidationError("");
         }, 6000);
+        event.target.value = "";
       }
     });
 
@@ -42,6 +43,7 @@ const ConfigFileUpload = () => {
       setError(validationError);
       setFiles([]);
       setFileCount(0);
+      event.target.value = "";
     }
   };
 
@@ -87,6 +89,7 @@ const ConfigFileUpload = () => {
       setUploadProgress(100);
       setFiles([]);
       setFileCount(0);
+      document.getElementById("fileID").value = "";
     }
   };
 
@@ -185,7 +188,7 @@ const ConfigFileUpload = () => {
                       ) : (
                         <i
                           className="fa-solid fa-circle-check"
-                          id="checkGreen"
+                          id="successGreen"
                         ></i>
                       )}
                     </div>
