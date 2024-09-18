@@ -144,7 +144,7 @@ h5 b {
 .custom-select {
   position: relative;
   display: inline-block;
-  width: 200px;
+  width: 210px;
   margin-top: -3px;
   font-weight: 400;
 }
@@ -156,7 +156,7 @@ h5 b {
   content: "▼";
   position: absolute;
   top: 50%;
-  right: 2px;
+  right: 6px;
   transform: translateY(-50%);
   pointer-events: none;
   color: #3cc9e2;
@@ -184,20 +184,21 @@ h5 b {
   cursor: pointer;
 }
 .custom-select .select-selected:hover {
-  background-color: #3cc9e2;
+  /* background-color: #3cc9e2; */
+  background-color: #fdfcf3;
   color: black;
   border-radius: 50px;
 }
 
 .custom-select .select-items {
   position: absolute;
-  background-color: #2db6d4;
+  background-color: #fdfcf3;
   top: 100%;
   left: 0;
   right: 0;
   z-index: 99;
   border: 1px solid black;
-  border-radius: 0 0 5px 5px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -205,10 +206,12 @@ h5 b {
   color: black;
   padding: 10px;
   cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 5px;
 }
 
 .custom-select .select-items div:hover {
-  background-color: #3cc9e2;
+  background-color: rgb(206, 204, 204);
   color: black;
 }
 

@@ -75,10 +75,6 @@
   border-radius: 4px;
 }
 
-.labelValue {
-  color: white;
-}
-
 .form-group textarea {
   resize: none;
   background-color: transparent;
@@ -171,7 +167,8 @@
 }
 
 .labelValue {
-  white-space: nowrap;
+  color: white;
+  text-align: center;
 }
 .displayDate {
   display: contents;

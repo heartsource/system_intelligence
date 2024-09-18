@@ -1,6 +1,7 @@
 .popover-container {
   border: 1px solid #ccc;
-  background-color: rgb(45, 182, 212);
+  /* background-color: rgb(45, 182, 212); */
+  background-color: #fdfcf3;
   color: black;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
@@ -40,7 +41,7 @@ input[type="checkbox"] {
   margin-top: 10px;
   padding: 5px;
   cursor: pointer;
-  border: 1px solid rgb(45, 182, 212);
+  /* border: 1px solid rgb(45, 182, 212); */
   background-color: black;
   color: white;
   border-radius: 4px;
