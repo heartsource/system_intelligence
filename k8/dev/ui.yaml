@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: systemintelligenceui
-          image: issappacr.azurecr.io/si/system-intelligence-ui:0.1.9
+          image: issappacr.azurecr.io/si/system-intelligence-ui:0.2.0
           ports:
             - containerPort: 80
           envFrom:
