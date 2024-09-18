@@ -16,7 +16,7 @@ const TableHeader = ({ columns, sortConfig, onSort }) => (
     {columns.map((column) => (
       <div
         key={column.key}
-        className={`grid-cell ${column.sortable ? "sortable" : ""}`}
+        className={`knowledge-grid-cell ${column.sortable ? "sortable" : ""}`}
       >
         {column.label}{" "}
         {column.sortable && (

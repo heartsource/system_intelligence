@@ -242,12 +242,20 @@ const ConfigAgents = () => {
               </div>
               <div className="modal-body">
                 <p>
-                  Are you sure you want to change the status of &quot;
-                  {agents[modalInfo.index].name}&quot; to &quot;
-                  {modalInfo.newStatus
-                    ? capitalizeFirstLetter(modalInfo.newStatus)
-                    : ""}
-                  &quot;?
+                  Are you sure you want to change the status of{" "}
+                  <b>
+                    &quot;
+                    {agents[modalInfo.index].name}&quot;
+                  </b>{" "}
+                  to{" "}
+                  <b>
+                    &quot;
+                    {modalInfo.newStatus
+                      ? capitalizeFirstLetter(modalInfo.newStatus)
+                      : ""}
+                    &quot;
+                  </b>
+                  ?
                 </p>
               </div>
               <div className="modal-footer">

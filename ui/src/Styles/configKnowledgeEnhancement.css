@@ -68,7 +68,7 @@
 .knowledge-grid-header,
 .knowledge-grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr 2.3fr 2.3fr 2.3fr;
+  grid-template-columns: 2fr 1.5fr 2fr 2.3fr 2.3fr 2.3fr;
   width: 100%;
   color: #fff;
   align-items: center;
@@ -80,7 +80,7 @@
 .knowledge-grid-cell {
   padding-bottom: 8px;
   border-bottom: 1px solid #ddd;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -89,11 +89,10 @@
 }
 
 .knowledge-grid-header .knowledge-grid-cell {
-  display: flex;
+  /* display: flex; */
   font-weight: bolder;
   font-size: 1.1em;
   cursor: pointer;
-  text-align: left; /* Ensure header text is left-aligned */
   justify-content: flex-start;
 }
 
@@ -109,9 +108,9 @@
   text-align: center;
 }
 .knowledge-grid-cell {
-  padding: 10px; /* Default padding for all grid cells */
+  padding: 10px;
   border-bottom: 1px solid #ddd;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

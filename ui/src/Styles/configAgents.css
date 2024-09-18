@@ -73,7 +73,6 @@
   margin-left: -2em;
   font-size: 0.9em;
   color: #fff;
-  /* text-align: center; */
 }
 
 .modal {
@@ -111,10 +110,26 @@
   align-items: center;
 }
 
-.modal-header .close {
-  border: none;
+.modal-header {
   background: none;
   font-size: 1.2em;
+}
+/* .modal-content {
+  background-color: #fdfcf3;
+  border: 1px solid #fff;
+  font-size: 1.3em;
+  color: black;
+  position: fixed !important;
+  bottom: 0;
+  right: 0;
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+} */
+
+.close {
+  border: none;
+  color: rgb(45, 182, 212);
 }
 
 .modal-body {
@@ -129,22 +144,26 @@
 
 .modal-footer .btn {
   margin-left: 10px;
+  margin-top: -5%;
 }
-
-#configYes,
+#configYes {
+  background-color: rgb(45, 182, 212);
+  color: black;
+  border-color: black;
+}
 #configNo {
-  background-color: black;
-  border-color: rgb(45, 182, 212);
-  color: #fff;
+  background-color: rgb(172, 170, 170);
+  border-color: black;
+  color: black;
 }
 
 #configYes:hover {
-  background-color: rgb(45, 182, 212);
-  border-color: rgb(45, 182, 212);
+  background-color: transparent;
+  border-color: black;
   color: black;
 }
 #configNo:hover {
-  background-color: rgb(45, 182, 212);
+  background-color: transparent;
   border-color: black;
   color: black;
 }
@@ -152,6 +171,7 @@
 #checkGreen {
   color: rgb(45, 182, 212);
 }
+
 .form-check-input:checked {
   background-color: rgb(45, 182, 212);
   border-color: rgb(45, 182, 212);
