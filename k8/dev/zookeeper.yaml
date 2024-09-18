@@ -38,6 +38,9 @@ spec:
         volumeMounts:
         - name: zookeeper-data
           mountPath: /var/lib/zookeeper
+        env:
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
   volumeClaimTemplates:
   - metadata:
       name: zookeeper-data
