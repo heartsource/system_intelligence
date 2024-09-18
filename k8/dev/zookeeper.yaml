@@ -7,9 +7,10 @@ metadata:
     app: zookeeper
 spec:
   ports:
-  - port: 2181
-    name: client
-  clusterIP: None
+  - protocol: TCP
+    port: 2181
+    targetPort: 2181
+  type: ClusterIP
   selector:
     app: zookeeper
 ---
@@ -46,6 +47,8 @@ spec:
           value: "10"
         - name: ZOOKEEPER_SYNC_LIMIT
           value: "5"
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
   volumeClaimTemplates:
   - metadata:
       name: zookeeper-data
