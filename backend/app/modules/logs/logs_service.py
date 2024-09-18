@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from utils.common_utilities import custom_serializer, is_valid_uuid
 from modules.logs.logs_model import AgentLogsListModel, AgentLogsModel
 from bson import ObjectId
-import utils.constants.error_constants as ERROR_CONSTANTS 
+import utils.constants.error_messages as ERROR_MESSAGES 
 import json
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
@@ -62,7 +62,7 @@ class LogService:
                 formattedAgentIds = []
                 for id in payload.agent_ids:
                     if not ObjectId.is_valid(id):
-                        raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+                        raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_ID_ERROR)
                     formattedAgentIds.append(ObjectId(id))
                 query = { "$match": 
                             { 
@@ -70,15 +70,25 @@ class LogService:
                             }
                         }
                 pipeline.insert(0, query)
+            
             results = await self.collection.aggregate(pipeline).to_list(length=None)
-            return json.loads(json.dumps(list(results), default=custom_serializer))
+
+            # separate count pipeline (excluding skip and limit)
+            count_pipeline = pipeline[:-2]  # Remove the last two stages (skip and limit)
+            count_pipeline.append({"$count": "total"})
+            count_result = await self.collection.aggregate(count_pipeline).to_list(length=1)
+
+            # Extract the total count from the result
+            data_length = count_result[0]["total"] if count_result else 0
+
+            return { "data": json.loads(json.dumps(list(results), default=custom_serializer)), "length": data_length }
         except Exception as e:
             raise Exception(e)
         
     async def fetchLogDetails(self, id: str)-> Dict[str, Any]:
         try:
             if not is_valid_uuid(id):
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_INTERACTION_ID_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_INTERACTION_ID_ERROR)
             
             pipeline = [
                 {
@@ -137,7 +147,7 @@ class LogService:
     async def deleteAgentLogs(self, agent_id: str):
         try:
             if not ObjectId.is_valid(agent_id):
-                raise HTTPException(status_code=400, detail=ERROR_CONSTANTS.INVALID_ID_ERROR)
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_ID_ERROR)
             return await self.collection.update_many({"agent_id": ObjectId(agent_id)}, {"$set": {"deleted_dt": datetime.now(timezone.utc)}})
         except Exception as e:
             raise Exception(e)

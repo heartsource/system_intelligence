@@ -1,4 +1,5 @@
 from confluent_kafka import Consumer, KafkaError, KafkaException
+from confluent_kafka.admin import AdminClient, NewTopic
 from modules.data_injection.chromadb import loadFileToChromadb, loadToChromadb
 import json
 import sys
@@ -69,8 +70,40 @@ async def basic_consume_loop(consumer, topics):
         # Close down consumer cleanly
         consumer.close()
 
+
+def create_kafka_topic(bootstrap_servers, topic_name, num_partitions=APP_CONSTANTS.NUM_PARTITIONS, replication_factor=APP_CONSTANTS.REPLICATION_FACTOR):
+    """Create a Kafka topic if it doesn't already exist."""
+    try:
+        admin_client = AdminClient({'bootstrap.servers': bootstrap_servers})
+        topic_list = [NewTopic(topic=topic_name, num_partitions=num_partitions, replication_factor=replication_factor)]
+        
+        # Create topics and handle exceptions
+        futures = admin_client.create_topics(topic_list)
+        for topic, future in futures.items():
+            try:
+                future.result()  # Wait for result
+                print(f"Topic '{topic_name}' created successfully.")
+            except Exception as e:
+                if 'already exists' in str(e):
+                    print(f"Topic '{topic_name}' already exists.")
+                else:
+                    print(f"Failed to create topic '{topic_name}': {e}")
+    except Exception as e:
+        print(f"Error during topic creation: {e}")
+
+
 if __name__ == '__main__':
-    topics = [APP_CONSTANTS.KAFKA_TOPIC_ENRICHMENT]  # List of topics to subscribe to
+    topics = [APP_CONSTANTS.KAFKA_TOPIC_NAME]  # List of topics to subscribe to
+
+    # Kafka configuration
+    bootstrap_servers = f'{kafkaConsumerConfig.kafka_host}:{kafkaConsumerConfig.kafka_port}'  # Replace with your Kafka broker address
+    print(bootstrap_servers)
+    topic_name = APP_CONSTANTS.KAFKA_TOPIC_NAME
+
+    # Create Kafka topic before starting the consumer
+    create_kafka_topic(bootstrap_servers, topic_name)
+
+    # Configure and create Kafka consumer
     consumer = kafkaConsumerConfig.kafka_consumer()
 
     # Run asynchronous consume loop

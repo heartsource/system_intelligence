@@ -6,8 +6,7 @@ from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
 import traceback
 import os
-import utils.constants.error_constants as ERROR_CONSTANTS
-import utils.constants.app_constants as APP_CONSTANTS
+import utils.constants.message_constants as MESSAGE_CONSTANTS
 
 def chromadb_writer(txt_file_content):
     print("Writing to Chroma: Started...")
@@ -48,7 +47,7 @@ def chromadb_reader(question: str):
     return query_results["documents"][0]
 
 async def loadToChromadb(file_content):
-    return_value = {"status": "success", "data": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
+    return_value = {"status": "success", "data": MESSAGE_CONSTANTS.FILE_UPLOAD_SUCCESS}
     chromadb_writer(file_content)
     return return_value
 
@@ -75,7 +74,7 @@ async def loadFileToChromadb(file):
                         pdf_text.append(content)
             except PdfReadError as e:
                 print(f"Error reading PDF: {e}")
-                return {"status": "error", "data": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
+                return {"status": "error", "data": MESSAGE_CONSTANTS.PDF_FILE_READ_ERROR }
         
         elif file_extension == 'txt':
             try:
@@ -87,13 +86,13 @@ async def loadFileToChromadb(file):
                         pdf_text.append(f.read())
                 except Exception as e:
                     print(f"Error reading TXT file with fallback encoding: {e}")
-                    return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                    return {"status": "error", "data": MESSAGE_CONSTANTS.TXT_FILE_READ_ERROR }
             except Exception as e:
                 print(f"Error reading TXT file: {e}")
-                return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                return {"status": "error", "data": MESSAGE_CONSTANTS.TXT_FILE_READ_ERROR }
         
         else:
-            return {"status": "error", "data": ERROR_CONSTANTS.FILE_SUPPORT_ERROR }
+            return {"status": "error", "data": MESSAGE_CONSTANTS.FILE_SUPPORT_ERROR }
 
         if os.path.exists(save_to):
             os.remove(save_to)

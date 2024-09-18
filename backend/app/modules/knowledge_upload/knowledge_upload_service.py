@@ -6,8 +6,8 @@ import os
 import json
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
-import utils.constants.error_constants as ERROR_CONSTANTS
-import utils.constants.app_constants as APP_CONSTANTS
+import utils.constants.error_messages as ERROR_MESSAGES
+import utils.constants.success_messages as SUCCESS_MESSAGES
 from modules.shared.chromadb_reader_writer import chromadb_writer
 
 class KnowledgeUploadService:
@@ -19,13 +19,13 @@ class KnowledgeUploadService:
         try:
             agent_config = await self.collection.find_one({"name": "agent_config"})
             if agent_config is None:
-                raise Exception(ERROR_CONSTANTS.NOT_FOUND_ERROR)
+                raise Exception(ERROR_MESSAGES.NOT_FOUND_ERROR)
             return json.loads(json.dumps(agent_config, default=str))
         except Exception as e:
             raise Exception(e) 
     
     async def loadToChromadb(self, file_content):
-        return_value = {"status": "success", "data": APP_CONSTANTS.FILE_UPLOAD_SUCCESS}
+        return_value = {"status": "success", "data": SUCCESS_MESSAGES.FILE_UPLOAD_SUCCESS}
         chromadb_writer(file_content)
         return return_value
 
@@ -50,7 +50,7 @@ class KnowledgeUploadService:
                         pdf_text = [page.extract_text() for page in reader.pages]
                 except PdfReadError as e:
                     print(f"Error reading PDF: {e}")
-                    return {"status": "error", "data": ERROR_CONSTANTS.PDF_FILE_READ_ERROR }
+                    return {"status": "error", "data": ERROR_MESSAGES.PDF_FILE_READ_ERROR }
             
             elif file_extension == 'txt':
                 try:
@@ -62,13 +62,13 @@ class KnowledgeUploadService:
                             pdf_text.append(f.read())
                     except Exception as e:
                         print(f"Error reading TXT file with fallback encoding: {e}")
-                        return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                        return {"status": "error", "data": ERROR_MESSAGES.TXT_FILE_READ_ERROR }
                 except Exception as e:
                     print(f"Error reading TXT file: {e}")
-                    return {"status": "error", "data": ERROR_CONSTANTS.TXT_FILE_READ_ERROR }
+                    return {"status": "error", "data": ERROR_MESSAGES.TXT_FILE_READ_ERROR }
             
             else:
-                return {"status": "error", "data": ERROR_CONSTANTS.FILE_SUPPORT_ERROR }
+                return {"status": "error", "data": ERROR_MESSAGES.FILE_SUPPORT_ERROR }
 
             if os.path.exists(save_to):
                 os.remove(save_to)

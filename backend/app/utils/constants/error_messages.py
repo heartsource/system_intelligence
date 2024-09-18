@@ -13,7 +13,7 @@ INVALID_INTERACTION_ID_ERROR="Interaction Id should be valid UUID"
 
 MONGODB_CONN_ERROR="Error connecting to MongoDB"
 INVALID_MODEL_ERROR="Inavlid Model"
-
+MODEL_INPROGRESS= "Mistral model is currently not supported. Please select other Model"
 CHORMADB_CONN_ERROR="Error connectiong to ChromaDB"
 
 ENRICHMENT_UPDATE_ERROR="file or payload either one of the field should be passed"

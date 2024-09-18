@@ -14,7 +14,7 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 # Set default environment file
-ARG ENV_FILE=.env.development
+ARG ENV_FILE=.env.local
 COPY ./environments/${ENV_FILE} .env
 
 EXPOSE 8080

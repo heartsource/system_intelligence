@@ -17,7 +17,7 @@ COPY --from=build /usr/local/bin/ /usr/local/bin/
 COPY ./app/ /app/
 
 # Set default environment file
-ARG ENV_FILE=.env.development
+ARG ENV_FILE=.env.local
 # Copy the environment file into the build context
 COPY ./environments/${ENV_FILE} .env
 

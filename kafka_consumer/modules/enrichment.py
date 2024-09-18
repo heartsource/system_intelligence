@@ -4,8 +4,6 @@ from fastapi import HTTPException
 from utils.enums.shared_enum import EnrichmentStatus
 from config.mongodb_config import mongo_config
 import utils.constants.db_constants as DB_CONSTANTS
-import utils.constants.error_constants as ERROR_CONSTANTS
-import utils.constants.app_constants as APP_CONSTANTS
 
 class EnrichmentRequestService:
     def __init__(self) -> None:

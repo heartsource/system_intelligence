@@ -1,5 +1,5 @@
 import os
-import utils.constants.error_constants as ERROR_CONSTANTS
+import utils.constants.error_messages as ERROR_MESSAGES
 import chromadb
 from dotenv import load_dotenv
 from fastapi import HTTPException
@@ -19,7 +19,7 @@ class ChromaDbConfig:
             self.chromaDb_writer_embed_model = os.getenv('CHROMA_DB_WRITER_EMBED_MODEL') # This is better trained
         except Exception as e:
             print(f"Error initializing ChromaDB config: {e}")
-            raise HTTPException(status_code=500, detail=ERROR_CONSTANTS.CHORMADB_CONN_ERROR)
+            raise HTTPException(status_code=500, detail=ERROR_MESSAGES.CHORMADB_CONN_ERROR)
 
     def get_client(self):
         try:
