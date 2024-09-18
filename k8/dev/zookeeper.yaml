@@ -21,7 +21,7 @@ metadata:
   namespace: si-app-dev
 spec:
   serviceName: "zookeeper"
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: zookeeper
@@ -32,23 +32,12 @@ spec:
     spec:
       containers:
       - name: zookeeper
-        image: confluentinc/cp-zookeeper:latest
+        image: bitnami/zookeeper:latest
         ports:
         - containerPort: 2181
         volumeMounts:
         - name: zookeeper-data
           mountPath: /var/lib/zookeeper
-        env:
-        - name: ZOOKEEPER_CLIENT_PORT
-          value: "2181"
-        - name: ZOOKEEPER_TICK_TIME
-          value: "2000"
-        - name: ZOOKEEPER_INIT_LIMIT
-          value: "10"
-        - name: ZOOKEEPER_SYNC_LIMIT
-          value: "5"
-        - name: ALLOW_ANONYMOUS_LOGIN
-          value: "yes"
   volumeClaimTemplates:
   - metadata:
       name: zookeeper-data
@@ -57,4 +46,3 @@ spec:
       resources:
         requests:
           storage: 5Gi
-      storageClassName: managed-premium-rw
