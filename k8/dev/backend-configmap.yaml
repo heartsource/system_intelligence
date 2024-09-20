@@ -13,7 +13,7 @@ data:
   AZURE_OPENAI_ENDPOINT: "https://productsupportopenai.openai.azure.com/"
   AZURE_OPENAI_API_VERSION: "2024-02-01"
   AZURE_DEPLOYMENT_NAME: "system-intelligence-gpt-35-turbo-instruct"
-  OPENAI_MAX_TOKENS: "250"
+  OPENAI_MAX_TOKENS: "500"
   OPENAI_TEMPERATURE: "0.5"
   LLAMA_MAX_TOKENS: "128"
   LLAMA_TEMPERATURE: "0.58"
