@@ -73,7 +73,7 @@ const ConfigAgentLogs = () => {
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  const limit = 10;
+  const limit = 20;
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
     {

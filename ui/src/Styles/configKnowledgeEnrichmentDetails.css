@@ -111,6 +111,7 @@
   display: flex;
   width: 60%;
   margin-left: 19em;
+  padding-top: 2%;
 }
 
 .save-btn {
@@ -147,28 +148,26 @@
   color: white;
 }
 .date-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 20px;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
 }
+
 .date-group {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
+  /* justify-content: center; */
+  align-items: left;
 }
 .date-group label {
-  margin-right: 10px;
-  width: auto;
+  white-space: nowrap;
+  color: white;
 }
 
 .labelValue {
   color: white;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
 }
 .displayDate {
   display: contents;

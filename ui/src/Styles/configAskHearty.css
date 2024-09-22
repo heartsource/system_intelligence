@@ -129,6 +129,7 @@ h5 b {
 }
 .spinner-overlay .loading-text {
   color: #000;
+  font-weight: bold;
 }
 .spinner-border {
   color: #000;
@@ -184,7 +185,6 @@ h5 b {
   cursor: pointer;
 }
 .custom-select .select-selected:hover {
-  /* background-color: #3cc9e2; */
   background-color: #fdfcf3;
   color: black;
   border-radius: 50px;
