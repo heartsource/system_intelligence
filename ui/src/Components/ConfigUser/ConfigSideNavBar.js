@@ -74,6 +74,7 @@ const ConfigSideNavBar = () => {
             >
               <i className="fa-solid fa-heart"></i> Ask Hearty
             </div>
+
             <div
               onClick={() => handleNavigation("config-knowledge-enrichment")}
               className={`nav_link ${
@@ -86,6 +87,7 @@ const ConfigSideNavBar = () => {
               <br />
               Enrichment
             </div>
+
             <div class="nav-item-divider"></div>
             <div
               onClick={() => handleNavigation("profile")}
@@ -98,14 +100,6 @@ const ConfigSideNavBar = () => {
         <div class="dashboard-app">
           <header class="dashboard-toolbar header-text">Support Genie</header>
         </div>
-        {/* <div class="dashboard-content">
-          <div class="container">
-            <div class="card">
-              <div class="card-body">Content</div>
-            </div>
-          </div>
-        </div> 
-        </div>*/}
       </div>
     </>
   );

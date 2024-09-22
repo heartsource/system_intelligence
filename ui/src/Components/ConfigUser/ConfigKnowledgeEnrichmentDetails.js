@@ -191,15 +191,17 @@ const ConfigKnowledgeEnrichmentDetails = () => {
                 ))}
               </div>
             </div>
-            <div className="form-group date-row">
+            <div className="date-row">
               <div className="date-group">
                 <label>Request Date</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div className="labelValue">
                   {dateFormat(selectedEnrichmentId.requested_on)}
                 </div>
               </div>
               <div className="date-group">
                 <label className="displayDate">Response Date</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div className="labelValue">
                   {selectedEnrichmentId.responded_on
                     ? dateFormat(selectedEnrichmentId.responded_on)
@@ -208,6 +210,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               </div>
               <div className="date-group">
                 <label className="displayDate">Ingested Date</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div className="labelValue">
                   {selectedEnrichmentId.ingested_on
                     ? dateFormat(selectedEnrichmentId.ingested_on)
