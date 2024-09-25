@@ -33,6 +33,13 @@ spec:
       containers:
       - name: zookeeper
         image: bitnami/zookeeper:latest
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi" 
+            cpu: "1"
         ports:
         - containerPort: 2181
         volumeMounts:
