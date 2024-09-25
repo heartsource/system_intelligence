@@ -122,6 +122,11 @@ const ConfigKnowledgeEnrichment = () => {
   const [currPage, setCurrPage] = useState(1);
   const [wasLastList, setWasLastList] = useState(false);
 
+  // Set default sortConfig for interaction_date
+  useEffect(() => {
+    setSortConfig({ key: "enrichment_id", direction: "desc" });
+  }, []);
+
   const limit = 20;
   const columns = [
     { key: "enrichment_id", label: "Enrichment Id", sortable: true },

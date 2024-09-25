@@ -5,59 +5,44 @@ import { handleError } from "../../utils/handleError";
 import config from "../../config";
 
 const ConfigFileUpload = () => {
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
-  const [fileCount, setFileCount] = useState(0);
   const [validationError, setValidationError] = useState("");
 
   const allowedFileTypes = ["pdf", "txt"];
 
   const handleFileChange = (event) => {
-    const selectedFiles = Array.from(event.target.files);
-    const validFiles = [];
+    const selectedFile = event.target.files[0];
+    const fileExtension = selectedFile?.name.split(".").pop().toLowerCase();
 
-    selectedFiles.forEach((file) => {
-      const fileExtension = file.name.split(".").pop().toLowerCase();
-      if (allowedFileTypes.includes(fileExtension)) {
-        validFiles.push(file);
-      } else {
-        setValidationError(
-          `Invalid file type.Only PDF and TEXT files are allowed.`
-        );
-        setTimeout(() => {
-          setValidationError("");
-        }, 6000);
-        event.target.value = "";
-      }
-    });
-
-    if (validFiles.length > 0) {
-      setFiles(validFiles);
+    if (selectedFile && allowedFileTypes.includes(fileExtension)) {
+      setFile(selectedFile);
+      setValidationError("");
       setError("");
       setSuccessMessage("");
-      setFileCount(validFiles.length);
     } else {
-      setError(validationError);
-      setFiles([]);
-      setFileCount(0);
+      setValidationError(
+        `Invalid file type. Only PDF and TEXT files are allowed.`
+      );
+      setTimeout(() => {
+        setValidationError("");
+      }, 6000);
       event.target.value = "";
+      setFile(null);
     }
   };
 
   const handleUpload = async () => {
-    if (files.length === 0) {
-      handleError(
-        setError,
-        "Please select at least one valid file for upload."
-      );
+    if (!file) {
+      handleError(setError, "Please select a valid file for upload.");
       return;
     }
 
     const formData = new FormData();
-    files.forEach((file) => formData.append("file", file));
+    formData.append("file", file);
 
     setShowModal(true);
     try {
@@ -74,11 +59,7 @@ const ConfigFileUpload = () => {
           },
         }
       );
-      setSuccessMessage(
-        files.length > 1
-          ? "Files uploaded successfully."
-          : "File uploaded successfully."
-      );
+      setSuccessMessage("File uploaded successfully.");
       setTimeout(() => setSuccessMessage(""), 6000);
     } catch (error) {
       const errorMessage =
@@ -87,8 +68,7 @@ const ConfigFileUpload = () => {
     } finally {
       setShowModal(false);
       setUploadProgress(100);
-      setFiles([]);
-      setFileCount(0);
+      setFile(null);
       document.getElementById("fileID").value = "";
     }
   };
@@ -134,10 +114,9 @@ const ConfigFileUpload = () => {
             <p>
               <label htmlFor="fileID">Files Supported: PDF, TEXT</label>
             </p>
-            {files.length > 0 && <h3>{fileCount} file(s) selected</h3>}
+            {file && <h3>1 file selected</h3>}
             <input
               type="file"
-              multiple
               id="fileID"
               style={{ display: "none" }}
               onChange={handleFileChange}
@@ -155,14 +134,11 @@ const ConfigFileUpload = () => {
             <span className="close" onClick={() => setShowModal(false)}>
               &times;
             </span>
-            <h3>
-              {uploadProgress < 100 ? "Uploading..." : "Uploaded"}{" "}
-              {files.length} file(s)
-            </h3>
+            <h3>{uploadProgress < 100 ? "Uploading..." : "Uploaded"} 1 file</h3>
             <div className="progress-bar-container"></div>
-            <ul style={{ listStyle: "none" }}>
-              {files.map((file, index) => (
-                <li key={index} style={{ marginBottom: "10px" }}>
+            {file && (
+              <ul style={{ listStyle: "none" }}>
+                <li style={{ marginBottom: "10px" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <div style={{ marginRight: "10px" }}>
                       {getFileIcon(file.name.split(".").pop())}
@@ -194,8 +170,8 @@ const ConfigFileUpload = () => {
                     </div>
                   </div>
                 </li>
-              ))}
-            </ul>
+              </ul>
+            )}
           </div>
         </div>
       )}

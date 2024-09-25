@@ -74,6 +74,11 @@ const ConfigAgentLogs = () => {
   const [wasLastList, setWasLastList] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Set default sortConfig for interaction_date
+  useEffect(() => {
+    setSortConfig({ key: "interaction_date", direction: "desc" });
+  }, []);
+
   const limit = 20;
   const columns = [
     { key: "interaction_id", label: "Agent Interaction Id", sortable: true },
