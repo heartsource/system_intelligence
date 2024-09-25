@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../Styles/configKnowledgeEnrichmentDetails.css";
 import { AppContext } from "../../context/AppContext";
-import { capitalizeFirstLetter } from "../../utils/camelCase";
 import config from "../../config";
 import { dateFormat } from "../../utils/dateFormat";
 import axios from "axios";
@@ -14,7 +13,7 @@ const ConfigKnowledgeEnrichmentDetails = () => {
   const [response, setResponse] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null); // Single file
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -26,18 +25,18 @@ const ConfigKnowledgeEnrichmentDetails = () => {
   }, [selectedEnrichmentId]);
 
   const handleFileChange = (event) => {
-    const newFiles = Array.from(event.target.files);
-    setFiles(newFiles);
-    event.target.value = "";
+    const newFile = event.target.files[0]; // Get single file
+    setFile(newFile);
+    event.target.value = ""; // Reset input field
   };
 
-  const handleRemoveFile = (index) => {
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  const handleRemoveFile = () => {
+    setFile(null); // Remove the file
   };
 
   const handleSave = async () => {
     if (!selectedEnrichmentId) return;
-    if (!query && !files.length) {
+    if (!query && !file) {
       setError("Either a file or query_response must be provided.");
       return;
     }
@@ -45,9 +44,9 @@ const ConfigKnowledgeEnrichmentDetails = () => {
     const formData = new FormData();
     formData.append("payload", response);
     formData.append("enrichment_id", selectedEnrichmentId.enrichment_id);
-    files.forEach((file) => {
-      formData.append("file", file);
-    });
+    if (file) {
+      formData.append("file", file); // Only one file
+    }
 
     try {
       const saveResponse = await axios.put(
@@ -143,13 +142,13 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               <p className="form-description">
                 You can either write your response here or{" "}
                 <a
-                  href="#"
+                  href="/#"
                   style={{ color: "rgb(45, 182, 212)", fontWeight: "bold" }}
                   onClick={() => document.getElementById("file-upload").click()}
                 >
                   upload
                 </a>{" "}
-                the documents containing the response to the query below.
+                the document containing the response to the query below.
               </p>
             </div>
             <div className="form-group" id="response-text-area">
@@ -163,10 +162,9 @@ const ConfigKnowledgeEnrichmentDetails = () => {
               ></textarea>
             </div>
             <div className="form-group">
-              <label>Upload Response Document(s)</label>
+              <label>Upload Response Document</label>
               <input
                 type="file"
-                multiple
                 onChange={handleFileChange}
                 className="file-input"
                 style={{ display: "none" }}
@@ -179,16 +177,15 @@ const ConfigKnowledgeEnrichmentDetails = () => {
                 Upload
               </button>
               <div className="file-names">
-                {files.map((file, index) => (
-                  <div key={index} className="file-item">
+                {file && (
+                  <div className="file-item">
                     <span>{file.name}</span>
-
                     <i
                       className="fa-solid fa-xmark remove-file-btn"
-                      onClick={() => handleRemoveFile(index)}
+                      onClick={handleRemoveFile}
                     ></i>
                   </div>
-                ))}
+                )}
               </div>
             </div>
             <div className="date-row">
