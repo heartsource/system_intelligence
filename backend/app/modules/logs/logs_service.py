@@ -119,6 +119,7 @@ class LogService:
                             "interaction_id": 1,
                             "interaction_date": 1,
                             "duration": 1,
+                            "template": 1,
                             "question": 1,
                             "answer": 1,
                             "model": 1,
