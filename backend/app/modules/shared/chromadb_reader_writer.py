@@ -1,27 +1,31 @@
 import uuid
 from chromadb.utils import embedding_functions
 from config.chromadb_config import chromadb_config
+import asyncio
 
-def chromadb_writer(txt_file_content):
+async def chromadb_writer(txt_file_content):
     print("Writing to Chroma: Started...")
-    chunk_size = 200
+    chunk_size = 1000  # Increase chunk size to reduce overhead
+    
     # Split the data into chunks
-
     txt_split = [txt_file_content[i:i + chunk_size] for i in range(0, len(txt_file_content), chunk_size)]
     ids = [str(uuid.uuid4()) for arr in txt_split]
     metadata = [{"hnsw:space": f"cosine{i}"} for i in range(len(txt_split))]
 
     client = chromadb_config.get_client()
-
     embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=chromadb_config.chromaDb_writer_embed_model)
     collection_name = chromadb_config.get_collection_name()
+
     try:
         collection = client.get_or_create_collection(name=collection_name, embedding_function=embedding_func)
-        collection.add(
-            documents=txt_split,
-            ids=ids,
-            metadatas=metadata,
-        )
+        
+        # Write in batches
+        for i in range(0, len(txt_split), 10):  # Batch size of 10
+            batch_documents = txt_split[i:i+10]
+            batch_ids = ids[i:i+10]
+            batch_metadata = metadata[i:i+10]
+            await asyncio.to_thread(collection.add, documents=batch_documents, ids=batch_ids, metadatas=batch_metadata)
+
         print("Writing to ChromaDB: Ended")
     except Exception as e:
         print(f"Error writing to ChromaDB: {str(e)}")

@@ -4,9 +4,11 @@ chromadb
 langchain_community
 sentence_transformers
 openai
-PyPDF2
 pydantic
 pymongo>=4.1,<5
 motor==3.5.1
 confluent-kafka
 chardet
+pandas
+docx
+pytesseract
