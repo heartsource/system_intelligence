@@ -12,7 +12,8 @@ const KnowledgeFilterButtonWithPopover = () => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const buttonRef = useRef(null);
   const popoverRef = useRef(null);
-  const { setFilteredStatus, sortConfig } = useContext(AppContext);
+  const { setFilteredStatus, sortConfig, setTotalRecords } =
+    useContext(AppContext);
 
   const { styles, attributes } = usePopper(
     buttonRef.current,
@@ -60,6 +61,7 @@ const KnowledgeFilterButtonWithPopover = () => {
       );
 
       const data = Array.isArray(response.data.data) ? response.data.data : [];
+      setTotalRecords(response.data.totalRecords);
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredStatus(sortedData);
     } catch (error) {

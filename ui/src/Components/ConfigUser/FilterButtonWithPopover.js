@@ -11,7 +11,8 @@ const FilterButtonWithPopover = () => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const buttonRef = useRef(null);
   const popoverRef = useRef(null);
-  const { setFilteredLogs, sortConfig } = useContext(AppContext);
+  const { setFilteredLogs, sortConfig, setTotalRecords } =
+    useContext(AppContext);
 
   const { styles, attributes } = usePopper(
     buttonRef.current,
@@ -43,6 +44,7 @@ const FilterButtonWithPopover = () => {
         agent_ids: selectedAgentIds,
       });
       const data = Array.isArray(response.data.data) ? response.data.data : [];
+      setTotalRecords(response.data.totalRecords);
       const sortedData = sortItems(data, sortConfig.key, sortConfig.direction);
       setFilteredLogs(data);
     } catch (error) {

@@ -107,6 +107,8 @@ const ConfigKnowledgeEnrichment = () => {
     selectedEnrichmentId,
     filteredStatus,
     setFilteredStatus,
+    totalRecords,
+    setTotalRecords,
     sortConfig,
     setSortConfig,
     componentKey,
@@ -119,7 +121,6 @@ const ConfigKnowledgeEnrichment = () => {
   const [loading, setLoading] = useState(false);
   const [currPage, setCurrPage] = useState(1);
   const [wasLastList, setWasLastList] = useState(false);
-  const [totalRecords, setTotalRecords] = useState(0);
 
   const limit = 20;
   const columns = [
@@ -199,16 +200,7 @@ const ConfigKnowledgeEnrichment = () => {
     };
 
     fetchData();
-  }, [
-    currPage,
-    sortConfig.key,
-    sortConfig.direction,
-    // selectedEnrichmentId,
-    // currPage,
-    // sortConfig.key,
-    // sortConfig.direction,
-    // wasLastList,
-  ]);
+  }, [currPage, sortConfig.key, sortConfig.direction]);
 
   useEffect(() => {
     setFilteredStatus([]);

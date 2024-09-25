@@ -61,6 +61,8 @@ const ConfigAgentLogs = () => {
     selectedAgentId,
     filteredLogs,
     setFilteredLogs,
+    totalRecords,
+    setTotalRecords,
     sortConfig,
     setSortConfig,
     componentKey,
@@ -71,7 +73,6 @@ const ConfigAgentLogs = () => {
   const [currPage, setCurrPage] = useState(1);
   const [wasLastList, setWasLastList] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [totalRecords, setTotalRecords] = useState(0);
 
   const limit = 20;
   const columns = [

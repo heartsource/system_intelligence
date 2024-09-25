@@ -16,6 +16,7 @@ export const AppProvider = ({ children }) => {
   const [selectedEnrichmentId, setSelectedEnrichmentId] = useState(null);
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [filteredStatus, setFilteredStatus] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [sortConfig, setSortConfig] = useState({
     key: "interaction_id",
     direction: "desc",
@@ -50,6 +51,8 @@ export const AppProvider = ({ children }) => {
         setSelectedEnrichmentId,
         records,
         setRecords,
+        totalRecords,
+        setTotalRecords,
         filteredStatus,
         setFilteredStatus,
         selectedInquiryId,
