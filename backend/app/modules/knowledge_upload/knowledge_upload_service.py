@@ -1,10 +1,5 @@
 import io
 import json
-import pandas as pd
-from docx import Document
-from PIL import Image
-import pytesseract  # For OCR
-import xml.etree.ElementTree as ET
 import traceback
 from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
@@ -13,6 +8,11 @@ import utils.constants.db_constants as DB_CONSTANTS
 import utils.constants.error_messages as ERROR_MESSAGES
 import utils.constants.success_messages as SUCCESS_MESSAGES
 from modules.shared.chromadb_reader_writer import chromadb_writer
+# import pandas as pd
+# from docx import Document
+# from PIL import Image
+# import pytesseract  # For OCR
+# import xml.etree.ElementTree as ET
 
 class KnowledgeUploadService:
     def __init__(self):
@@ -66,58 +66,58 @@ class KnowledgeUploadService:
                         return {"status": "error", "data": ERROR_MESSAGES.TXT_FILE_READ_ERROR}
 
             # Handle Word (DOCX) files
-            elif file_extension == 'docx':
-                try:
-                    docx_stream = io.BytesIO(data)
-                    doc = Document(docx_stream)
-                    extracted_text = [para.text for para in doc.paragraphs]
-                except Exception as e:
-                    print(f"Error reading DOCX file: {e}")
-                    return {"status": "error", "data": ERROR_MESSAGES.WORD_FILE_READ_ERROR}
+            # elif file_extension == 'docx':
+            #     try:
+            #         docx_stream = io.BytesIO(data)
+            #         doc = Document(docx_stream)
+            #         extracted_text = [para.text for para in doc.paragraphs]
+            #     except Exception as e:
+            #         print(f"Error reading DOCX file: {e}")
+            #         return {"status": "error", "data": ERROR_MESSAGES.WORD_FILE_READ_ERROR}
 
             # Handle Excel files (XLSX, XLS, CSV)
-            elif file_extension in ['xlsx', 'xls', 'csv']:
-                try:
-                    excel_stream = io.BytesIO(data)
-                    if file_extension == 'csv':
-                        df = pd.read_csv(excel_stream)
-                    else:
-                        df = pd.read_excel(excel_stream, engine='openpyxl' if file_extension == 'xlsx' else 'xlrd')
-                    extracted_text = df.to_string(index=False).split("\n")  # Convert DataFrame to text
-                except Exception as e:
-                    print(f"Error reading Excel/CSV file: {e}")
-                    return {"status": "error", "data": ERROR_MESSAGES.EXCEL_FILE_READ_ERROR}
+            # elif file_extension in ['xlsx', 'xls', 'csv']:
+            #     try:
+            #         excel_stream = io.BytesIO(data)
+            #         if file_extension == 'csv':
+            #             df = pd.read_csv(excel_stream)
+            #         else:
+            #             df = pd.read_excel(excel_stream, engine='openpyxl' if file_extension == 'xlsx' else 'xlrd')
+            #         extracted_text = df.to_string(index=False).split("\n")  # Convert DataFrame to text
+            #     except Exception as e:
+            #         print(f"Error reading Excel/CSV file: {e}")
+            #         return {"status": "error", "data": ERROR_MESSAGES.EXCEL_FILE_READ_ERROR}
 
             # Handle Image files (JPEG, PNG, GIF, etc.) using OCR
-            elif file_extension in ['jpg', 'jpeg', 'png', 'gif']:
-                try:
-                    image_stream = io.BytesIO(data)
-                    image = Image.open(image_stream)
-                    text = pytesseract.image_to_string(image)
-                    extracted_text.append(text)
-                except Exception as e:
-                    print(f"Error reading image file: {e}")
-                    return {"status": "error", "data": ERROR_MESSAGES.IMAGE_FILE_READ_ERROR}
+            # elif file_extension in ['jpg', 'jpeg', 'png', 'gif']:
+            #     try:
+            #         image_stream = io.BytesIO(data)
+            #         image = Image.open(image_stream)
+            #         text = pytesseract.image_to_string(image)
+            #         extracted_text.append(text)
+            #     except Exception as e:
+            #         print(f"Error reading image file: {e}")
+            #         return {"status": "error", "data": ERROR_MESSAGES.IMAGE_FILE_READ_ERROR}
 
             # Handle XML files
-            elif file_extension == 'xml':
-                try:
-                    xml_stream = io.BytesIO(data)
-                    tree = ET.parse(xml_stream)
-                    root = tree.getroot()
-                    extracted_text.append(ET.tostring(root, encoding='unicode'))
-                except Exception as e:
-                    print(f"Error reading XML file: {e}")
-                    return {"status": "error", "data": ERROR_MESSAGES.XML_FILE_READ_ERROR}
+            # elif file_extension == 'xml':
+            #     try:
+            #         xml_stream = io.BytesIO(data)
+            #         tree = ET.parse(xml_stream)
+            #         root = tree.getroot()
+            #         extracted_text.append(ET.tostring(root, encoding='unicode'))
+            #     except Exception as e:
+            #         print(f"Error reading XML file: {e}")
+            #         return {"status": "error", "data": ERROR_MESSAGES.XML_FILE_READ_ERROR}
 
             # Handle JSON files
-            elif file_extension == 'json':
-                try:
-                    json_content = json.loads(data.decode('utf-8'))
-                    extracted_text.append(json.dumps(json_content, indent=4))
-                except Exception as e:
-                    print(f"Error reading JSON file: {e}")
-                    return {"status": "error", "data": ERROR_MESSAGES.JSON_FILE_READ_ERROR}
+            # elif file_extension == 'json':
+            #     try:
+            #         json_content = json.loads(data.decode('utf-8'))
+            #         extracted_text.append(json.dumps(json_content, indent=4))
+            #     except Exception as e:
+            #         print(f"Error reading JSON file: {e}")
+            #         return {"status": "error", "data": ERROR_MESSAGES.JSON_FILE_READ_ERROR}
 
             # Handle unsupported file types
             else:
