@@ -30,7 +30,7 @@ spec:
         - name: PERSIST_DIRECTORY
           value: "/data/chroma"
         - name: ANONYMIZED_TELEMETRY
-          value: "TRUE"
+          value: "FALSE"
 ---
 apiVersion: v1
 kind: Service
