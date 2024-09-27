@@ -66,9 +66,7 @@ spec:
           value: "true"
         # Correctly set the broker id using the pod ordinal
         - name: KAFKA_CFG_NODE_ID
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['statefulset.kubernetes.io/pod-ordinal']
+          value: "1"
         - name: KAFKA_CFG_ADVERTISED_LISTENERS
           value: "PLAINTEXT://$(POD_NAME).kafka.si-app-dev.svc.cluster.local:9092"
         - name: POD_NAME
