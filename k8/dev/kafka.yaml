@@ -26,7 +26,7 @@ metadata:
   namespace: si-app-dev
 spec:
   serviceName: "kafka"
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: kafka
@@ -66,15 +66,19 @@ spec:
         - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
           value: "true"
         - name: KAFKA_CFG_NODE_ID
-          value: "1"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name: POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
         - name: KAFKA_CFG_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://kafka-0.kafka.si-app-dev.svc.cluster.local:9092"
+          value: "PLAINTEXT://$(POD_NAME).kafka.si-app-dev.svc.cluster.local:9092"
         - name: KAFKA_KRAFT_CLUSTER_ID
           value: "1aS54A0dQXmSL5Q3tUHjCQ"
+        - name: KAFKA_CFG_GRACEFUL_SHUTDOWN_TIMEOUT
+          value: "10000"
   volumeClaimTemplates:
   - metadata:
       name: kafka-storage
