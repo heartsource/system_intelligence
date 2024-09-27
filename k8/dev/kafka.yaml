@@ -65,11 +65,11 @@ spec:
           value: "1@kafka-0.kafka.si-app-dev.svc.cluster.local:9093,2@kafka-1.kafka.si-app-dev.svc.cluster.local:9093"
         - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
           value: "true"
-        # Pod-specific settings for broker ID and advertised listeners
+        # Use the pod ordinal (number) as the broker ID
         - name: KAFKA_CFG_NODE_ID
           valueFrom:
             fieldRef:
-              fieldPath: metadata.name  # Dynamic pod name for unique node_id
+              fieldPath: metadata.labels['statefulset.kubernetes.io/pod-ordinal']
         - name: KAFKA_CFG_ADVERTISED_LISTENERS
           value: "PLAINTEXT://$(POD_NAME).kafka.si-app-dev.svc.cluster.local:9092"
         - name: POD_NAME
