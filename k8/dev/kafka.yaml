@@ -40,11 +40,11 @@ spec:
         image: bitnami/kafka:latest
         resources:
           requests:
+            memory: "500Mi"
+            cpu: "250m"
+          limits:
             memory: "1Gi"
             cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "1"
         ports:
         - containerPort: 9092
         - containerPort: 9093

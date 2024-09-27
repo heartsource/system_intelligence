@@ -17,11 +17,11 @@ spec:
         image: issappacr.azurecr.io/si/system-intelligence-backend:2.2.6
         resources:
           requests:
-            memory: "1.5Gi"
-            cpu: "500m"
+            memory: "500Mi"
+            cpu: "250m"
           limits:
-            memory: "2Gi" 
-            cpu: "500m"
+            memory: "1Gi" 
+            cpu: "250m"
         ports:
         - containerPort: 80
         envFrom:
