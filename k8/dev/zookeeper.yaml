@@ -35,10 +35,10 @@ spec:
         image: bitnami/zookeeper:latest
         resources:
           requests:
-            memory: "500Mi"
+            memory: "250Mi"
             cpu: "250m"
           limits:
-            memory: "1Gi" 
+            memory: "500Mi" 
             cpu: "500m"
         ports:
         - containerPort: 2181
