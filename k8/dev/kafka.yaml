@@ -11,6 +11,10 @@ spec:
     port: 9092
     name: kafka
     targetPort: 9092
+  - protocol: TCP
+    port: 9093
+    name: controller
+    targetPort: 9093
   type: ClusterIP
   selector:
     app: kafka
@@ -43,20 +47,35 @@ spec:
             cpu: "1"
         ports:
         - containerPort: 9092
+        - containerPort: 9093
         volumeMounts:
         - name: kafka-storage
           mountPath: /var/lib/kafka
         env:
+        # Common Kafka settings for both brokers
         - name: KAFKA_CFG_PROCESS_ROLES
           value: "broker,controller"
-        - name: KAFKA_CFG_NODE_ID
-          value: "1"
-        - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
-          value: "1@kafka-0.kafka.si-app-dev.svc.cluster.local:9092,2@kafka-1.kafka.si-app-dev.svc.cluster.local:9092"
         - name: KAFKA_CFG_LISTENERS
           value: "PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
+        - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT"
+        - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+          value: "CONTROLLER"
+        - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+          value: "1@kafka-0.kafka.si-app-dev.svc.cluster.local:9093,2@kafka-1.kafka.si-app-dev.svc.cluster.local:9093"
+        - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+          value: "true"
+        # Pod-specific settings for broker ID and advertised listeners
+        - name: KAFKA_CFG_NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name  # Dynamic pod name for unique node_id
         - name: KAFKA_CFG_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://kafka-0.kafka.si-app-dev.svc.cluster.local:9092"
+          value: "PLAINTEXT://$(POD_NAME).kafka.si-app-dev.svc.cluster.local:9092"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
   volumeClaimTemplates:
   - metadata:
       name: kafka-storage
