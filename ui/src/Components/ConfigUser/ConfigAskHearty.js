@@ -150,14 +150,16 @@ const ConfigAskHearty = ({ onTextSubmit }) => {
               </div>
               {isDropdownOpen && (
                 <div className="select-items">
-                  {agentNames.map((agent, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleOptionSelect(agent.name)}
-                    >
-                      {agent.name}
-                    </div>
-                  ))}
+                  {agentNames
+                    .filter((agent) => agent.status === "active")
+                    .map((agent, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleOptionSelect(agent.name)}
+                      >
+                        {agent.name}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
