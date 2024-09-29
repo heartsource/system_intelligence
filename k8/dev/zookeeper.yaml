@@ -21,7 +21,7 @@ metadata:
   namespace: si-app-dev
 spec:
   serviceName: "zookeeper"
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: zookeeper
