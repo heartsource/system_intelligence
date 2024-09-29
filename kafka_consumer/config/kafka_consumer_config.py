@@ -9,7 +9,7 @@ class KafkaConsumerConfig:
             self.kafka_host = os.getenv('KAFKA_HOST')
             self.kafka_port = int(os.getenv('KAFKA_PORT'))
             self.group_id = os.getenv('GROUP_ID')
-            self.auto_offset_rest = os.getenv('AUTO_OFFSET_RESET')
+            self.auto_offset_reset = os.getenv('AUTO_OFFSET_RESET')
             self.session_timeout = int(os.getenv('SESSION_TIMEOUT'))
             self.max_poll_interval = int(os.getenv('MAX_POLL_INTERVAL'))
             self.message_max_bytes = int(os.getenv('MESSAGE_MAX_BYTES'))
@@ -23,10 +23,11 @@ class KafkaConsumerConfig:
             consumer_conf = {
                 'bootstrap.servers': f'{self.kafka_host}:{self.kafka_port}',  # e.g., 'localhost:9092' or Confluent Cloud broker
                 'group.id': self.group_id,
-                'auto.offset.reset': self.auto_offset_rest,
+                'auto.offset.reset': self.auto_offset_reset,
                 'session.timeout.ms': self.session_timeout,   # Adjust session timeout as needed
                 'max.poll.interval.ms': self.max_poll_interval,  # Adjust poll interval as needed
-                'message.max.bytes': self.message_max_bytes
+                'message.max.bytes': self.message_max_bytes,
+                'enable.auto.commit': True  # Commit offsets automatically
             }
             consumer = Consumer(consumer_conf)
             return consumer
