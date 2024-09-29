@@ -50,8 +50,6 @@ spec:
           value: PLAINTEXT://0.0.0.0:9092
         - name: KAFKA_ADVERTISED_LISTENERS
           value: "PLAINTEXT://kafka-0.kafka.si-app-dev.svc.cluster.local:9092"
-        - name: KAFKA_BROKER_ID
-          value: "{{ .StatefulSetOrdinal }}"
         volumeMounts:
         - name: kafka-storage
           mountPath: /var/lib/kafka
