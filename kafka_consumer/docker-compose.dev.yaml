@@ -28,6 +28,6 @@ services:
       context: .
       args:
         ENV: dev
-    image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.6
+    image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.8
     depends_on:
       - kafka

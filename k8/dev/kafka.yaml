@@ -22,7 +22,7 @@ metadata:
   namespace: si-app-dev
 spec:
   serviceName: "kafka"
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kafka
@@ -36,16 +36,13 @@ spec:
         image: bitnami/kafka:latest
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1"
+            memory: "500Mi"
+            cpu: "250m"
           limits:
-            memory: "4Gi"
-            cpu: "2"
+            memory: "1Gi"
+            cpu: "500m"
         ports:
         - containerPort: 9092
-        volumeMounts:
-        - name: kafka-storage
-          mountPath: /var/lib/kafka
         env:
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: "zookeeper:2181"
@@ -53,6 +50,9 @@ spec:
           value: PLAINTEXT://0.0.0.0:9092
         - name: KAFKA_ADVERTISED_LISTENERS
           value: "PLAINTEXT://kafka-0.kafka.si-app-dev.svc.cluster.local:9092"
+        volumeMounts:
+        - name: kafka-storage
+          mountPath: /var/lib/kafka
   volumeClaimTemplates:
   - metadata:
       name: kafka-storage

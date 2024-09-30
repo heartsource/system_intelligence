@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.6
+          image: issappacr.azurecr.io/si/system-intelligence-kafka:1.0.8
           envFrom:
           - configMapRef:
               name: si-kafka-consumer-configmap-dev
