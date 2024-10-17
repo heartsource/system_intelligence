@@ -15,13 +15,6 @@ spec:
       containers:
       - name: systemintelligencebackendapp
         image: issappacr.azurecr.io/si/system-intelligence-backend:2.2.6
-        resources:
-          requests:
-            memory: "250Mi"
-            cpu: "250m"
-          limits:
-            memory: "500Mi" 
-            cpu: "250m"
         ports:
         - containerPort: 80
         envFrom:
