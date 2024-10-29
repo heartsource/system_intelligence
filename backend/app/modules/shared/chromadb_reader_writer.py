@@ -34,7 +34,7 @@ def chromadb_reader(question: str):
     collection = client.get_or_create_collection(collection_name)
     query_results = collection.query(
         query_texts=[question],
-        n_results=1,
+        n_results=10,
         include=["documents"]
     )
     return query_results["documents"][0]
