@@ -5,7 +5,7 @@ import asyncio
 
 def chromadb_writer(txt_file_content):
     print("Writing to Chroma: Started...")
-    chunk_size = 1000
+    chunk_size = 200
     # Split the data into chunks
 
     txt_split = [txt_file_content[i:i + chunk_size] for i in range(0, len(txt_file_content), chunk_size)]
