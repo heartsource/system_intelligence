@@ -7,7 +7,7 @@ data:
   MONGO_DB_NAME: "system_intelligence_db"
   MONGO_PORT: "27017"
   DEBUG: "true"
-  CHROMA_HOST: "productsupportchromadb.si-app.svc.cluster.local"
+  CHROMA_HOST: "productsupportchromadb.si-app-dev.svc.cluster.local"
   CHROMA_PORT: "8000"
   CHROMA_DB_PATH: "../chromadb"
   CHROMA_DB_NAME: "system_intelligence_chromadb"
