@@ -13,14 +13,14 @@ spec:
   - http:
       paths:
       - path: /heartie-be-dev(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: systemintelligencebackendapp
             port:
               number: 80
       - path: /ui-dev(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: systemintelligenceui
