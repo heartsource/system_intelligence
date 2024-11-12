@@ -20,7 +20,7 @@ spec:
         envFrom:
         - configMapRef:
             name: si-backend-configmap
-	      - secretRef:
+        - secretRef:
             name: si-backend-secret
 ---
 apiVersion: v1
