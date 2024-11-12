@@ -23,7 +23,7 @@ data:
   LLAMA_ENDPOINT: "https://Meta-Llama-3-70B-Instruct-ztbdq-serverless.eastus2.inference.ai.azure.com/v1/chat/completions"
   LLAMA_MODEL_LOCAL_PATH: "../model/llama-2-7b-chat.Q5_0.gguf"
   LLAMA_MODEL_PATH: "/model/llama-2-7b-chat.Q5_0.gguf"
-  CHROMA_HOST: "productsupportchromadb.si-app.svc.cluster.local"
+  CHROMA_HOST: "productsupportchromadb.si-app-dev.svc.cluster.local"
   CHROMA_PORT: "8000"
   CHROMA_DB_PATH: "../chromadb"
   CHROMA_DB_NAME: "system_intelligence_chromadb"
