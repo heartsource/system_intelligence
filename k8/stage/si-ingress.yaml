@@ -6,20 +6,21 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: '300m'
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
       - path: /heartie-be(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: systemintelligencebackendapp
             port:
               number: 80
       - path: /ui(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: systemintelligenceui
