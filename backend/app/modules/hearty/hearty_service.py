@@ -21,10 +21,11 @@ llama_service = LlamaService()
 knowledge_upload_service = KnowledgeUploadService()
 enrichment_service = EnrichmentRequestService()
 
-async def talkToHeartie(question = None, prompt= None, model = None, flow= None, payload= None):
+async def talkToHeartie(question=None, prompt=None, model=None, flow=None, payload=None):
     try:
-        print('Heartie is in Action:  Started ... ')
-        #If payload is available use it
+        print('Heartie is in Action: Started ...')
+
+        # If payload is available, use it
         if payload is not None:
             question = payload.question
             prompt = payload.prompt
@@ -36,50 +37,38 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
             "interaction_id": str(uuid4()),
             "interaction_date": datetime.now(timezone.utc)
         }
+
+        # Fetch agent details and validate
         agent_data = await agent_service.fetchAgentDetails(payload.agent_id)
         if agent_data is None or agent_data['model'] != payload.model or agent_data['flow'] != payload.flow:
             raise HTTPException(status_code=400, detail=ERROR_MESSAGES.AGENT_MISMATCH_ERROR)
-        
-        context = chromadb_reader(question) #Context creation
-        # Define your template with context and prompt
 
-        template_with_context_and_question = ""
-        template = ''
-        if prompt is not None:
-            template = prompt
-            # template_with_context_and_question = template.format(prompt, context, question)
-            template_with_context_and_question = f"{prompt} Context: {context}. Prompt: {question}"
-        else:
-            agent_config = await knowledge_upload_service.getAiPrompts()
-            template = agent_config['template']
-            template_with_context_and_question = f"{agent_config['template']} Context: {context}. Prompt: {question}"
+        # Retrieve context from ChromaDB
+        context = chromadb_reader(question)
 
-        if model == Model.ChatGPT4:
-            ai_model_response = await chatgpt_service.chatGPTChatCompletions(template_with_context_and_question)
-        elif model == Model.Llama3:
-            ai_model_response = await llama_service.LlamaChatCompletions(template_with_context_and_question)
-        elif model == Model.Mistral:
-            raise HTTPException(status_code=400, detail=ERROR_MESSAGES.MODEL_INPROGRESS)
-        else:
-            raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_MODEL_ERROR)
-
-        # Check for various "not found" indicators
-        not_found_indicators = [
-            "I don't have enough information",
-            "I do not have enough information",
-            "I apologize, but I don't have any information",
-            "The context is an empty list",
-            "Could you please provide more information"
-        ]
-        if any(phrase in ai_model_response for phrase in not_found_indicators):
+        # Check if context is empty or minimal before proceeding
+        if context is None:
+            # Trigger enrichment and add fallback message if no context
             await enrichment_service.createEnrichmentRequest({"query": question, "agent_id": payload.agent_id})
+            ai_model_response = "I do not have enough information to answer your question. I will follow up on this and get back to you in a few days with the required information."
+        else:
+            # Build the template if context exists
+            template = prompt if prompt else (await knowledge_upload_service.getAiPrompts())['template']
+            template_with_context_and_question = f"{template} Context: {context}. Prompt: {question}"
 
-        # not_found = "I do not have enough information"
-        # if not_found in ai_model_response:
-        #     await enrichment_service.createEnrichmentRequest({"query": question, "agent_id": payload.agent_id})
+            # Get AI model response based on selected model
+            if model == Model.ChatGPT4:
+                ai_model_response = await chatgpt_service.chatGPTChatCompletions(template_with_context_and_question)
+            elif model == Model.Llama3:
+                ai_model_response = await llama_service.LlamaChatCompletions(template_with_context_and_question)
+            elif model == Model.Mistral:
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.MODEL_INPROGRESS)
+            else:
+                raise HTTPException(status_code=400, detail=ERROR_MESSAGES.INVALID_MODEL_ERROR)
 
-        print('Heartie is in Action:  Ended')
-        
+        print('Heartie is in Action: Ended')
+
+        # Log interaction details
         agentlog['duration'] = datetime.now(timezone.utc) - agentlog['interaction_date']
         agentlog['question'] = question
         agentlog['template'] = template
@@ -87,9 +76,11 @@ async def talkToHeartie(question = None, prompt= None, model = None, flow= None,
         agentlog['model'] = model
         agentlog['flow'] = flow
         await logs_service.createAgentLogs(agentlog)
+
         return ai_model_response
+
     except Exception as e:
-        raise Exception(e)
+        raise Exception(f"An error occurred in talkToHeartie: {e}")
 
 
 query1="Tell me about the warranty period of Leaf?"
